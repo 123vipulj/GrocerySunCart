@@ -16,8 +16,8 @@
             android:id="@+id/cat_and_search"
             android:layout_marginTop="16dp"
             android:layout_marginBottom="16dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginEnd="8dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize">
             <!-- categories-->
@@ -91,16 +91,51 @@
             </androidx.cardview.widget.CardView>
 
         </RelativeLayout>
-
         <!-- End of ads slider -->
 
-        <!-- awesome deal -->
         <RelativeLayout
-            android:id="@+id/awesome_deal"
+            android:id="@+id/categories"
             android:layout_below="@id/ads_slider"
             android:layout_width="match_parent"
             android:background="@drawable/awesome_deal_lay"
             android:elevation="3dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            android:layout_height="150dp">
+
+            <RelativeLayout
+                android:id="@+id/categories_title"
+                android:layout_width="match_parent"
+                android:layout_margin="8dp"
+                android:padding="3dp"
+                android:layout_height="35dp">
+
+                <TextView
+                    android:layout_alignParentStart="true"
+                    android:text="Categories"
+                    android:textStyle="bold"
+                    android:textSize="18sp"
+                    android:fontFamily="@font/archia"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+            </RelativeLayout>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:layout_below="@id/categories_title"
+                android:id="@+id/categories_recycler"
+                android:layout_margin="8dp"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"/>
+        </RelativeLayout>
+
+        <!-- awesome deal -->
+        <RelativeLayout
+            android:id="@+id/awesome_deal"
+            android:layout_below="@id/categories"
+            android:layout_width="match_parent"
+            android:background="@drawable/awesome_deal_lay"
+            android:elevation="3dp"
+            android:layout_marginTop="16dp"
             android:layout_marginStart="16dp"
             android:layout_marginEnd="16dp"
             android:layout_height="350dp">
@@ -110,7 +145,7 @@
                 android:layout_width="match_parent"
                 android:layout_margin="8dp"
                 android:padding="3dp"
-                android:layout_height="25dp">
+                android:layout_height="35dp">
 
                 <TextView
                     android:layout_alignParentStart="true"
@@ -123,10 +158,12 @@
 
                 <TextView
                     android:id="@+id/view_more_best_deal"
-                    android:text="View More"
+                    android:text="See More"
+                    android:padding="6dp"
                     android:textStyle="bold"
-                    android:elevation="2dp"
-                    android:textColor="#85000000"
+                    android:textSize="12sp"
+                    android:background="@drawable/view_more_lay"
+                    android:textColor="#6F000000"
                     android:fontFamily="@font/archia"
                     android:layout_alignParentEnd="true"
                     android:layout_marginEnd="16dp"
@@ -138,6 +175,94 @@
             <androidx.recyclerview.widget.RecyclerView
                 android:layout_below="@id/best_deal_title"
                 android:id="@+id/first_slide_best_deal"
+                android:layout_margin="8dp"
+                android:layout_width="match_parent"
+                android:layout_height="350dp"/>
+        </RelativeLayout>
+        <!-- end of awesome deal -->
+
+        <!-- ads slider_2 -->
+        <RelativeLayout
+            android:id="@+id/ads_slider_2"
+            android:layout_below="@id/awesome_deal"
+            android:layout_width="match_parent"
+            android:layout_height="200dp">
+
+            <androidx.cardview.widget.CardView
+                app:cardCornerRadius="6dp"
+                android:layout_margin="16dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <com.smarteist.autoimageslider.SliderView
+                    android:id="@+id/imageSlider_2"
+                    android:layout_width="match_parent"
+                    android:layout_height="200dp"
+                    app:sliderAnimationDuration="600"
+                    app:sliderAutoCycleDirection="back_and_forth"
+                    app:sliderAutoCycleEnabled="true"
+                    app:sliderIndicatorAnimationDuration="600"
+                    app:sliderIndicatorGravity="center_horizontal|bottom"
+                    app:sliderIndicatorMargin="15dp"
+                    app:sliderIndicatorOrientation="horizontal"
+                    app:sliderIndicatorPadding="3dp"
+                    app:sliderIndicatorRadius="2dp"
+                    app:sliderIndicatorSelectedColor="#5A5A5A"
+                    app:sliderIndicatorUnselectedColor="#FFF"
+                    app:sliderScrollTimeInSec="1"
+                    app:sliderStartAutoCycle="true" />
+
+            </androidx.cardview.widget.CardView>
+
+        </RelativeLayout>
+        <!-- End of ads_2 slider -->
+
+        <!-- awesome deal -->
+        <RelativeLayout
+            android:id="@+id/awesome_deal_2"
+            android:layout_below="@id/ads_slider_2"
+            android:layout_width="match_parent"
+            android:background="@drawable/awesome_deal_lay"
+            android:elevation="3dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            android:layout_height="350dp">
+
+            <RelativeLayout
+                android:id="@+id/best_deal_title_2"
+                android:layout_width="match_parent"
+                android:layout_margin="8dp"
+                android:padding="3dp"
+                android:layout_height="35dp">
+
+                <TextView
+                    android:layout_alignParentStart="true"
+                    android:text="Vegetable Deal"
+                    android:textStyle="bold"
+                    android:textSize="18sp"
+                    android:fontFamily="@font/archia"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+
+                <TextView
+                    android:id="@+id/view_more_best_deal_2"
+                    android:text="See More"
+                    android:textStyle="bold"
+                    android:padding="6dp"
+                    android:textSize="12sp"
+                    android:background="@drawable/view_more_lay"
+                    android:textColor="#6F000000"
+                    android:fontFamily="@font/archia"
+                    android:layout_alignParentEnd="true"
+                    android:layout_marginEnd="16dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+            </RelativeLayout>
+
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:layout_below="@id/best_deal_title_2"
+                android:id="@+id/first_slide_best_deal_2"
                 android:layout_margin="8dp"
                 android:layout_width="match_parent"
                 android:layout_height="350dp"/>
