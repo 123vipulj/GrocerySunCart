@@ -21,6 +21,18 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:theme="@style/AppTheme.NoActionBar"
+            android:name=".activity.ProductDetails"/>
+        <activity
+            android:theme="@style/AppTheme.NoActionBar"
+            android:name=".activity.MyCart"/>
+        <activity
+            android:theme="@style/AppTheme.NoActionBar"
+            android:name=".activity.OTPAccept"/>
+        <activity
+            android:theme="@style/AppTheme.NoActionBar"
+            android:name=".activity.OTPLogin"/>
     </application>
 
 </manifest>

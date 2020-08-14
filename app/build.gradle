@@ -2,6 +2,8 @@ apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 
+def dbflow_version = "5.0.0-alpha1"
+
 android {
     compileSdkVersion 29
     buildToolsVersion "29.0.3"
@@ -52,4 +54,15 @@ dependencies {
     // glide
     implementation 'com.github.bumptech.glide:glide:4.10.0'
     annotationProcessor 'com.github.bumptech.glide:compiler:4.10.0'
+    //db flow
+    annotationProcessor "com.github.agrosner.dbflow:processor:${dbflow_version}"
+    implementation "com.github.agrosner.dbflow:core:${dbflow_version}"
+    implementation "com.github.agrosner.dbflow:lib:${dbflow_version}"
+    implementation "com.github.agrosner.dbflow:contentprovider:${dbflow_version}"
+    //phone edit text
+    implementation 'com.google.android.material:material:1.1.0-alpha09'
+    implementation 'com.github.amannirala13:PhoneEditText-Android:1.1.1'
+    //otp pinview
+    implementation 'com.github.mukeshsolanki:android-otpview-pinview:2.1.1'
+
 }

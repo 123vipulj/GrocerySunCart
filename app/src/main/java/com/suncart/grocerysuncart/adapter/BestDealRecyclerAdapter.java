@@ -1,6 +1,7 @@
 package com.suncart.grocerysuncart.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Paint;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.suncart.grocerysuncart.R;
+import com.suncart.grocerysuncart.activity.ProductDetails;
 import com.suncart.grocerysuncart.model.BestDealModel;
 
 import java.util.List;
@@ -43,6 +45,14 @@ public class BestDealRecyclerAdapter extends RecyclerView.Adapter<BestDealRecycl
         holder.productMrp.setPaintFlags(holder.productMrp.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
         holder.productSp.setText(bestDealModelList.get(position).getProductSP());
         holder.productUnit.setText(bestDealModelList.get(position).getProductWeight());
+
+        holder.productImg.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(context, ProductDetails.class);
+                context.startActivity(intent);
+            }
+        });
     }
 
     @Override

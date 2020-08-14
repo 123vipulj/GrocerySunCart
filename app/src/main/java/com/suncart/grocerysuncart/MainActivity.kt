@@ -1,5 +1,6 @@
 package com.suncart.grocerysuncart
 
+import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
 import android.view.Gravity
@@ -24,6 +25,7 @@ import com.google.android.material.navigation.NavigationView
 import com.smarteist.autoimageslider.IndicatorView.animation.type.IndicatorAnimationType
 import com.smarteist.autoimageslider.SliderAnimations
 import com.smarteist.autoimageslider.SliderView
+import com.suncart.grocerysuncart.activity.MyCart
 import com.suncart.grocerysuncart.adapter.BestDealRecyclerAdapter
 import com.suncart.grocerysuncart.adapter.CategoriesAdapter
 import com.suncart.grocerysuncart.adapter.SliderImage
@@ -41,6 +43,14 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+        val toolbar: Toolbar = findViewById(R.id.toolbar)
+        setSupportActionBar(toolbar)
+        supportActionBar?.displayOptions = ActionBar.DISPLAY_SHOW_CUSTOM
+        supportActionBar?.setCustomView(R.layout.custom_toolbar)
+        supportActionBar?.setHomeButtonEnabled(false)
+        supportActionBar?.setDisplayHomeAsUpEnabled(false)
+
         var bestDealList =  mutableListOf<BestDealModel>()
         bestDealList.add(BestDealModel("0", "Plastic Free grocery deliver fast", "Rs. 960",  "Rs. 1080", "102","7 kg" , "http://vipultest.nbwebsolution.com/images/fortune.jpg"))
         bestDealList.add(BestDealModel("0", "Plastic Free grocery deliver fast", "Rs. 960",  "Rs. 1080", "102","7 kg" , "http://vipultest.nbwebsolution.com/images/fortune.jpg"))
@@ -63,14 +73,10 @@ class MainActivity : AppCompatActivity() {
         recyclerCat.adapter = categoriesAdapter
         recyclerCat.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
 
-        val toolbar: Toolbar = findViewById(R.id.toolbar)
-        setSupportActionBar(toolbar)
-        supportActionBar?.displayOptions = ActionBar.DISPLAY_SHOW_CUSTOM
-        supportActionBar?.setCustomView(R.layout.custom_toolbar)
-        supportActionBar?.setHomeButtonEnabled(false)
-        supportActionBar?.setDisplayHomeAsUpEnabled(false)
+
 
         var nav_icon  = supportActionBar?.customView?.findViewById<ImageView>(R.id.navigation_drawer)
+        var cartImg = supportActionBar?.customView?.findViewById<ImageView>(R.id.cart_icons);
         var totalCart = supportActionBar?.customView?.findViewById<TextView>(R.id.total_cart)
 
         var recyclerBestDeal = findViewById<RecyclerView>(R.id.first_slide_best_deal);
@@ -82,6 +88,11 @@ class MainActivity : AppCompatActivity() {
         bestDealRecyclerAdapter = BestDealRecyclerAdapter(this,
             bestDealList as List<BestDealModel>?
         );
+
+        cartImg?.setOnClickListener {
+            val intent = Intent(this, MyCart::class.java)
+            startActivity(intent)
+        }
 
         recyclerDeal(recyclerBestDeal, bestDealRecyclerAdapter);
         recyclerDeal(recylerBestDeal_2, bestDealRecyclerAdapter)
