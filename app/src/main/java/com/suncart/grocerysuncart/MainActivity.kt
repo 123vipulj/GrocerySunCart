@@ -3,24 +3,21 @@ package com.suncart.grocerysuncart
 import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
-import android.view.Gravity
-import android.view.Menu
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.ActionBar
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.core.view.GravityCompat
-import androidx.core.view.isVisible
 import androidx.drawerlayout.widget.DrawerLayout
-import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
-import androidx.navigation.ui.navigateUp
-import androidx.navigation.ui.setupActionBarWithNavController
-import androidx.navigation.ui.setupWithNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager.widget.ViewPager
+import com.dbflow5.config.DatabaseConfig
+import com.dbflow5.config.FlowConfig
+import com.dbflow5.config.FlowManager
+import com.dbflow5.database.AndroidSQLiteOpenHelper
 import com.google.android.material.navigation.NavigationView
 import com.smarteist.autoimageslider.IndicatorView.animation.type.IndicatorAnimationType
 import com.smarteist.autoimageslider.SliderAnimations
@@ -29,9 +26,13 @@ import com.suncart.grocerysuncart.activity.MyCart
 import com.suncart.grocerysuncart.adapter.BestDealRecyclerAdapter
 import com.suncart.grocerysuncart.adapter.CategoriesAdapter
 import com.suncart.grocerysuncart.adapter.SliderImage
+import com.suncart.grocerysuncart.bus.ContentLoadedEvent
+import com.suncart.grocerysuncart.database.AppDatabase
 import com.suncart.grocerysuncart.model.BestDealModel
 import com.suncart.grocerysuncart.model.CategoriesItems
 import com.suncart.grocerysuncart.model.SliderItem
+import com.suncart.grocerysuncart.service.ContentService
+import de.greenrobot.event.EventBus
 
 
 class MainActivity : AppCompatActivity() {
@@ -40,9 +41,15 @@ class MainActivity : AppCompatActivity() {
     private lateinit var bestDealRecyclerAdapter: BestDealRecyclerAdapter
     private lateinit var appBarConfiguration: AppBarConfiguration
 
+    var eventBus = EventBus.getDefault()
+    lateinit var contentService : ContentService
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+        contentService = ContentService(this)
+        contentService.getAllNewsItems()
 
         val toolbar: Toolbar = findViewById(R.id.toolbar)
         setSupportActionBar(toolbar)
@@ -141,5 +148,25 @@ class MainActivity : AppCompatActivity() {
     private fun recyclerDeal(recyclerBestDeal: RecyclerView, bestDealRecyclerAdapter: BestDealRecyclerAdapter){
         recyclerBestDeal.adapter = bestDealRecyclerAdapter;
         recyclerBestDeal.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
+    }
+
+    override fun onStart() {
+        super.onStart()
+        if (!eventBus.isRegistered(this)) {
+            eventBus.register(this)
+        }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        if (eventBus.hasSubscriberForEvent(ContentService::class.java)) {
+            eventBus.unregister(this)
+        }
+    }
+
+    fun onEvent(contentLoadedEvent: ContentLoadedEvent){
+        if (contentLoadedEvent != null){
+
+        }
     }
 }

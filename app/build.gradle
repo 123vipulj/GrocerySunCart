@@ -3,6 +3,7 @@ apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 
 def dbflow_version = "5.0.0-alpha1"
+def acraVersion = '5.6.1'
 
 android {
     compileSdkVersion 29
@@ -24,10 +25,12 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
+
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
+
     kotlinOptions {
         jvmTarget = '1.8'
     }
@@ -64,5 +67,25 @@ dependencies {
     implementation 'com.github.amannirala13:PhoneEditText-Android:1.1.1'
     //otp pinview
     implementation 'com.github.mukeshsolanki:android-otpview-pinview:2.1.1'
-
+    //retrofit
+    implementation 'com.squareup.retrofit2:retrofit:2.7.0'
+    implementation 'com.squareup.retrofit2:converter-jackson:2.7.0'
+    
+    //okhttp3 interceptor
+    implementation 'com.squareup.okhttp3:logging-interceptor:4.7.2'
+    //gson
+    implementation 'com.google.code.gson:gson:2.8.6'
+    implementation group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.10.1'
+    implementation group: 'com.fasterxml.jackson.core', name: 'jackson-core', version: '2.10.1'
+    implementation group: 'com.fasterxml.jackson.core', name: 'jackson-annotations', version: '2.10.1'
+    implementation group: 'com.fasterxml.jackson.datatype', name: 'jackson-datatype-jsr310', version: '2.3.0-rc1'
+    implementation group: 'com.fasterxml.jackson.datatype', name: 'jackson-datatype-jdk8', version: '2.10.1'
+    // eventbus
+    implementation group: 'de.greenrobot', name: 'eventbus', version: '2.4.1'
+    // lombok
+    //    compileOnly 'org.projectlombok:lombok:1.18.10'
+    //    annotationProcessor 'org.projectlombok:lombok:1.18.10'
+    // acra
+    implementation "ch.acra:acra-mail:$acraVersion"
+    implementation "ch.acra:acra-dialog:$acraVersion"
 }
