@@ -10,20 +10,23 @@ import com.suncart.grocerysuncart.database.AppDatabase;
 public class ProductItems extends BaseModel {
 
     @PrimaryKey(autoincrement = false)
-    int ids;
+    public long ids;
 
     @Column
-    String productName;
+    public String productName;
 
     @Column
-    String productMrp;
+    public String productPics;
 
     @Column
-    String productSp;
+    public String productMrp;
 
     @Column
-    String productWeight;
+    public String productSp;
 
     @Column
-    int totalQty;
+    public String productWeight;
+
+    @Column
+    public int totalQty;
 }

@@ -7,9 +7,9 @@ import java.util.List;
 
 public class ContentLoadedEvent {
 
-    private List<ContentItems> newsItemsList;
+    public List<ContentItems> contentItemsList;
 
-    public ContentLoadedEvent(List<ContentItems> newsItemsList) {
-        this.newsItemsList = newsItemsList;
+    public ContentLoadedEvent(List<ContentItems> contentItemsList) {
+        this.contentItemsList = contentItemsList;
     }
 }

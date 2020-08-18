@@ -18,20 +18,45 @@ import com.smarteist.autoimageslider.SliderView
 import com.suncart.grocerysuncart.R
 import com.suncart.grocerysuncart.adapter.BestDealRecyclerAdapter
 import com.suncart.grocerysuncart.adapter.SliderImage
+import com.suncart.grocerysuncart.bus.ContentLoadedEvent
+import com.suncart.grocerysuncart.bus.ContentLoadedMoreDetailsEvent
 import com.suncart.grocerysuncart.model.BestDealModel
 import com.suncart.grocerysuncart.model.SliderItem
+import com.suncart.grocerysuncart.model.content.ContentItems
+import com.suncart.grocerysuncart.service.ContentService
+import com.suncart.grocerysuncart.util.DbUtils
+import de.greenrobot.event.EventBus
 import org.w3c.dom.Text
 
 public class ProductDetails : AppCompatActivity() {
+
+    var eventBus = EventBus.getDefault()
+
+    lateinit var bestDealRecyclerAdapter : BestDealRecyclerAdapter
+    lateinit var bestDealRecycler : RecyclerView
+    lateinit var totalCart : TextView
+    lateinit var contentService : ContentService
+
+    lateinit var totalQnty : TextView
+    lateinit var titleProduct : TextView
+    lateinit var titleCat: TextView
+    lateinit var priceTag : TextView
+    lateinit var weightTag : TextView
+    lateinit var quantityTag : TextView
+    lateinit var descriptionContent : TextView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.product_details_activity)
 
+        contentService = ContentService(this)
+        contentService.getAllNewsItems()
+        contentService.getAllNewsItemsMoreDetails("10000")
+
         var bestDealList =  mutableListOf<BestDealModel>()
-        bestDealList.add(BestDealModel("0", "Plastic Free grocery deliver fast", "Rs. 960",  "Rs. 1080", "102","7 kg" , "http://vipultest.nbwebsolution.com/images/fortune.jpg"))
-        bestDealList.add(BestDealModel("0", "Plastic Free grocery deliver fast", "Rs. 960",  "Rs. 1080", "102","7 kg" , "http://vipultest.nbwebsolution.com/images/fortune.jpg"))
-        bestDealList.add(BestDealModel("0", "Plastic Free grocery deliver fast", "Rs. 960",  "Rs. 1080", "102","7 kg" , "http://vipultest.nbwebsolution.com/images/fortune.jpg"))
+        bestDealList.add(BestDealModel(1, "Plastic Free grocery deliver fast", "Rs. 960",  "Rs. 1080", "102","7 kg" , "http://vipultest.nbwebsolution.com/images/fortune.jpg"))
+        bestDealList.add(BestDealModel(2, "Plastic Free grocery deliver fast", "Rs. 960",  "Rs. 1080", "102","7 kg" , "http://vipultest.nbwebsolution.com/images/fortune.jpg"))
+        bestDealList.add(BestDealModel(3, "Plastic Free grocery deliver fast", "Rs. 960",  "Rs. 1080", "102","7 kg" , "http://vipultest.nbwebsolution.com/images/fortune.jpg"))
 
         val toolbar: Toolbar = findViewById(R.id.toolbar)
         setSupportActionBar(toolbar)
@@ -44,26 +69,26 @@ public class ProductDetails : AppCompatActivity() {
         toolbar.setNavigationOnClickListener {
             super.onBackPressed()
         }
+
         var nav_icon  = supportActionBar?.customView?.findViewById<ImageView>(R.id.navigation_drawer)
         nav_icon?.visibility = View.GONE
-        var totalCart = supportActionBar?.customView?.findViewById<TextView>(R.id.total_cart)
+        totalCart = supportActionBar?.customView?.findViewById<TextView>(R.id.total_cart)!!
 
         var imageSlider = findViewById<SliderView>(R.id.imageSlider)
         var minusBtn = findViewById<ImageView>(R.id.minus_btn)
-        var totalQnty = findViewById<TextView>(R.id.ttl_quanity)
+        totalQnty = findViewById<TextView>(R.id.ttl_quanity)
         var positiveBtn = findViewById<ImageView>(R.id.add_btn)
-        var titleProduct = findViewById<TextView>(R.id.title_p)
-        var titleCat = findViewById<TextView>(R.id.title_cat_p)
-        var priceTag = findViewById<TextView>(R.id.price_tag)
-        var weightTag = findViewById<TextView>(R.id.weight_tag)
-        var quantityTag = findViewById<TextView>(R.id.quanity_tag)
-        var descriptionContent = findViewById<TextView>(R.id.desc_content)
-        var bestDealRecycler = findViewById<RecyclerView>(R.id.best_deal_reycler)
+        titleProduct = findViewById<TextView>(R.id.product_title)
+        titleCat = findViewById<TextView>(R.id.title_cat_p)
+        priceTag = findViewById<TextView>(R.id.price_tag)
+        weightTag = findViewById<TextView>(R.id.weight_tag)
+        quantityTag = findViewById<TextView>(R.id.quanity_tag)
+        descriptionContent = findViewById<TextView>(R.id.desc_content)
 
-        // adapter
-        var bestDealRecyclerAdapter = BestDealRecyclerAdapter(this, bestDealList)
-        bestDealRecycler.adapter = bestDealRecyclerAdapter
-        bestDealRecycler.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
+        bestDealRecycler = findViewById<RecyclerView>(R.id.best_deal_reycler)
+
+        //cart total qty
+        totalCart.text = DbUtils.getDataForTrack().toString();
 
         //image slider
         var sliderImageList = mutableListOf<SliderItem>()
@@ -89,4 +114,49 @@ public class ProductDetails : AppCompatActivity() {
         adapter.renewItems(sliderImgList)
         sliderView.startAutoCycle()
     }
+
+    override fun onStart() {
+        super.onStart()
+        if (!eventBus.isRegistered(this)) {
+            eventBus.register(this)
+        }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        if (eventBus.hasSubscriberForEvent(ContentService::class.java)) {
+            eventBus.unregister(this)
+        }
+    }
+
+    fun onEvent(contentLoadedEvent: ContentLoadedEvent){
+        if (contentLoadedEvent != null){
+            val contentItems = mutableListOf<ContentItems>()
+            contentItems.addAll(contentLoadedEvent.contentItemsList)
+
+            // adapter
+            bestDealRecyclerAdapter = BestDealRecyclerAdapter(this, contentItems)
+            bestDealRecycler.adapter = bestDealRecyclerAdapter
+            bestDealRecycler.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
+
+            // set cart track of product
+            bestDealRecyclerAdapter.setCartTrackListener {
+                    currentQty: String? ->  totalCart.text = currentQty
+            }
+        }
+    }
+
+    fun onEvent(contentLoadedMoreDetailsEvent: ContentLoadedMoreDetailsEvent){
+        if (contentLoadedMoreDetailsEvent != null){
+            var contentLoadedMoreDetailsList = contentLoadedMoreDetailsEvent.loadedMoreDetailsEvents
+
+            titleProduct.text = contentLoadedMoreDetailsList.get(0).productName
+            weightTag.text = contentLoadedMoreDetailsList.get(0).productWeight
+            priceTag.text = contentLoadedMoreDetailsList.get(0).productSp
+            descriptionContent.text = contentLoadedMoreDetailsList.get(0).productDescription
+        }
+    }
+
+
+
 }

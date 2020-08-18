@@ -14,10 +14,7 @@ import androidx.navigation.ui.AppBarConfiguration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager.widget.ViewPager
-import com.dbflow5.config.DatabaseConfig
-import com.dbflow5.config.FlowConfig
 import com.dbflow5.config.FlowManager
-import com.dbflow5.database.AndroidSQLiteOpenHelper
 import com.google.android.material.navigation.NavigationView
 import com.smarteist.autoimageslider.IndicatorView.animation.type.IndicatorAnimationType
 import com.smarteist.autoimageslider.SliderAnimations
@@ -31,8 +28,11 @@ import com.suncart.grocerysuncart.database.AppDatabase
 import com.suncart.grocerysuncart.model.BestDealModel
 import com.suncart.grocerysuncart.model.CategoriesItems
 import com.suncart.grocerysuncart.model.SliderItem
+import com.suncart.grocerysuncart.model.content.ContentItems
 import com.suncart.grocerysuncart.service.ContentService
+import com.suncart.grocerysuncart.util.DbUtils
 import de.greenrobot.event.EventBus
+import org.w3c.dom.Text
 
 
 class MainActivity : AppCompatActivity() {
@@ -44,9 +44,15 @@ class MainActivity : AppCompatActivity() {
     var eventBus = EventBus.getDefault()
     lateinit var contentService : ContentService
 
+    lateinit var recyclerBestDeal : RecyclerView
+    lateinit var recylerBestDeal_2 : RecyclerView
+
+    lateinit var totalCart : TextView
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        FlowManager.init(this)
 
         contentService = ContentService(this)
         contentService.getAllNewsItems()
@@ -58,10 +64,11 @@ class MainActivity : AppCompatActivity() {
         supportActionBar?.setHomeButtonEnabled(false)
         supportActionBar?.setDisplayHomeAsUpEnabled(false)
 
+
         var bestDealList =  mutableListOf<BestDealModel>()
-        bestDealList.add(BestDealModel("0", "Plastic Free grocery deliver fast", "Rs. 960",  "Rs. 1080", "102","7 kg" , "http://vipultest.nbwebsolution.com/images/fortune.jpg"))
-        bestDealList.add(BestDealModel("0", "Plastic Free grocery deliver fast", "Rs. 960",  "Rs. 1080", "102","7 kg" , "http://vipultest.nbwebsolution.com/images/fortune.jpg"))
-        bestDealList.add(BestDealModel("0", "Plastic Free grocery deliver fast", "Rs. 960",  "Rs. 1080", "102","7 kg" , "http://vipultest.nbwebsolution.com/images/fortune.jpg"))
+        bestDealList.add(BestDealModel(1, "Plastic Free grocery deliver fast", "Rs. 960",  "Rs. 1080", "102","7 kg" , "http://vipultest.nbwebsolution.com/images/fortune.jpg"))
+        bestDealList.add(BestDealModel(2, "Plastic Free grocery deliver fast", "Rs. 960",  "Rs. 1080", "102","7 kg" , "http://vipultest.nbwebsolution.com/images/fortune.jpg"))
+        bestDealList.add(BestDealModel(3, "Plastic Free grocery deliver fast", "Rs. 960",  "Rs. 1080", "102","7 kg" , "http://vipultest.nbwebsolution.com/images/fortune.jpg"))
 
         var categoryItems = mutableListOf<CategoriesItems>()
         categoryItems.add(CategoriesItems("http://vipultest.nbwebsolution.com/images/categories_icons/vegetables.png","Vegetables"))
@@ -81,28 +88,28 @@ class MainActivity : AppCompatActivity() {
         recyclerCat.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
 
 
-
         var nav_icon  = supportActionBar?.customView?.findViewById<ImageView>(R.id.navigation_drawer)
         var cartImg = supportActionBar?.customView?.findViewById<ImageView>(R.id.cart_icons);
-        var totalCart = supportActionBar?.customView?.findViewById<TextView>(R.id.total_cart)
+        totalCart = supportActionBar?.customView?.findViewById<TextView>(R.id.total_cart)!!
 
-        var recyclerBestDeal = findViewById<RecyclerView>(R.id.first_slide_best_deal);
-        var recylerBestDeal_2 = findViewById<RecyclerView>(R.id.first_slide_best_deal_2);
+        recyclerBestDeal = findViewById<RecyclerView>(R.id.first_slide_best_deal);
+        recylerBestDeal_2 = findViewById<RecyclerView>(R.id.first_slide_best_deal_2);
 
         val sliderView = findViewById<SliderView>(R.id.imageSlider)
         val sliderView_2 = findViewById<SliderView>(R.id.imageSlider_2)
 
-        bestDealRecyclerAdapter = BestDealRecyclerAdapter(this,
-            bestDealList as List<BestDealModel>?
-        );
+
+
 
         cartImg?.setOnClickListener {
             val intent = Intent(this, MyCart::class.java)
             startActivity(intent)
         }
 
-        recyclerDeal(recyclerBestDeal, bestDealRecyclerAdapter);
-        recyclerDeal(recylerBestDeal_2, bestDealRecyclerAdapter)
+        // add no of product to track cart
+        totalCart?.text = DbUtils.getDataForTrack().toString();
+
+
 
         val drawerLayout: DrawerLayout = findViewById(R.id.drawer_layout)
         val navView: NavigationView = findViewById(R.id.nav_view)
@@ -148,6 +155,7 @@ class MainActivity : AppCompatActivity() {
     private fun recyclerDeal(recyclerBestDeal: RecyclerView, bestDealRecyclerAdapter: BestDealRecyclerAdapter){
         recyclerBestDeal.adapter = bestDealRecyclerAdapter;
         recyclerBestDeal.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
+
     }
 
     override fun onStart() {
@@ -166,7 +174,18 @@ class MainActivity : AppCompatActivity() {
 
     fun onEvent(contentLoadedEvent: ContentLoadedEvent){
         if (contentLoadedEvent != null){
+            val contentItems = mutableListOf<ContentItems>()
+            contentItems.addAll(contentLoadedEvent.contentItemsList)
 
+            bestDealRecyclerAdapter = BestDealRecyclerAdapter(this, contentItems);
+            recyclerDeal(recyclerBestDeal, bestDealRecyclerAdapter);
+            recyclerDeal(recylerBestDeal_2, bestDealRecyclerAdapter)
+
+            // set cart track of product
+            bestDealRecyclerAdapter.setCartTrackListener {
+                    currentQty: String? ->  totalCart?.text = currentQty
+            }
         }
     }
+
 }

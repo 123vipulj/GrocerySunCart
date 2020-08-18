@@ -16,7 +16,7 @@ import org.acra.annotation.AcraMailSender
 
 @AcraMailSender(mailTo = "123.vipulj@gmail.com")
 @AcraCore(buildConfigClass = BuildConfig::class)
-class GroceryApp : Application(){
+open class GroceryApp : Application(){
 
     companion object {
         fun saveLoginNumber(context: Context, number : Int){

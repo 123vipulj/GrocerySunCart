@@ -4,9 +4,11 @@ import android.content.Context;
 import android.util.Log;
 
 import com.suncart.grocerysuncart.bus.ContentLoadedEvent;
+import com.suncart.grocerysuncart.bus.ContentLoadedMoreDetailsEvent;
 import com.suncart.grocerysuncart.config.GroceryApp;
 import com.suncart.grocerysuncart.exception.ApiErrorEvent;
 import com.suncart.grocerysuncart.model.content.ContentItems;
+import com.suncart.grocerysuncart.model.content.ContentItemsMoreDetails;
 
 import java.util.List;
 
@@ -36,12 +38,32 @@ public class ContentService {
         contentResponseCall.enqueue(new Callback<List<ContentItems>>() {
             @Override
             public void onResponse(Call<List<ContentItems>> call, Response<List<ContentItems>> response) {
-                Log.i(TAG, "### Get News Items Response : " + response.body().toString());
+                Log.i(TAG, "### Get Items Response : " + response.body().toString());
                 eventBus.post(new ContentLoadedEvent(response.body()));
             }
 
             @Override
             public void onFailure(Call<List<ContentItems>> call, Throwable t) {
+                eventBus.post(new ApiErrorEvent(t));
+            }
+        });
+
+    }
+
+    // get all news
+    public void getAllNewsItemsMoreDetails(String ids) {
+
+        Call<List<ContentItemsMoreDetails>> contentResponseCall = GroceryApp.Companion.getNewsApi().getAllContentDetails(ids);
+
+        contentResponseCall.enqueue(new Callback<List<ContentItemsMoreDetails>>() {
+            @Override
+            public void onResponse(Call<List<ContentItemsMoreDetails>> call, Response<List<ContentItemsMoreDetails>> response) {
+                Log.i(TAG, "### Get Items Response : " + response.body().toString());
+                eventBus.post(new ContentLoadedMoreDetailsEvent(response.body()));
+            }
+
+            @Override
+            public void onFailure(Call<List<ContentItemsMoreDetails>> call, Throwable t) {
                 eventBus.post(new ApiErrorEvent(t));
             }
         });

@@ -9,10 +9,11 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.suncart.grocerysuncart.R
+import com.suncart.grocerysuncart.database.tables.ProductItems
 import com.suncart.grocerysuncart.model.BestDealModel
 import org.w3c.dom.Text
 
-public class ShippingItemsAdapter(var context: Context, var bestDealModel: MutableList<BestDealModel>) : RecyclerView.Adapter<ShippingItemsAdapter.MyViewHolder>(){
+public class ShippingItemsAdapter(var context: Context, var bestDealModel: MutableList<ProductItems>) : RecyclerView.Adapter<ShippingItemsAdapter.MyViewHolder>(){
 
     override fun onCreateViewHolder(
         parent: ViewGroup,
@@ -28,10 +29,11 @@ public class ShippingItemsAdapter(var context: Context, var bestDealModel: Mutab
 
     override fun onBindViewHolder(holder: ShippingItemsAdapter.MyViewHolder, position: Int) {
         Glide.with(context).load(bestDealModel[position].productPics).into(holder.productImg)
-        holder.productMrp.text = bestDealModel[position].productMRP
-        holder.productSp.text = bestDealModel[position].productSP
+        holder.productMrp.text = bestDealModel[position].productMrp
+        holder.productSp.text = bestDealModel[position].productSp
         holder.productTitle.text = bestDealModel[position].productName
         holder.productUnit.text = bestDealModel[position].productWeight
+        holder.totalQty.text = bestDealModel[position].totalQty.toString()
     }
 
     class MyViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -40,6 +42,7 @@ public class ShippingItemsAdapter(var context: Context, var bestDealModel: Mutab
         var productMrp = itemView.findViewById<TextView>(R.id.mrp_price)
         var productTitle  = itemView.findViewById<TextView>(R.id.product_title)
         var productUnit = itemView.findViewById<TextView>(R.id.product_weight)
+        var totalQty = itemView.findViewById<TextView>(R.id.total_quantity)
     }
 
 }

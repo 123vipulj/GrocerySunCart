@@ -1,10 +1,12 @@
 package com.suncart.grocerysuncart.model;
 
 public class BestDealModel {
-    String id, productName, productMRP, productSP,
+    Long id;
+    int itemsLimit;
+    String  productName, productMRP, productSP,
             totalStock, productWeight, productPics;
 
-    public BestDealModel(String id, String productName, String productMRP, String productSP, String totalStock, String productWeight, String productPics) {
+    public BestDealModel(Long id, String productName, String productMRP, String productSP, String totalStock, String productWeight, String productPics) {
         this.id = id;
         this.productName = productName;
         this.productMRP = productMRP;
@@ -14,12 +16,31 @@ public class BestDealModel {
         this.productPics = productPics;
     }
 
-    public String getId() {
+    public BestDealModel(Long id, int itemsLimit, String productName, String productMRP, String productSP, String totalStock, String productWeight, String productPics) {
+        this.id = id;
+        this.itemsLimit = itemsLimit;
+        this.productName = productName;
+        this.productMRP = productMRP;
+        this.productSP = productSP;
+        this.totalStock = totalStock;
+        this.productWeight = productWeight;
+        this.productPics = productPics;
+    }
+
+    public Long getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(Long id) {
         this.id = id;
+    }
+
+    public int getItemsLimit() {
+        return itemsLimit;
+    }
+
+    public void setItemsLimit(int itemsLimit) {
+        this.itemsLimit = itemsLimit;
     }
 
     public String getProductName() {
@@ -70,3 +91,4 @@ public class BestDealModel {
         this.productPics = productPics;
     }
 }
+

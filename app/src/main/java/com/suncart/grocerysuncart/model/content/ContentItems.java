@@ -3,7 +3,7 @@ package com.suncart.grocerysuncart.model.content;
 
 public class ContentItems {
 
-    String id;
+    int id;
     String productName;
     String productMrp;
     String productSp;
@@ -11,8 +11,8 @@ public class ContentItems {
     String productWeight;
     String productPics;
 
-    public String getId() {
-        return id;
+    public int getId() {
+       return id;
     }
 
     public String getProductName() {

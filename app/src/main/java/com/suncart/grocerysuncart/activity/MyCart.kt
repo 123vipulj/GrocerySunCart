@@ -1,10 +1,8 @@
 package com.suncart.grocerysuncart.activity
 
-import android.content.Context
 import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
-import android.os.PersistableBundle
 import android.view.View
 import android.widget.ImageView
 import android.widget.RelativeLayout
@@ -20,10 +18,11 @@ import com.suncart.grocerysuncart.adapter.BestDealRecyclerAdapter
 import com.suncart.grocerysuncart.adapter.ShippingItemsAdapter
 import com.suncart.grocerysuncart.config.GroceryApp
 import com.suncart.grocerysuncart.model.BestDealModel
-import org.w3c.dom.Text
+import com.suncart.grocerysuncart.util.DbUtils
 
 class MyCart : AppCompatActivity(){
 
+    lateinit var recyclerBestDeal : RecyclerView
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.my_cart_activity)
@@ -54,20 +53,23 @@ class MyCart : AppCompatActivity(){
         }
 
         var bestDealModel = mutableListOf<BestDealModel>()
-        bestDealModel.add(BestDealModel("0", "Plastic Free grocery deliver fast", "Rs. 960",  "Rs. 1080", "102","7 kg" , "http://vipultest.nbwebsolution.com/images/fortune.jpg"))
-        bestDealModel.add(BestDealModel("0", "Plastic Free grocery deliver fast", "Rs. 960",  "Rs. 1080", "102","7 kg" , "http://vipultest.nbwebsolution.com/images/fortune.jpg"))
-        bestDealModel.add(BestDealModel("0", "Plastic Free grocery deliver fast", "Rs. 960",  "Rs. 1080", "102","7 kg" , "http://vipultest.nbwebsolution.com/images/fortune.jpg"))
+        bestDealModel.add(BestDealModel(1, "Plastic Free grocery deliver fast", "Rs. 960",  "Rs. 1080", "102","7 kg" , "http://vipultest.nbwebsolution.com/images/fortune.jpg"))
+        bestDealModel.add(BestDealModel(2, "Plastic Free grocery deliver fast", "Rs. 960",  "Rs. 1080", "102","7 kg" , "http://vipultest.nbwebsolution.com/images/fortune.jpg"))
+        bestDealModel.add(BestDealModel(3, "Plastic Free grocery deliver fast", "Rs. 960",  "Rs. 1080", "102","7 kg" , "http://vipultest.nbwebsolution.com/images/fortune.jpg"))
 
+        var productCartList = DbUtils.getDataCart()
 
+        // cart product
         var productShipRecycler = findViewById<RecyclerView>(R.id.shipping_product_recycle)
-        var bestDealRecyclerAdapter = ShippingItemsAdapter(this, bestDealModel)
+        var bestDealRecyclerAdapter = ShippingItemsAdapter(this, productCartList)
         productShipRecycler.adapter = bestDealRecyclerAdapter
         productShipRecycler.layoutManager = LinearLayoutManager(this)
         productShipRecycler.addItemDecoration(DividerItemDecoration(this, DividerItemDecoration.VERTICAL))
 
-        var recyclerBestDeal = findViewById<RecyclerView>(R.id.first_slide_best_deal);
-        var bestDealRecyclerAdapter_2 = BestDealRecyclerAdapter(this, bestDealModel)
-        recyclerDeal(recyclerBestDeal, bestDealRecyclerAdapter_2);
+        //best deal
+//        recyclerBestDeal = findViewById<RecyclerView>(R.id.first_slide_best_deal);
+//        var bestDealRecyclerAdapter_2 = BestDealRecyclerAdapter(this, bestDealModel)
+//        recyclerDeal(recyclerBestDeal, bestDealRecyclerAdapter_2);
 
         checkoutBtn.setOnClickListener {
             if (!GroceryApp.isUserLoged(this)){
@@ -84,4 +86,5 @@ class MyCart : AppCompatActivity(){
         recyclerBestDeal.adapter = bestDealRecyclerAdapter;
         recyclerBestDeal.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
     }
+
 }
