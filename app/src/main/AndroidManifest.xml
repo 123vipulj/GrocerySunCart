@@ -2,15 +2,36 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.suncart.grocerysuncart">
 
-    <uses-permission android:name="android.permission.INTERNET"/>
+    <!--
+         The ACCESS_COARSE/FINE_LOCATION permissions are not required to use
+         Google Maps Android API v2, but you must specify either coarse or fine
+         location permissions for the "MyLocation" functionality.
+    -->
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.INTERNET" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:usesCleartextTraffic="true"
-        android:theme="@style/AppTheme">
+        android:theme="@style/AppTheme"
+        android:usesCleartextTraffic="true">
+
+        <!--
+             The API key for Google Maps-based APIs is defined as a string resource.
+             (See the file "res/values/google_maps_api.xml").
+             Note that the API key is linked to the encryption key used to sign the APK.
+             You need a different API key for each encryption key, including the release key that is used to
+             sign the APK for publishing.
+             You can define the keys for the debug and release targets in src/debug/ and src/release/.
+        -->
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="@string/google_maps_key" />
+
+
         <activity
             android:name=".MainActivity"
             android:label="@string/app_name"
@@ -22,17 +43,20 @@
             </intent-filter>
         </activity>
         <activity
-            android:theme="@style/AppTheme.NoActionBar"
-            android:name=".activity.ProductDetails"/>
+            android:name=".activity.ProductDetails"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".activity.MyCart"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".activity.OTPAccept"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".activity.OTPLogin"
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:theme="@style/AppTheme.NoActionBar"
-            android:name=".activity.MyCart"/>
-        <activity
-            android:theme="@style/AppTheme.NoActionBar"
-            android:name=".activity.OTPAccept"/>
-        <activity
-            android:theme="@style/AppTheme.NoActionBar"
-            android:name=".activity.OTPLogin"/>
+            android:name=".activity.MapPickAddress" />
 
         <service
             android:name=".config.GroceryFirebaseMessagingService"
@@ -41,17 +65,16 @@
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
         </service>
-
-        <!-- Set color used with incoming notification messages. This is used when no color is set for the incoming
-             notification message. See README(https://goo.gl/6BKBk7) for more. -->
+        <!--
+ Set color used with incoming notification messages. This is used when no color is set for the incoming
+             notification message. See README(https://goo.gl/6BKBk7) for more.
+        -->
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_icon"
             android:resource="@drawable/cart" />
-
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_color"
             android:resource="@color/colorAccent" />
-
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_channel_id"
             android:value="@string/default_notification_channel_id" />

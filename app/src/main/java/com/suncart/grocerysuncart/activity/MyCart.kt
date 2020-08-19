@@ -72,11 +72,12 @@ class MyCart : AppCompatActivity(){
 //        recyclerDeal(recyclerBestDeal, bestDealRecyclerAdapter_2);
 
         checkoutBtn.setOnClickListener {
-            if (!GroceryApp.isUserLoged(this)){
-                var intent = Intent(this, OTPLogin::class.java)
+            if (GroceryApp.isUserLoged(this)){
+                val intent = Intent(this, OTPLogin::class.java)
                 startActivity(intent)
             }else {
-                // var intent = Intent(this, )
+                val intent = Intent(this, MapPickAddress::class.java)
+                startActivity(intent)
             }
         }
 
