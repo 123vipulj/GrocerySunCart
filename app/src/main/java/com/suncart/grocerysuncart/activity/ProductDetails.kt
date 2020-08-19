@@ -148,7 +148,7 @@ public class ProductDetails : AppCompatActivity() {
 
     fun onEvent(contentLoadedMoreDetailsEvent: ContentLoadedMoreDetailsEvent){
         if (contentLoadedMoreDetailsEvent != null){
-            var contentLoadedMoreDetailsList = contentLoadedMoreDetailsEvent.loadedMoreDetailsEvents
+            val contentLoadedMoreDetailsList = contentLoadedMoreDetailsEvent.loadedMoreDetailsEvents
 
             titleProduct.text = contentLoadedMoreDetailsList.get(0).productName
             weightTag.text = contentLoadedMoreDetailsList.get(0).productWeight
