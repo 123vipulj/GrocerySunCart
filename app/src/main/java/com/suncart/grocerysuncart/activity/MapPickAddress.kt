@@ -18,6 +18,7 @@ import android.text.TextWatcher
 import android.view.KeyEvent
 import android.view.View
 import android.view.animation.AccelerateDecelerateInterpolator
+import android.widget.EditText
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
@@ -28,6 +29,7 @@ import androidx.appcompat.widget.Toolbar
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.widget.addTextChangedListener
+import androidx.core.widget.doOnTextChanged
 import com.google.android.gms.location.LocationCallback
 import com.google.android.gms.location.LocationResult
 import com.google.android.gms.maps.CameraUpdateFactory
@@ -66,9 +68,6 @@ class MapPickAddress : AppCompatActivity(), OnMapReadyCallback {
 
         mResultReceiver = AddressResultReceiver(Handler())
 
-        var nameFieldTxt = findViewById<TextInputEditText>(R.id.nameField)
-        var flatFieldTxt = findViewById<TextInputEditText>(R.id.flatField)
-        var addressFielTxt = findViewById<TextInputEditText>(R.id.addField)
 
         val toolbar: Toolbar = findViewById(R.id.toolbar)
         setSupportActionBar(toolbar)
@@ -78,9 +77,9 @@ class MapPickAddress : AppCompatActivity(), OnMapReadyCallback {
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
         // toolbar
-        var nav_icon  = supportActionBar?.customView?.findViewById<ImageView>(R.id.navigation_drawer)
-        var cartImg = supportActionBar?.customView?.findViewById<ImageView>(R.id.cart_icons)
-        var totalCart = supportActionBar?.customView?.findViewById<TextView>(R.id.total_cart)
+        val nav_icon  = supportActionBar?.customView?.findViewById<ImageView>(R.id.navigation_drawer)
+        val cartImg = supportActionBar?.customView?.findViewById<ImageView>(R.id.cart_icons)
+        val totalCart = supportActionBar?.customView?.findViewById<TextView>(R.id.total_cart)
         val titleBar = supportActionBar?.customView?.findViewById<TextView>(R.id.title_appbar)
         titleBar?.setText("My Pickup")
         titleBar?.setTextColor(Color.BLACK)
@@ -133,15 +132,20 @@ class MapPickAddress : AppCompatActivity(), OnMapReadyCallback {
                 }
             })
 
-        setTextChangeListener(nameFieldTxt)
-        setTextChangeListener(flatFieldTxt)
-        setTextChangeListener(addressFielTxt)
+        val nameFieldTxt = nameField.editText
+        val flatFieldTxt  = flatField.editText
+        val addrFieldTxt = addField.editText
+
+        setTextChangeListener(nameFieldTxt!!)
+        setTextChangeListener(flatFieldTxt!!)
+        setTextChangeListener(addrFieldTxt!!)
 
         save_address.setOnClickListener {
 //            var alertDialogConfirm = AlertDialog.Builder(this)
 //            alertDialogConfirm.setTitle("Confirmation")
 //            alertDialogConfirm.setMessage("Are You want to save your address ?")
             var intent = Intent(this, ProceedToPayMent::class.java)
+            startActivity(intent)
         }
 
     }
@@ -170,6 +174,7 @@ class MapPickAddress : AppCompatActivity(), OnMapReadyCallback {
                     )
                         .position(marker!!.position).title("hi")
                 )
+
                 Toast.makeText(this, "" + midLatLng, Toast.LENGTH_SHORT).show()
 //                val d = GradientDrawable()
 //                d.setShape(GradientDrawable.OVAL)
@@ -270,27 +275,18 @@ class MapPickAddress : AppCompatActivity(), OnMapReadyCallback {
         }
     }
 
-    private fun setTextChangeListener(id : TextInputEditText){
-        id.addTextChangedListener { object : TextWatcher{
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
-
+    private fun setTextChangeListener(idTxt : EditText){
+        idTxt.doOnTextChanged(){ a, b, c, d ->
+            if (a.toString().isNotEmpty() && flatField.editText?.length()!! > 0 && addField.editText
+                    ?.length()!! > 0
+            ){
+                save_address.setBackgroundColor(Color.parseColor("#CDDC39"))
+                save_add_txt.setTextColor(Color.parseColor("#000000"))
+            }else{
+                save_address.setBackgroundColor(Color.parseColor("#7F807F"))
+                save_add_txt.setTextColor(Color.parseColor("#000000"))
             }
-
-            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                if (s.toString().isNotEmpty() && flatField.text!!.isNotEmpty() && addField.text!!.isNotEmpty()){
-                    save_address.setBackgroundColor(Color.parseColor("#CDDC39"))
-                    save_add_txt.setTextColor(Color.parseColor("#000000"))
-                }else{
-                    save_address.setBackgroundColor(Color.parseColor("#CDDC39"))
-                    save_add_txt.setTextColor(Color.parseColor("#000000"))
-                }
-            }
-
-            override fun afterTextChanged(s: Editable?) {
-
-            }
-
-        }}
+        }
 
     }
 
