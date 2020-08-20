@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#6200EE</color>
+    <color name="colorPrimaryDark">#3700B3</color>
+    <color name="colorAccent">#03DAC5</color>
+    <color name="backgroundApp">#303230</color>
+    <color name="titleTxtColor">#D8D8D8</color>
+    <color name="appBarTitleColor">#F3F3F3</color>
+    <color name="viewMoreTxtColor">#B5B5B5</color>
+    <color name="mrpPriceTxtColor">#979696</color>
+    <color name="spPriceTxtColor">#F8F8F8</color>
+    <color name="percentOffTxtColor">#BCBCBC</color>
+    <color name="productTitleColor">#E3DFDF</color>
+    <color name="weightTxtColor">#BABABA</color>
+    <color name="descriptionTxtColor">#EDEDED</color>
+    <color name="fourChipBackColor">#525357</color>
+    <color name="fourChipTitleTxtColor">#E4E0E0</color>
+    <color name="fourchipSubTitleTxtColor">#BCBCBC</color>
+</resources>

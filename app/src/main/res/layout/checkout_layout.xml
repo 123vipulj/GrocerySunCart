@@ -11,6 +11,7 @@
         android:layout_height="45dp">
 
         <TextView
+            android:id="@+id/checkout_title"
             android:text="Checkout"
             android:textColor="#fff"
             android:layout_centerVertical="true"

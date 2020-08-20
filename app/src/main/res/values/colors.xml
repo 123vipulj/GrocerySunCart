@@ -3,5 +3,17 @@
     <color name="colorPrimary">#6200EE</color>
     <color name="colorPrimaryDark">#3700B3</color>
     <color name="colorAccent">#03DAC5</color>
-    <color name="backgroundApp">#829081</color>
+    <color name="backgroundApp">#D8FFFFFF</color>
+    <color name="titleTxtColor">#323232</color>
+    <color name="appBarTitleColor">#201F1F</color>
+    <color name="viewMoreTxtColor">#5A5959</color>
+    <color name="mrpPriceTxtColor">#979696</color>
+    <color name="spPriceTxtColor">#151515</color>
+    <color name="percentOffTxtColor">#808080</color>
+    <color name="productTitleColor">#393737</color>
+    <color name="weightTxtColor">#858585</color>
+    <color name="descriptionTxtColor">#473D3D</color>
+    <color name="fourChipBackColor">#3F51B5</color>
+    <color name="fourChipTitleTxtColor">#EDEDED</color>
+    <color name="fourchipSubTitleTxtColor">#DADADA</color>
 </resources>

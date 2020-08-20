@@ -50,7 +50,10 @@ dependencies {
     implementation 'androidx.lifecycle:lifecycle-extensions:2.2.0'
     implementation 'androidx.navigation:navigation-fragment-ktx:2.3.0'
     implementation 'androidx.navigation:navigation-ui-ktx:2.3.0'
+    implementation 'com.google.android.material:material:1.1.0-alpha09'
+    //map
     implementation 'com.google.android.gms:play-services-maps:17.0.0'
+    implementation 'com.google.android.libraries.places:places:2.3.0'
 
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'
@@ -66,7 +69,6 @@ dependencies {
     implementation "com.github.agrosner.dbflow:lib:${dbflow_version}"
     implementation "com.github.agrosner.dbflow:contentprovider:${dbflow_version}"
     //phone edit text
-    implementation 'com.google.android.material:material:1.1.0-alpha09'
     implementation 'com.github.amannirala13:PhoneEditText-Android:1.1.1'
     //otp pinview
     implementation 'com.github.mukeshsolanki:android-otpview-pinview:2.1.1'

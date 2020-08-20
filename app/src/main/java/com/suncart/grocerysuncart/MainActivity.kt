@@ -99,8 +99,6 @@ class MainActivity : AppCompatActivity() {
         val sliderView_2 = findViewById<SliderView>(R.id.imageSlider_2)
 
 
-
-
         cartImg?.setOnClickListener {
             val intent = Intent(this, MyCart::class.java)
             startActivity(intent)
@@ -108,8 +106,6 @@ class MainActivity : AppCompatActivity() {
 
         // add no of product to track cart
         totalCart?.text = DbUtils.getDataForTrack().toString();
-
-
 
         val drawerLayout: DrawerLayout = findViewById(R.id.drawer_layout)
         val navView: NavigationView = findViewById(R.id.nav_view)
@@ -156,6 +152,11 @@ class MainActivity : AppCompatActivity() {
         recyclerBestDeal.adapter = bestDealRecyclerAdapter;
         recyclerBestDeal.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
 
+    }
+
+    override fun onResume() {
+        super.onResume()
+        totalCart.text = DbUtils.getDataForTrack().toString();
     }
 
     override fun onStart() {

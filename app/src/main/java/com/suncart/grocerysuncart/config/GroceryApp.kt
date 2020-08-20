@@ -19,19 +19,19 @@ import org.acra.annotation.AcraMailSender
 open class GroceryApp : Application(){
 
     companion object {
-        fun saveLoginNumber(context: Context, number : Int){
-            SharedPrefsUtils.setIntegerPreference(context, "loginNumber", number)
+        fun saveLoginNumber(context: Context, number : String){
+            SharedPrefsUtils.setStringPreference(context, "loginNumber", number)
         }
 
         fun saveLogin(context: Context, yesNo : Boolean){
             SharedPrefsUtils.setBooleanPreference(context, "isLogin", yesNo)
         }
 
-        fun getLoginNumber(context: Context) : Int{
-            return SharedPrefsUtils.getIntegerPreference(context, "loginNumber", 0)
+        fun getLoginNumber(context: Context) : String? {
+            return SharedPrefsUtils.getStringPreference(context, "loginNumber")
         }
 
-        fun isUserLoged(context: Context) : Boolean{
+        fun isUserLogged(context: Context) : Boolean{
             return SharedPrefsUtils.getBooleanPreference(context, "isLogin", false)
         }
 

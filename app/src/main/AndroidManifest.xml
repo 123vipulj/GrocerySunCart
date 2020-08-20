@@ -43,19 +43,15 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".activity.ProductDetails"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:name=".activity.ProductDetails" />
         <activity
-            android:name=".activity.MyCart"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:name=".activity.MyCart" />
         <activity
-            android:name=".activity.OTPAccept"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:name=".activity.OTPAccept" />
         <activity
-            android:name=".activity.OTPLogin"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:name=".activity.OTPLogin" />
         <activity
-            android:theme="@style/AppTheme.NoActionBar"
+            android:theme="@style/materialThemeForEdiText"
             android:name=".activity.MapPickAddress" />
 
         <service
@@ -65,6 +61,8 @@
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
         </service>
+
+        <service android:name=".util.map.FetchAddressIntentService"/>
         <!--
  Set color used with incoming notification messages. This is used when no color is set for the incoming
              notification message. See README(https://goo.gl/6BKBk7) for more.

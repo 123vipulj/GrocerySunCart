@@ -198,7 +198,10 @@ public class BestDealRecyclerAdapter extends RecyclerView.Adapter<BestDealRecycl
                         .longValue(databaseWrapper);
             }
         });
-        cartTrackListener.setCurrentQty(String.valueOf(totalQty));
+        if (cartTrackListener != null){
+            cartTrackListener.setCurrentQty(String.valueOf(totalQty));
+        }
+
     }
 
     public Long getTtlQty(){
