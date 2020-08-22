@@ -1,0 +1,250 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <RelativeLayout
+            android:id="@+id/total_ship_lay"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_margin="16dp"
+            android:background="@drawable/awesome_deal_lay">
+
+            <RelativeLayout
+                android:id="@+id/mrp_lay"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginBottom="8dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:fontFamily="@font/archia"
+                    android:text="M.R.P"
+                    android:textColor="#000"
+                    android:textSize="13sp"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:fontFamily="@font/archia"
+                    android:text="$290"
+                    android:textColor="#000"
+                    android:textSize="13sp"/>
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/discount_lay"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/mrp_lay"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginBottom="8dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:fontFamily="@font/archia"
+                    android:text="Discount"
+                    android:textColor="#000"
+                    android:textSize="13sp"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:fontFamily="@font/archia"
+                    android:text="-$82"
+                    android:textColor="#4CAF50"
+                    android:textSize="13sp"
+                    android:textStyle="bold"/>
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/delivery_lay"
+                android:layout_below="@id/discount_lay"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="8dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="16dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:text="Delivery Charges"
+                    android:textColor="#000"
+                    android:textSize="13sp"
+                    android:layout_alignParentStart="true"
+                    android:fontFamily="@font/archia"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+
+                <TextView
+                    android:text="-$8"
+                    android:layout_alignParentEnd="true"
+                    android:textColor="#E91E63"
+                    android:textStyle="bold"
+                    android:textSize="13sp"
+                    android:fontFamily="@font/archia"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+            </RelativeLayout>
+
+            <View
+                android:id="@+id/br_line"
+                android:background="#6D000000"
+                android:layout_below="@id/delivery_lay"
+                android:layout_width="match_parent"
+                android:layout_height="0.1dp"/>
+
+            <RelativeLayout
+                android:id="@+id/subtotal_lay"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="8dp"
+                android:paddingTop="8dp"
+                android:paddingBottom="8dp"
+                android:layout_below="@id/br_line"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:text="Sub Total"
+                    android:textColor="#000"
+                    android:textStyle="bold"
+                    android:paddingStart="16dp"
+                    android:layout_alignParentStart="true"
+                    android:fontFamily="@font/archia"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+
+                <TextView
+                    android:text="$128"
+                    android:paddingEnd="16dp"
+                    android:layout_alignParentEnd="true"
+                    android:textColor="#0E0E0E"
+                    android:textStyle="bold"
+                    android:fontFamily="@font/archia"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+            </RelativeLayout>
+        </RelativeLayout>
+
+
+        <RelativeLayout
+            android:id="@+id/address_lay"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/total_ship_lay"
+            android:layout_margin="16dp"
+            android:background="@drawable/awesome_deal_lay">
+
+            <TextView
+                android:id="@+id/chng_add"
+                android:text="Change Addrress"
+                android:background="@drawable/view_more_lay"
+                android:padding="3dp"
+                android:textColor="#BE232125"
+                android:layout_marginEnd="8dp"
+                android:layout_marginTop="8dp"
+                android:layout_alignParentEnd="true"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+            <LinearLayout
+                android:id="@+id/name_root"
+                android:layout_below="@id/chng_add"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="false"
+                android:layout_margin="8dp"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/nameField"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/name_root"
+                android:layout_margin="8dp"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/addrField"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+            </LinearLayout>
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/ship_lay"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/address_lay"
+            android:layout_margin="16dp"
+            android:background="@drawable/awesome_deal_lay">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/shipping_product_recycle"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"/>
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_below="@id/ship_lay"
+            android:layout_width="match_parent"
+            android:background="@drawable/awesome_deal_lay"
+            android:layout_margin="16dp"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/sdo_title"
+                android:text="Select Delivery Option"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="8dp"
+                android:textStyle="bold"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+            <RadioGroup
+                android:layout_below="@id/sdo_title"
+                android:orientation="vertical"
+                android:layout_marginTop="8dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <RadioButton
+                    android:text="Cash On Delivery"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+                <RadioButton
+                    android:text="RazorPay"
+                    android:layout_gravity=""
+                    android:layout_marginTop="16dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"/>
+            </RadioGroup>
+        </RelativeLayout>
+
+    </RelativeLayout>
+
+
+</ScrollView>

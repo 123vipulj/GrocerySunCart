@@ -68,7 +68,6 @@ class MapPickAddress : AppCompatActivity(), OnMapReadyCallback {
 
         mResultReceiver = AddressResultReceiver(Handler())
 
-
         val toolbar: Toolbar = findViewById(R.id.toolbar)
         setSupportActionBar(toolbar)
         supportActionBar?.displayOptions = ActionBar.DISPLAY_SHOW_CUSTOM
@@ -98,13 +97,13 @@ class MapPickAddress : AppCompatActivity(), OnMapReadyCallback {
             .findFragmentById(R.id.map) as SupportMapFragment
         mapFragment.getMapAsync(this)
 
-        valueAnimator = ValueAnimator()
-        valueAnimator!!.repeatCount = ValueAnimator.INFINITE
-        valueAnimator!!.repeatMode = ValueAnimator.RESTART
-        valueAnimator!!.setIntValues(0, radius)
-        valueAnimator!!.duration = 3000
-        valueAnimator!!.setEvaluator(IntEvaluator())
-        valueAnimator!!.interpolator = AccelerateDecelerateInterpolator()
+//        valueAnimator = ValueAnimator()
+//        valueAnimator!!.repeatCount = ValueAnimator.INFINITE
+//        valueAnimator!!.repeatMode = ValueAnimator.RESTART
+//        valueAnimator!!.setIntValues(0, radius)
+//        valueAnimator!!.duration = 3000
+//        valueAnimator!!.setEvaluator(IntEvaluator())
+//        valueAnimator!!.interpolator = AccelerateDecelerateInterpolator()
 
         // initialize custom location
         location = Location(
@@ -144,7 +143,7 @@ class MapPickAddress : AppCompatActivity(), OnMapReadyCallback {
 //            var alertDialogConfirm = AlertDialog.Builder(this)
 //            alertDialogConfirm.setTitle("Confirmation")
 //            alertDialogConfirm.setMessage("Are You want to save your address ?")
-            var intent = Intent(this, ProceedToPayMent::class.java)
+            var intent = Intent(this, ProceedToPayment::class.java)
             startActivity(intent)
         }
 

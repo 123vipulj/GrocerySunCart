@@ -53,7 +53,7 @@
         <activity
             android:theme="@style/materialThemeForEdiText"
             android:name=".activity.MapPickAddress" />
-        <activity android:name=".activity.ProceedToPayMent"/>
+        <activity android:name=".activity.ProceedToPayment"/>
 
         <service
             android:name=".config.GroceryFirebaseMessagingService"

@@ -99,4 +99,7 @@ dependencies {
     implementation 'com.google.firebase:firebase-messaging:20.2.4'
     //slide up activity https://github.com/umano/AndroidSlidingUpPanel
     compile 'com.sothree.slidinguppanel:library:3.4.0'
+    //razorpay
+    implementation 'com.razorpay:checkout:1.6.3'
+
 }
