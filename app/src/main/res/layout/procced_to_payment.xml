@@ -157,9 +157,11 @@
             <TextView
                 android:id="@+id/chng_add"
                 android:text="Change Addrress"
-                android:background="@drawable/view_more_lay"
-                android:padding="3dp"
-                android:textColor="#BE232125"
+                android:background="@drawable/rounded_blue"
+                android:padding="5dp"
+                android:textSize="13sp"
+                android:textStyle="bold"
+                android:textColor="#D7EFEFEF"
                 android:layout_marginEnd="8dp"
                 android:layout_marginTop="8dp"
                 android:layout_alignParentEnd="true"
@@ -172,11 +174,18 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_alignParentTop="false"
-                android:layout_margin="8dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="16dp"
+
                 android:orientation="vertical">
 
                 <TextView
                     android:id="@+id/nameField"
+                    android:textStyle="bold"
+                    android:fontFamily="@font/archia"
+                    android:textSize="17sp"
+                    android:textColor="#B0000000"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"/>
             </LinearLayout>
@@ -185,11 +194,17 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/name_root"
-                android:layout_margin="8dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginBottom="16dp"
+                android:layout_marginTop="8dp"
                 android:orientation="vertical">
 
                 <TextView
                     android:id="@+id/addrField"
+                    android:fontFamily="@font/archia"
+                    android:textSize="15sp"
+                    android:textColor="#D5000000"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"/>
             </LinearLayout>
@@ -219,7 +234,7 @@
             <TextView
                 android:id="@+id/sdo_title"
                 android:text="Select Delivery Option"
-                android:layout_marginStart="8dp"
+                android:layout_marginStart="16dp"
                 android:layout_marginTop="8dp"
                 android:layout_marginBottom="8dp"
                 android:textStyle="bold"
@@ -228,7 +243,9 @@
             <RadioGroup
                 android:layout_below="@id/sdo_title"
                 android:orientation="vertical"
-                android:layout_marginTop="8dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginBottom="16dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
                 <RadioButton
@@ -237,6 +254,12 @@
                     android:layout_height="wrap_content"/>
                 <RadioButton
                     android:text="RazorPay"
+                    android:layout_gravity=""
+                    android:layout_marginTop="16dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"/>
+                <RadioButton
+                    android:text="PhonePe"
                     android:layout_gravity=""
                     android:layout_marginTop="16dp"
                     android:layout_width="wrap_content"

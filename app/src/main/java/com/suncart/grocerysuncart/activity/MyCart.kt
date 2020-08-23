@@ -88,11 +88,11 @@ class MyCart : AppCompatActivity(){
         }
 
         checkoutBtn.setOnClickListener {
-            if (!GroceryApp.isUserLogged(this)){
+            if (GroceryApp.isUserLogged(this)){
                 val intent = Intent(this, OTPLogin::class.java)
                 startActivity(intent)
             }else {
-                val intent = Intent(this, MapPickAddress::class.java)
+                val intent = Intent(this, ChangeAddress::class.java)
                 startActivity(intent)
             }
         }

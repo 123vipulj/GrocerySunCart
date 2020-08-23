@@ -30,6 +30,7 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.widget.addTextChangedListener
 import androidx.core.widget.doOnTextChanged
+import com.dbflow5.config.FlowManager
 import com.google.android.gms.location.LocationCallback
 import com.google.android.gms.location.LocationResult
 import com.google.android.gms.maps.CameraUpdateFactory
@@ -42,6 +43,8 @@ import com.google.android.material.textfield.TextInputEditText
 import com.suncart.grocerysuncart.R
 import com.suncart.grocerysuncart.constant.map.ConstantMap
 import com.suncart.grocerysuncart.constant.map.locationListener
+import com.suncart.grocerysuncart.database.AppDatabase
+import com.suncart.grocerysuncart.util.DbUtils
 import com.suncart.grocerysuncart.util.map.FetchAddressIntentService
 import com.suncart.grocerysuncart.util.map.Location
 import kotlinx.android.synthetic.main.activity_maps.*
@@ -62,6 +65,7 @@ class MapPickAddress : AppCompatActivity(), OnMapReadyCallback {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_maps)
+        FlowManager.init(this);
 
         Places.initialize(this, resources.getString(R.string.google_maps_key))
         val placesClient = Places.createClient(this)
@@ -140,11 +144,20 @@ class MapPickAddress : AppCompatActivity(), OnMapReadyCallback {
         setTextChangeListener(addrFieldTxt!!)
 
         save_address.setOnClickListener {
-//            var alertDialogConfirm = AlertDialog.Builder(this)
-//            alertDialogConfirm.setTitle("Confirmation")
-//            alertDialogConfirm.setMessage("Are You want to save your address ?")
-            var intent = Intent(this, ProceedToPayment::class.java)
-            startActivity(intent)
+            var alertDialogConfirm = AlertDialog.Builder(this)
+            alertDialogConfirm.setTitle("Confirmation")
+            alertDialogConfirm.setMessage("Are You want to save your address ?")
+            alertDialogConfirm.setPositiveButton("ok") { dialog, which ->
+                DbUtils.insertRowInDbAddress(nameFieldTxt.text.toString(),
+                    flatFieldTxt.text.toString() + "\n" + addrFieldTxt.text.toString())
+
+//                val intent = Intent(this, ProceedToPayment::class.java)
+//                startActivity(intent)
+                dialog.dismiss()
+                finish()
+            }
+            alertDialogConfirm.show()
+
         }
 
     }
@@ -271,6 +284,7 @@ class MapPickAddress : AppCompatActivity(), OnMapReadyCallback {
          */
         override fun onReceiveResult(resultCode: Int, resultData: Bundle) {
             address_places.text = resultData.getString(ConstantMap.RESULT_DATA_KEY)
+            addField.editText!!.setText(resultData.getString(ConstantMap.RESULT_DATA_KEY))
         }
     }
 

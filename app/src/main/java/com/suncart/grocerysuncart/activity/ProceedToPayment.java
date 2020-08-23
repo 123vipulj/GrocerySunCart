@@ -23,6 +23,7 @@ import com.razorpay.PaymentResultListener;
 import com.suncart.grocerysuncart.R;
 import com.suncart.grocerysuncart.adapter.ShippingItemsAdapter;
 import com.suncart.grocerysuncart.database.tables.ProductItems;
+import com.suncart.grocerysuncart.database.tables.UserAddress;
 import com.suncart.grocerysuncart.util.DbUtils;
 
 
@@ -36,13 +37,19 @@ public class ProceedToPayment extends AppCompatActivity implements PaymentResult
     Checkout checkout;
 
     Button button;
+    TextView nameFieldTxt, addrFieldTxt;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.procced_to_pay_activity);
+        nameFieldTxt = findViewById(R.id.nameField);
+        addrFieldTxt = findViewById(R.id.addrField);
+
         //nVe7QSss8gMdYc5U1sLT2r5w
 //        checkout = new Checkout();
 //        checkout.setKeyID("rzp_test_xvrBJAhHttawNV");
+
         Checkout.preload(this);
 
         //toolbar
@@ -81,6 +88,13 @@ public class ProceedToPayment extends AppCompatActivity implements PaymentResult
         productShipRecycler.setAdapter(bestDealRecyclerAdapter);
         productShipRecycler.setLayoutManager(new LinearLayoutManager(this));
         productShipRecycler.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
+
+        //addr field
+        List<UserAddress> userAddress = DbUtils.getRowSelectedDbAddress();
+        if (userAddress.size() != 0){
+            nameFieldTxt.setText(userAddress.get(0).userName);
+            addrFieldTxt.setText(userAddress.get(0).userAddress);
+        }
 
         button = findViewById(R.id.startPayment);
         button.setOnClickListener(new View.OnClickListener() {
