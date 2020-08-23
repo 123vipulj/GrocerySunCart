@@ -109,8 +109,8 @@ class MyCart : AppCompatActivity(){
             val contentItems = mutableListOf<ContentItems>()
             contentItems.addAll(contentLoadedEvent.contentItemsList)
 
-            bestDealRecyclerAdapter = BestDealRecyclerAdapter(this, contentItems);
-            recyclerDeal(recyclerBestDeal, bestDealRecyclerAdapter);
+            bestDealRecyclerAdapter = BestDealRecyclerAdapter(this, contentItems)
+            recyclerDeal(recyclerBestDeal, bestDealRecyclerAdapter)
 
         }
     }

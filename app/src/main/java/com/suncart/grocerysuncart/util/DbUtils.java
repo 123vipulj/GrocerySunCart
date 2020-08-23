@@ -40,7 +40,7 @@ public class DbUtils extends GroceryApp {
 
     }
 
-    public static Boolean insertRowInDbAddress(String name, String addr){
+    public static Boolean insertRowInDbAddress(String name, String addr, String exactLoc){
         return FlowManager.getDatabase(AppDatabase.class).executeTransaction(new ITransaction<Boolean>() {
             @Override
             public Boolean execute(@NotNull DatabaseWrapper databaseWrapper) {
@@ -48,6 +48,7 @@ public class DbUtils extends GroceryApp {
                 userAddress.ids = System.currentTimeMillis();
                 userAddress.userName = name;
                 userAddress.userAddress = addr;
+                userAddress.exactLoc = exactLoc;
                 userAddress.isInUse = 0;
                 userAddress.insert(databaseWrapper);
                 return true;

@@ -56,9 +56,9 @@ class FetchAddressIntentService : IntentService(TAG) {
             latitude_dec.roundingMode = RoundingMode.CEILING
 
 
-            Log.e(TAG,  (latitude_dec.format(location!!.longitude)).toString() + "  " + (longitude_dec.format(location.latitude)).toString())
-            addresses = geocoder!!.getFromLocation(latitude_dec.format(location.latitude).toDouble(), latitude_dec.format(
-                location.longitude).toDouble(), 1)
+            // Log.e(TAG,  (latitude_dec.format(location!!.longitude)).toString() + "  " + (longitude_dec.format(location.latitude)).toString())
+            addresses = geocoder!!.getFromLocation(latitude_dec.format(location?.latitude).toDouble(), latitude_dec.format(
+                location?.longitude).toDouble(), 1)
         } catch (ioException: IOException) {
             Log.e(TAG, errorMessage, ioException)
         } catch (illegalArgumentException: IllegalArgumentException) {

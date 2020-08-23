@@ -1,6 +1,7 @@
 package com.suncart.grocerysuncart.activity;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
@@ -21,6 +22,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.razorpay.Checkout;
 import com.razorpay.PaymentResultListener;
 import com.suncart.grocerysuncart.R;
+import com.suncart.grocerysuncart.adapter.ProductShippingPayment;
 import com.suncart.grocerysuncart.adapter.ShippingItemsAdapter;
 import com.suncart.grocerysuncart.database.tables.ProductItems;
 import com.suncart.grocerysuncart.database.tables.UserAddress;
@@ -31,7 +33,10 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.List;
-
+/*
+todo
+change address click
+* */
 public class ProceedToPayment extends AppCompatActivity implements PaymentResultListener {
     private static final String TAG = ProceedToPayment.class.getSimpleName();
     Checkout checkout;
@@ -46,9 +51,8 @@ public class ProceedToPayment extends AppCompatActivity implements PaymentResult
         nameFieldTxt = findViewById(R.id.nameField);
         addrFieldTxt = findViewById(R.id.addrField);
 
-        //nVe7QSss8gMdYc5U1sLT2r5w
-//        checkout = new Checkout();
-//        checkout.setKeyID("rzp_test_xvrBJAhHttawNV");
+        //nVe7QSss8gMdYc5U1sLT2r5w secret
+        //rzp_test_xvrBJAhHttawNV keyid
 
         Checkout.preload(this);
 
@@ -84,7 +88,7 @@ public class ProceedToPayment extends AppCompatActivity implements PaymentResult
         List<ProductItems> productCartList = DbUtils.getDataCart();
         // cart product
         RecyclerView productShipRecycler = findViewById(R.id.shipping_product_recycle);
-        ShippingItemsAdapter bestDealRecyclerAdapter = new ShippingItemsAdapter(this, productCartList);
+        ProductShippingPayment bestDealRecyclerAdapter = new ProductShippingPayment(this, productCartList);
         productShipRecycler.setAdapter(bestDealRecyclerAdapter);
         productShipRecycler.setLayoutManager(new LinearLayoutManager(this));
         productShipRecycler.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
@@ -135,7 +139,9 @@ public class ProceedToPayment extends AppCompatActivity implements PaymentResult
     @Override
     public void onPaymentSuccess(String razorpayPaymentID) {
         try {
+            startActivity(new Intent(this, SuccessPayment.class));
             Toast.makeText(this, "Payment Successful: " + razorpayPaymentID, Toast.LENGTH_SHORT).show();
+            finish();
         } catch (Exception e) {
             Log.e(TAG, "Exception in onPaymentSuccess", e);
         }

@@ -61,11 +61,12 @@ class MapPickAddress : AppCompatActivity(), OnMapReadyCallback {
     lateinit var groundOverlay : GroundOverlay
     var radius = 100000
     var valueAnimator : ValueAnimator? = null
+    lateinit var exactLoc : String
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_maps)
-        FlowManager.init(this);
+        FlowManager.init(this)
 
         Places.initialize(this, resources.getString(R.string.google_maps_key))
         val placesClient = Places.createClient(this)
@@ -127,6 +128,8 @@ class MapPickAddress : AppCompatActivity(), OnMapReadyCallback {
                         ).position(currentLoc).title("hi")
                     )
 
+                    exactLoc = currentLoc.toString()
+
                     mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(currentLoc, 14f))
                     startIntentService(currentLoc)
                     location?.stopUpdateLocation()
@@ -149,7 +152,7 @@ class MapPickAddress : AppCompatActivity(), OnMapReadyCallback {
             alertDialogConfirm.setMessage("Are You want to save your address ?")
             alertDialogConfirm.setPositiveButton("ok") { dialog, which ->
                 DbUtils.insertRowInDbAddress(nameFieldTxt.text.toString(),
-                    flatFieldTxt.text.toString() + "\n" + addrFieldTxt.text.toString())
+                    flatFieldTxt.text.toString() + "\n" + addrFieldTxt.text.toString(), exactLoc)
 
 //                val intent = Intent(this, ProceedToPayment::class.java)
 //                startActivity(intent)
@@ -227,6 +230,33 @@ class MapPickAddress : AppCompatActivity(), OnMapReadyCallback {
     private fun enableMyLocation() {
         if (isPermissionGranted()) {
             mMap.isMyLocationEnabled = true
+            location = Location(
+                this,
+                object :
+                    locationListener {
+                    override fun locationResponse(locationResult: LocationResult) {
+                        mMap.clear()
+                        val currentLoc = LatLng(
+                            locationResult.lastLocation.latitude,
+                            locationResult.lastLocation.longitude
+                        )
+
+                        marker = mMap.addMarker(
+                            MarkerOptions().icon(
+                                BitmapDescriptorFactory.fromBitmap(bitmapScaledDescriptorFromVector())
+                            ).position(currentLoc).title("hi")
+                        )
+
+                        exactLoc = currentLoc.toString()
+
+                        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(currentLoc, 14f))
+                        startIntentService(currentLoc)
+                        location?.stopUpdateLocation()
+
+
+                    }
+                })
+
         }
         else {
             ActivityCompat.requestPermissions(

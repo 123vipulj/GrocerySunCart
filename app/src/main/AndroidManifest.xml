@@ -55,6 +55,8 @@
             android:name=".activity.MapPickAddress" />
         <activity android:name=".activity.ProceedToPayment"/>
         <activity android:name=".activity.ChangeAddress"/>
+        <activity android:name=".activity.SuccessPayment"/>
+        <activity android:name=".activity.StatusOrder"/>
 
         <service
             android:name=".config.GroceryFirebaseMessagingService"

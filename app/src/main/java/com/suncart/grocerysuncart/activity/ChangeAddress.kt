@@ -6,11 +6,13 @@ import android.os.Bundle
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.ActionBar
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.dbflow5.structure.exists
 import com.suncart.grocerysuncart.R
 import com.suncart.grocerysuncart.adapter.ChangeAddressAdapter
 import com.suncart.grocerysuncart.database.tables.UserAddress
@@ -19,20 +21,20 @@ import com.suncart.grocerysuncart.util.DbUtils
 import kotlinx.android.synthetic.main.change_addr_activity.*
 
 class ChangeAddress : AppCompatActivity() {
-    lateinit var changeAddressAdapter : ChangeAddressAdapter
+    private var changeAddressAdapter : ChangeAddressAdapter? = null
+    private var changeAddrList : MutableList<AddressModel>? = null
+
 
     override fun onResume() {
         super.onResume()
-//        if (changeAddressAdapter != null){
-//            var userAddr = DbUtils.getRowInDbAddress()
-//            var changeAddrList = mutableListOf<AddressModel>()
-//            for (tList in changeAddrList){
-//                changeAddrList.add(AddressModel(tList.ids, tList.userName, tList.userAddress, tList.exactLoc))
-//            }
-//
-//            changeAddressAdapter.addrList = changeAddrList
-//            changeAddressAdapter.notifyDataSetChanged()
-//        }
+
+        if (changeAddressAdapter != null){
+            var userAddr = DbUtils.getRowInDbAddress()
+            changeAddrList!!.clear()
+            for (tList in userAddr!!){
+                changeAddrList!!.add(AddressModel(tList.ids, tList.userName, tList.userAddress, tList.exactLoc, tList.isInUse))
+            }
+        }
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -66,20 +68,23 @@ class ChangeAddress : AppCompatActivity() {
             super.onBackPressed()
         }
 
-
         var userAddr = DbUtils.getRowInDbAddress()
-        var changeAddrList = mutableListOf<AddressModel>()
+        changeAddrList = mutableListOf<AddressModel>()
         for (tList in userAddr){
-            changeAddrList.add(AddressModel(tList.ids, tList.userName, tList.userAddress, tList.exactLoc, tList.isInUse))
+            changeAddrList!!.add(AddressModel(tList.ids, tList.userName, tList.userAddress, tList.exactLoc, tList.isInUse))
         }
         val changeAddressRecyclerView = findViewById<RecyclerView>(R.id.changeAddrRecycler)
-        changeAddressAdapter = ChangeAddressAdapter(changeAddrList)
+        changeAddressAdapter = ChangeAddressAdapter(changeAddrList!!)
         changeAddressRecyclerView.adapter = changeAddressAdapter
         changeAddressRecyclerView.layoutManager = LinearLayoutManager(this)
 
         nextBtn.setOnClickListener {
-            startActivity(Intent(this, ProceedToPayment::class.java))
-            finish()
+            if (changeAddrList!!.size == 0){
+                Toast.makeText(this, "Add address first", Toast.LENGTH_SHORT).show()
+            }else {
+                startActivity(Intent(this, ProceedToPayment::class.java))
+                finish()
+            }
         }
     }
 }
