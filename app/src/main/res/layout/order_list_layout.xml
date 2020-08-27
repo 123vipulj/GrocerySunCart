@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<GridLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_marginTop="8dp"
+    android:layout_marginStart="8dp"
+    android:layout_marginEnd="8dp"
+    android:layout_marginBottom="8dp"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:columnCount="3">
+
+    <TextView
+        android:id="@+id/productTitle"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:fontFamily="@font/robotomono"
+        android:text="TextView"
+        android:textSize="14sp"
+        android:textStyle="bold"
+        android:layout_rowSpan="2"
+        android:layout_columnWeight="3"
+         />
+
+    <TextView
+        android:id="@+id/productQty"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="TextView"
+        android:layout_rowSpan="2"
+        android:layout_gravity="center_vertical"
+        android:textSize="15sp"
+        android:textStyle="bold"
+        android:fontFamily="@font/robotomono"
+        android:layout_columnWeight="1"
+       />
+
+    <TextView
+        android:id="@+id/productPrice"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:textSize="15sp"
+        android:textStyle="bold"
+        android:layout_rowSpan="2"
+        android:layout_gravity="center_vertical"
+        android:fontFamily="@font/robotomono"
+        android:text="TextView"
+        android:layout_columnWeight="1"
+        />
+
+</GridLayout>

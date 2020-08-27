@@ -55,6 +55,8 @@ dependencies {
     //map
     implementation 'com.google.android.gms:play-services-maps:17.0.0'
     implementation 'com.google.android.libraries.places:places:2.3.0'
+    implementation files('libs/PaytmChecksum.jar')
+    implementation 'androidx.gridlayout:gridlayout:1.0.0'
 
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'
@@ -104,5 +106,10 @@ dependencies {
     implementation 'com.razorpay:checkout:1.6.3'
     // lottie
     implementation "com.airbnb.android:lottie:$lottieVersion"
+    // paytm
+    compile('com.paytm:pgplussdk:1.4.4') {
+        transitive = true;
+    }
+
 
 }

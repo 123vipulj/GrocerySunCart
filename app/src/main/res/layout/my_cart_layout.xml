@@ -12,6 +12,32 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
+        <LinearLayout
+            android:id="@+id/not_item_cart"
+            android:layout_marginTop="16dp"
+            android:layout_alignParentTop="true"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+            <TextView
+                android:text="There is no item in cart"
+                android:textAlignment="center"
+                android:fontFamily="@font/robotomono"
+                android:textStyle="bold"
+                android:textSize="17sp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+
+            <Button
+                android:id="@+id/go_to_home"
+                android:text="Go To Home to Add Items To Cart"
+                android:layout_margin="16dp"
+                android:background="#3F51B5"
+                android:textColor="#B2FFFFFF"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"/>
+
+        </LinearLayout>
         <RelativeLayout
             android:id="@+id/total_ship_lay"
             android:layout_margin="16dp"

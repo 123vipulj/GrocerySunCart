@@ -20,6 +20,7 @@ import com.smarteist.autoimageslider.IndicatorView.animation.type.IndicatorAnima
 import com.smarteist.autoimageslider.SliderAnimations
 import com.smarteist.autoimageslider.SliderView
 import com.suncart.grocerysuncart.activity.MyCart
+import com.suncart.grocerysuncart.activity.StatusOrder
 import com.suncart.grocerysuncart.adapter.BestDealRecyclerAdapter
 import com.suncart.grocerysuncart.adapter.CategoriesAdapter
 import com.suncart.grocerysuncart.adapter.SliderImage
@@ -32,6 +33,7 @@ import com.suncart.grocerysuncart.model.content.ContentItems
 import com.suncart.grocerysuncart.service.ContentService
 import com.suncart.grocerysuncart.util.DbUtils
 import de.greenrobot.event.EventBus
+import kotlinx.android.synthetic.main.content_main.*
 import org.w3c.dom.Text
 
 
@@ -55,7 +57,7 @@ class MainActivity : AppCompatActivity() {
         FlowManager.init(this)
 
         contentService = ContentService(this)
-        contentService.getAllNewsItems()
+        contentService.getAllContentItems()
 
         val toolbar: Toolbar = findViewById(R.id.toolbar)
         setSupportActionBar(toolbar)
@@ -131,6 +133,10 @@ class MainActivity : AppCompatActivity() {
 
         imageSlider(sliderView, sliderImageList)
         imageSlider(sliderView_2, sliderImageList_2)
+
+        search_product.setOnClickListener {
+            startActivity(Intent(this, StatusOrder::class.java))
+        }
     }
 
     private fun imageSlider(sliderView : SliderView, sliderImgList : MutableList<SliderItem>){

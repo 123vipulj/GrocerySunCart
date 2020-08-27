@@ -94,6 +94,7 @@
             android:layout_width="25dp"
             android:layout_height="match_parent"
             android:layout_alignParentStart="true"
+            android:foreground="?attr/selectableItemBackgroundBorderless"
             android:background="@drawable/rounded_btn_green"
             android:src="@drawable/ic_minus_cart" />
 
@@ -112,6 +113,7 @@
             android:layout_width="25dp"
             android:layout_height="match_parent"
             android:layout_alignParentEnd="true"
+            android:foreground="?attr/selectableItemBackgroundBorderless"
             android:background="@drawable/rounded_btn_green"
             android:src="@drawable/ic_add_cart" />
 

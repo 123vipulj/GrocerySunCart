@@ -13,6 +13,7 @@ import com.suncart.grocerysuncart.database.tables.UserAddress_Table;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.util.Date;
 import java.util.List;
 
 import static com.dbflow5.query.MethodKt.sum;
@@ -86,6 +87,78 @@ public class DbUtils extends GroceryApp {
                 SQLite.update(UserAddress.class).set(UserAddress_Table.isInUse.eq(0)).execute(databaseWrapper);
                 SQLite.update(UserAddress.class).set(UserAddress_Table.isInUse.eq(1)).where(UserAddress_Table.ids.eq(ids)).execute(databaseWrapper);
                 return null;
+            }
+        });
+    }
+
+    // set value to cart value
+    public static void setTtlQty(int pos){
+        Long totalQty = FlowManager.getDatabase(AppDatabase.class).executeTransaction(new ITransaction<Long>() {
+            @Override
+            public Long execute(@NotNull DatabaseWrapper databaseWrapper) {
+                return SQLite.select(sum(ProductItems_Table.totalQty)).from(ProductItems.class)
+                        .longValue(databaseWrapper);
+            }
+        });
+
+    }
+
+    public static Long getTtlQty(){
+        return FlowManager.getDatabase(AppDatabase.class).executeTransaction(new ITransaction<Long>() {
+            @Override
+            public Long execute(@NotNull DatabaseWrapper databaseWrapper) {
+                return SQLite.select(sum(ProductItems_Table.totalQty)).from(ProductItems.class)
+                        .longValue(databaseWrapper);
+            }
+        });
+    }
+
+    public static void insertRowDb(int pos, int ttQty, List<ProductItems> bestDealModelList){
+        FlowManager.getDatabase(AppDatabase.class).executeTransaction(new ITransaction<Object>() {
+            @Override
+            public Object execute(@NotNull DatabaseWrapper databaseWrapper) {
+                List<ProductItems> productItemsList = SQLite.select()
+                        .from(ProductItems.class)
+                        .where(ProductItems_Table.ids.eq((long) bestDealModelList.get(pos).ids))
+                        .queryList(databaseWrapper);
+
+
+                if (productItemsList.size() > 0){
+                    SQLite.update(ProductItems.class)
+                            .set(ProductItems_Table.totalQty.eq((int) (getTtlQtyByIds(pos, bestDealModelList) + ttQty)))
+                            .where(ProductItems_Table.productName.eq(bestDealModelList.get(pos).productName))
+                            .execute(databaseWrapper);
+
+                    setTtlQty(pos);
+
+                }else {
+                    Date date = new Date();
+                    ProductItems productItems = new ProductItems();
+                    productItems.ids = bestDealModelList.get(pos).ids;
+                    productItems.productPics = bestDealModelList.get(pos).productPics;
+                    productItems.productName = bestDealModelList.get(pos).productName;
+                    productItems.productMrp = bestDealModelList.get(pos).productMrp;
+                    productItems.productSp = bestDealModelList.get(pos).productSp;
+                    productItems.productWeight = bestDealModelList.get(pos).productWeight;
+                    productItems.totalQty = 0;
+                    productItems.insert(databaseWrapper);
+                    setTtlQty(pos);
+                }
+                return null;
+            }
+        });
+
+    }
+
+    public static Long getTtlQtyByIds(int pos, List<ProductItems> bestDealModelList){
+        return FlowManager.getDatabase(AppDatabase.class).executeTransaction(new ITransaction<Long>() {
+            @Override
+            public Long execute(@NotNull DatabaseWrapper databaseWrapper) {
+                if (bestDealModelList.size() != 0 && bestDealModelList.size() > pos){
+                    return SQLite.select(sum(ProductItems_Table.totalQty)).from(ProductItems.class)
+                            .where(ProductItems_Table.ids.eq( bestDealModelList.get(pos).ids)).longValue(databaseWrapper);
+                }
+                return 0L;
             }
         });
     }

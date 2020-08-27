@@ -1,6 +1,203 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:background="#C6DFDFDF"
+    android:layout_width="match_parent"
     android:layout_height="match_parent">
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="#fff"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:popupTheme="@style/AppTheme.PopupOverlay" />
+
+    <RelativeLayout
+        android:id="@+id/relativeLayout"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:background="#99FFFFFF"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/toolbar">
+
+        <RelativeLayout
+            android:id="@+id/root_order"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="8dp">
+
+            <TextView
+                android:id="@+id/order_id_txt"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Order ID"
+                android:textSize="14sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/order_id_no"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_toEndOf="@id/order_id_txt"
+                android:text="12451fdsfs"
+                android:textSize="14sp" />
+
+            <TextView
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentTop="true"
+                android:text="12 july 2020"
+                android:textStyle="bold"
+                android:lineSpacingExtra="0.1dp"
+                android:fontFamily="@font/robotomono"
+                android:layout_marginEnd="8dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+        </RelativeLayout>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/order_recycler"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/root_order"
+            android:layout_margin="8dp" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="8dp"
+        android:background="#99FFFFFF"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/relativeLayout">
+
+        <TextView
+            android:id="@+id/status_title"
+            android:text="Status"
+            android:textStyle="bold"
+            android:textSize="17sp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+
+
+        <RelativeLayout
+            android:id="@+id/order_lay"
+            android:layout_below="@id/status_title"
+            android:layout_width="match_parent"
+            android:layout_height="100dp">
+
+            <com.suncart.grocerysuncart.util.customview.ProgressCircleWithLine
+                android:id="@+id/circle_with_line"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="32dp"
+                app:circleOnTop="true"
+                android:layout_width="45dp"
+                android:layout_height="match_parent"/>
+
+            <TextView
+                android:text="Order Wednesday 25"
+                android:layout_toEndOf="@id/circle_with_line"
+                android:layout_centerVertical="true"
+                android:textSize="22sp"
+                android:textStyle="bold"
+                android:fontFamily="@font/archia"
+                android:layout_marginStart="16dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/proccesed_lay"
+            android:layout_below="@id/order_lay"
+            android:layout_width="match_parent"
+            android:layout_height="100dp">
+
+            <com.suncart.grocerysuncart.util.customview.ProgressCircleWithLine
+                android:id="@+id/circle_with_line_proccesed"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="0dp"
+                app:circleOnBetween="true"
+                android:layout_width="45dp"
+                android:layout_height="match_parent"/>
+
+            <TextView
+                android:text="Processed"
+                android:layout_toEndOf="@id/circle_with_line_proccesed"
+                android:layout_centerVertical="true"
+                android:textSize="22sp"
+                android:textStyle="bold"
+                android:fontFamily="@font/archia"
+                android:layout_marginStart="16dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/out_of_deliver_lay"
+            android:layout_below="@id/proccesed_lay"
+            android:layout_width="match_parent"
+            android:layout_height="100dp">
+
+            <com.suncart.grocerysuncart.util.customview.ProgressCircleWithLine
+                android:id="@+id/circle_with_line_out_of_deliver"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="0dp"
+                app:circleOnBetween="true"
+                android:layout_width="45dp"
+                android:layout_height="match_parent"/>
+
+            <TextView
+                android:text="Out Of Delivery"
+                android:layout_toEndOf="@id/circle_with_line_out_of_deliver"
+                android:layout_centerVertical="true"
+                android:textSize="22sp"
+                android:textStyle="bold"
+                android:fontFamily="@font/archia"
+                android:layout_marginStart="16dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/delivered_lay"
+            android:layout_below="@id/out_of_deliver_lay"
+            android:layout_width="match_parent"
+            android:layout_height="100dp">
+
+            <com.suncart.grocerysuncart.util.customview.ProgressCircleWithLine
+                android:id="@+id/circle_with_line_delivered"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="0dp"
+                app:circleOnBottom="true"
+                android:layout_width="45dp"
+                android:layout_height="match_parent"/>
+
+            <TextView
+                android:text="Delivered"
+                android:layout_toEndOf="@id/circle_with_line_delivered"
+                android:layout_centerVertical="true"
+                android:textSize="22sp"
+                android:textStyle="bold"
+                android:fontFamily="@font/archia"
+                android:layout_marginStart="16dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+        </RelativeLayout>
+
+    </RelativeLayout>
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

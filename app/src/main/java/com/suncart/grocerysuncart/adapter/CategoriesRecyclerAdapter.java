@@ -35,14 +35,15 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 import static com.dbflow5.query.MethodKt.sum;
 
-public class BestDealRecyclerAdapter extends RecyclerView.Adapter<BestDealRecyclerAdapter.MyViewHolder> {
+public class CategoriesRecyclerAdapter extends RecyclerView.Adapter<CategoriesRecyclerAdapter.MyViewHolder> {
 
     Context context;
     List<ContentItems> bestDealModelList;
     CartTrack cartTrackListener = null;
+    int _countProductCart = 0;
     AtomicInteger countQty = new AtomicInteger();
 
-    public BestDealRecyclerAdapter(Context context, List<ContentItems> bestDealModelList) {
+    public CategoriesRecyclerAdapter(Context context, List<ContentItems> bestDealModelList) {
         this.context = context;
         this.bestDealModelList = bestDealModelList;
     }
@@ -56,7 +57,7 @@ public class BestDealRecyclerAdapter extends RecyclerView.Adapter<BestDealRecycl
     @NonNull
     @Override
     public MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.product_card_items_lay, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.categories_adapter_lay, parent, false);
         return new MyViewHolder(view);
     }
 
@@ -65,11 +66,11 @@ public class BestDealRecyclerAdapter extends RecyclerView.Adapter<BestDealRecycl
         AtomicInteger ttQty = new AtomicInteger();
 
         Glide.with(context).load(bestDealModelList.get(position).getProductPics()).into(holder.productImg);
-        addShowMoreDots(bestDealModelList.get(position).getProductName(), holder.productTitle,30);
-       // holder.productTitle.setText(bestDealModelList.get(position).getProductName());
-        holder.productMrp.setText("Rs."+bestDealModelList.get(position).getProductMrp());
+        addShowMoreDots(bestDealModelList.get(position).getProductName(), holder.productTitle,50);
+        // holder.productTitle.setText(bestDealModelList.get(position).getProductName());
+        holder.productMrp.setText("Rs." + bestDealModelList.get(position).getProductMrp());
         holder.productMrp.setPaintFlags(holder.productMrp.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
-        holder.productSp.setText("Rs."+bestDealModelList.get(position).getProductSp());
+        holder.productSp.setText("Rs." + bestDealModelList.get(position).getProductSp());
         holder.productUnit.setText(bestDealModelList.get(position).getProductWeight());
 
         holder.productImg.setOnClickListener(new View.OnClickListener() {
@@ -80,38 +81,42 @@ public class BestDealRecyclerAdapter extends RecyclerView.Adapter<BestDealRecycl
             }
         });
         holder.addBtn.setOnClickListener(v -> {
-            if (getTtlQty() == 0){
+            //countQty.incrementAndGet();
+            ttQty.incrementAndGet();
+            if (ttQty.get() == 0){
+                insertRowDb(position, 1);
+                holder.addTxt.setVisibility(View.VISIBLE);
+                holder.totalQty.setVisibility(View.GONE);
+
+            }else if( ttQty.get() > 0){
                 insertRowDb(position, 1);
                 holder.addTxt.setVisibility(View.GONE);
                 holder.totalQty.setVisibility(View.VISIBLE);
-                holder.totalQty.setText(getTtlQtyByIds(position)+"");
-               // cartTrackListener.setCurrentQty(String.valueOf(getTtlQty()));
-            }else if( getTtlQty() > 0){
-                insertRowDb(position, 1);
-                holder.addTxt.setVisibility(View.GONE);
-                holder.totalQty.setVisibility(View.VISIBLE);
-                holder.totalQty.setText(getTtlQtyByIds(position)+"");
-               // cartTrackListener.setCurrentQty(String.valueOf(getTtlQty()));
+                holder.totalQty.setText(getTtlQty()+"");
+
             }
+            // cartTrackListener.setCurrentQty(String.valueOf(ttQty));
 
         });
 
         holder.minusBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+//                countQty.decrementAndGet();
+//                int ttQty = countQty.get();
+                ttQty.decrementAndGet();
 
-                if (getTtlQty() == 0){
-                    insertRowDb(position, -1);
+                if (ttQty.get() == 0){
                     holder.addTxt.setVisibility(View.VISIBLE);
                     holder.totalQty.setVisibility(View.GONE);
-                   // cartTrackListener.setCurrentQty(String.valueOf(getTtlQty()));
-                }else if(getTtlQty() > 0){
+                   // insertRowDb(position, -1);
+                }else if( ttQty.get() > 0){
                     insertRowDb(position, -1);
                     holder.addTxt.setVisibility(View.GONE);
                     holder.totalQty.setVisibility(View.VISIBLE);
-                    holder.totalQty.setText(getTtlQtyByIds(position)+"");
-                   // cartTrackListener.setCurrentQty(String.valueOf(getTtlQty()));
+                    holder.totalQty.setText(getTtlQty()+"");
                 }
+                // cartTrackListener.setCurrentQty(String.valueOf(ttQty));
 
             }
         });

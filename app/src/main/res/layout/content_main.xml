@@ -50,6 +50,7 @@
 
             <!-- search -->
             <ImageView
+                android:id="@+id/search_product"
                 android:layout_alignParentEnd="true"
                 android:src="@drawable/search"
                 android:layout_width="50dp"

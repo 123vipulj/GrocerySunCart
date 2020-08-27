@@ -57,6 +57,7 @@
         <activity android:name=".activity.ChangeAddress"/>
         <activity android:name=".activity.SuccessPayment"/>
         <activity android:name=".activity.StatusOrder"/>
+        <activity android:name=".activity.ProductCategories"/>
 
         <service
             android:name=".config.GroceryFirebaseMessagingService"

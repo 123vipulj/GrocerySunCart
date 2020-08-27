@@ -14,17 +14,18 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.dbflow5.config.FlowManager
+import com.suncart.grocerysuncart.MainActivity
 import com.suncart.grocerysuncart.R
 import com.suncart.grocerysuncart.adapter.BestDealRecyclerAdapter
 import com.suncart.grocerysuncart.adapter.ShippingItemsAdapter
 import com.suncart.grocerysuncart.bus.ContentLoadedEvent
 import com.suncart.grocerysuncart.config.GroceryApp
-import com.suncart.grocerysuncart.model.BestDealModel
 import com.suncart.grocerysuncart.model.content.ContentItems
 import com.suncart.grocerysuncart.service.ContentService
 import com.suncart.grocerysuncart.util.DbUtils
 import de.greenrobot.event.EventBus
 import kotlinx.android.synthetic.main.checkout_layout.*
+import kotlinx.android.synthetic.main.my_cart_layout.*
 
 class MyCart : AppCompatActivity(){
 
@@ -42,7 +43,7 @@ class MyCart : AppCompatActivity(){
 
         //get content for deal
         contentService = ContentService(this)
-        contentService.getAllNewsItems()
+        contentService.getAllContentItems()
 
         val checkoutBtn = findViewById<RelativeLayout>(R.id.checkout_btn)
         recyclerBestDeal = findViewById(R.id.first_slide_best_deal)
@@ -71,6 +72,16 @@ class MyCart : AppCompatActivity(){
             super.onBackPressed()
         }
 
+        if (DbUtils.getTtlQty().toInt() == 0){
+            not_item_cart.visibility = View.VISIBLE
+            ship_lay.visibility = View.INVISIBLE
+            total_ship_lay.visibility = View.INVISIBLE
+        }else {
+            not_item_cart.visibility = View.GONE
+            ship_lay.visibility = View.VISIBLE
+            total_ship_lay.visibility = View.VISIBLE
+        }
+
         // get details about product in cart
         val productCartList = DbUtils.getDataCart()
         // cart product
@@ -78,7 +89,27 @@ class MyCart : AppCompatActivity(){
         val bestDealRecyclerAdapter = ShippingItemsAdapter(this, productCartList)
         productShipRecycler.adapter = bestDealRecyclerAdapter
         productShipRecycler.layoutManager = LinearLayoutManager(this)
-        productShipRecycler.addItemDecoration(DividerItemDecoration(this, DividerItemDecoration.VERTICAL))
+        productShipRecycler.addItemDecoration(
+            DividerItemDecoration(
+                this,
+                DividerItemDecoration.VERTICAL
+            )
+        )
+        bestDealRecyclerAdapter.setCartNumberListener(object :
+            ShippingItemsAdapter.cartNumberListener {
+            override fun setCurrentTotalQty(ttlQty: Int) {
+                if (ttlQty == 0) {
+                    not_item_cart.visibility = View.VISIBLE
+                    ship_lay.visibility = View.INVISIBLE
+                    total_ship_lay.visibility = View.INVISIBLE
+                } else {
+                    not_item_cart.visibility = View.GONE
+                    ship_lay.visibility = View.VISIBLE
+                    total_ship_lay.visibility = View.VISIBLE
+                }
+            }
+
+        })
 
 
         if(!GroceryApp.isUserLogged(this)){
@@ -88,7 +119,7 @@ class MyCart : AppCompatActivity(){
         }
 
         checkoutBtn.setOnClickListener {
-            if (GroceryApp.isUserLogged(this)){
+            if (!GroceryApp.isUserLogged(this)){
                 val intent = Intent(this, OTPLogin::class.java)
                 startActivity(intent)
             }else {
@@ -97,11 +128,25 @@ class MyCart : AppCompatActivity(){
             }
         }
 
+        go_to_home.setOnClickListener {
+            var intent = Intent(this, MainActivity::class.java)
+            intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK
+            startActivity(intent)
+            finish()
+        }
+
     }
 
-    private fun recyclerDeal(recyclerBestDeal: RecyclerView, bestDealRecyclerAdapter: BestDealRecyclerAdapter){
+    private fun recyclerDeal(
+        recyclerBestDeal: RecyclerView,
+        bestDealRecyclerAdapter: BestDealRecyclerAdapter
+    ){
         recyclerBestDeal.adapter = bestDealRecyclerAdapter;
-        recyclerBestDeal.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
+        recyclerBestDeal.layoutManager = LinearLayoutManager(
+            this,
+            LinearLayoutManager.HORIZONTAL,
+            false
+        );
     }
 
     fun onEvent(contentLoadedEvent: ContentLoadedEvent){

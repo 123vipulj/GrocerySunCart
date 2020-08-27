@@ -13,10 +13,14 @@ import retrofit2.http.POST;
 
 public interface ContentApi {
 
-    @POST("/v1/api/news/content/contentdata.php")
+    @POST("/v1/api/contentprod/content/contentdata.php")
     Call<List<ContentItems>> getAllContent();
 
     @FormUrlEncoded
-    @POST("/v1/api/news/content/contentdatamoredetails.php/{ids}")
+    @POST("/v1/api/contentprod/content/contentdatamoredetails.php/{ids}")
     Call<List<ContentItemsMoreDetails>> getAllContentDetails(@Field("ids") String ids);
+
+    @FormUrlEncoded
+    @POST("v1/api/contentprod/content/contentdatabycategories.php/{cat_names}")
+    Call<List<ContentItems>> getAllContentByCat(@Field("cat_names") String catNames);
 }

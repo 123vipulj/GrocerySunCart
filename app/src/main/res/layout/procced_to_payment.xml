@@ -249,16 +249,19 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
                 <RadioButton
+                    android:id="@+id/cash_on_delivery"
                     android:text="Cash On Delivery"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"/>
                 <RadioButton
+                    android:id="@+id/razor_pay"
                     android:text="RazorPay"
                     android:layout_gravity=""
                     android:layout_marginTop="16dp"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"/>
                 <RadioButton
+                    android:id="@+id/phone_pe"
                     android:text="PhonePe"
                     android:layout_gravity=""
                     android:layout_marginTop="16dp"

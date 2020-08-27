@@ -31,7 +31,7 @@ public class ContentService {
     }
 
     // get all news
-    public void getAllNewsItems() {
+    public void getAllContentItems() {
 
         Call<List<ContentItems>> contentResponseCall = GroceryApp.Companion.getNewsApi().getAllContent();
 
@@ -51,7 +51,7 @@ public class ContentService {
     }
 
     // get all news
-    public void getAllNewsItemsMoreDetails(String ids) {
+    public void getAllContentItemsMoreDetails(String ids) {
 
         Call<List<ContentItemsMoreDetails>> contentResponseCall = GroceryApp.Companion.getNewsApi().getAllContentDetails(ids);
 
@@ -64,6 +64,26 @@ public class ContentService {
 
             @Override
             public void onFailure(Call<List<ContentItemsMoreDetails>> call, Throwable t) {
+                eventBus.post(new ApiErrorEvent(t));
+            }
+        });
+
+    }
+
+    // get all news
+    public void getAllContentItemsByCategories(String catNames) {
+
+        Call<List<ContentItems>> contentResponseCall = GroceryApp.Companion.getNewsApi().getAllContentByCat(catNames);
+
+        contentResponseCall.enqueue(new Callback<List<ContentItems>>() {
+            @Override
+            public void onResponse(Call<List<ContentItems>> call, Response<List<ContentItems>> response) {
+                Log.i(TAG, "### Get Items Response : " + response.body().toString());
+                eventBus.post(new ContentLoadedEvent(response.body()));
+            }
+
+            @Override
+            public void onFailure(Call<List<ContentItems>> call, Throwable t) {
                 eventBus.post(new ApiErrorEvent(t));
             }
         });

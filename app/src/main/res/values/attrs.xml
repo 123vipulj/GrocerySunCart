@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="CircleProgressLine">
+        <attr name="circleOnTop" format="boolean">
+
+        </attr>
+        <attr name="circleOnBetween" format="boolean">
+
+        </attr>
+        <attr name="circleOnBottom" format="boolean">
+
+        </attr>
+    </declare-styleable>
+</resources>

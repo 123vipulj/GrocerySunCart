@@ -50,8 +50,8 @@ public class ProductDetails : AppCompatActivity() {
         setContentView(R.layout.product_details_activity)
 
         contentService = ContentService(this)
-        contentService.getAllNewsItems()
-        contentService.getAllNewsItemsMoreDetails("10000")
+        contentService.getAllContentItems()
+        contentService.getAllContentItemsMoreDetails("10000")
 
         var bestDealList =  mutableListOf<BestDealModel>()
         bestDealList.add(BestDealModel(1, "Plastic Free grocery deliver fast", "Rs. 960",  "Rs. 1080", "102","7 kg" , "http://vipultest.nbwebsolution.com/images/fortune.jpg"))
