@@ -7,6 +7,8 @@ import com.dbflow5.config.FlowConfig
 import com.dbflow5.config.FlowManager
 import com.dbflow5.database.AndroidSQLiteOpenHelper
 import com.suncart.grocerysuncart.api.ContentApi
+import com.suncart.grocerysuncart.api.TokenUpdaterApi
+import com.suncart.grocerysuncart.api.UserApi
 import com.suncart.grocerysuncart.database.AppDatabase
 import com.suncart.grocerysuncart.util.SharedPrefsUtils
 import org.acra.ACRA
@@ -35,8 +37,24 @@ open class GroceryApp : Application(){
             return SharedPrefsUtils.getBooleanPreference(context, "isLogin", false)
         }
 
-        fun  getNewsApi() : ContentApi {
+        fun setTokenLocally(context: Context, tokenVerfication : String){
+            SharedPrefsUtils.setStringPreference(context,"token_str" ,tokenVerfication)
+        }
+
+        fun getTokenString(context: Context) : String{
+            return SharedPrefsUtils.getStringPreference(context, "token_str")
+        }
+
+        fun getGroceryData() : ContentApi {
            return APIClient.getClient().create(ContentApi::class.java)
+        }
+
+        fun tokenUpdatation() : TokenUpdaterApi{
+            return APIClient.getClient().create(TokenUpdaterApi::class.java)
+        }
+
+        fun getPhoneValidation() : UserApi{
+            return APIClient.getClient().create(UserApi::class.java)
         }
     }
 

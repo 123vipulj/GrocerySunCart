@@ -4,6 +4,7 @@ package com.suncart.grocerysuncart.activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -22,9 +23,16 @@ import com.mukesh.OnOtpCompletionListener;
 import com.mukesh.OtpView;
 import com.suncart.grocerysuncart.MainActivity;
 import com.suncart.grocerysuncart.R;
+import com.suncart.grocerysuncart.api.TokenUpdaterApi;
+import com.suncart.grocerysuncart.bus.SuccessStatusLoadedEvent;
 import com.suncart.grocerysuncart.config.GroceryApp;
+import com.suncart.grocerysuncart.service.ContentService;
+import com.suncart.grocerysuncart.service.TokenUpdatatonService;
+import com.suncart.grocerysuncart.service.UserService;
 
 import java.util.concurrent.TimeUnit;
+
+import de.greenrobot.event.EventBus;
 
 public class OTPAccept extends AppCompatActivity {
 
@@ -35,11 +43,17 @@ public class OTPAccept extends AppCompatActivity {
    String phoneNumber;
    ProgressDialog progress;
 
+   EventBus eventBus = EventBus.getDefault();
+   TokenUpdatatonService tokenUpdaterService;
+   UserService userService;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.otp_accept_lay);
         mAuth = FirebaseAuth.getInstance();
+        tokenUpdaterService = new TokenUpdatatonService(this);
+        userService = new UserService(this);
 
         //progress bar
         progress = new ProgressDialog(this);
@@ -96,9 +110,9 @@ public class OTPAccept extends AppCompatActivity {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if (task.isComplete()){
+                    userService.getPhoneVerficationStatus(phoneNumber);
                     GroceryApp.Companion.saveLoginNumber(OTPAccept.this, phoneNumber.replace(" ",""));
                     GroceryApp.Companion.saveLogin(OTPAccept.this, true);
-
                     navigateUpTo(new Intent(OTPAccept.this, MainActivity.class));
                     finish();
                 }else {
@@ -115,4 +129,32 @@ public class OTPAccept extends AppCompatActivity {
         });
 
     }
+
+    public void onEvent(SuccessStatusLoadedEvent successStatusLoadedEvent){
+        if (successStatusLoadedEvent != null){
+            if(successStatusLoadedEvent.successStatus.getSuccess().equals("yes")){
+                tokenUpdaterService.setUpdatedToken(verificationId);
+            }else if (successStatusLoadedEvent.successStatus.getSuccess().equals("true")){
+                Log.d(OTPAccept.class.getCanonicalName(), "Token Updated");
+                GroceryApp.Companion.setTokenLocally(OTPAccept.this, verificationId);
+            }
+        }
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        if (!eventBus.isRegistered(this)) {
+            eventBus.register(this);
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (eventBus.hasSubscriberForEvent(ContentService.class)) {
+            eventBus.unregister(this);
+        }
+    }
+
 }

@@ -177,6 +177,7 @@ public class BestDealRecyclerAdapter extends RecyclerView.Adapter<BestDealRecycl
                     productItems.productMrp = bestDealModelList.get(pos).getProductMrp();
                     productItems.productSp = bestDealModelList.get(pos).getProductSp();
                     productItems.productWeight = bestDealModelList.get(pos).getProductWeight();
+                    productItems.discountProduct = bestDealModelList.get(pos).getProductDiscount();
                     productItems.totalQty = 0;
                     productItems.insert(databaseWrapper);
                     setTtlQty(pos);

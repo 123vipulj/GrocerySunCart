@@ -10,6 +10,16 @@ public class ContentItems {
     String totalStock;
     String productWeight;
     String productPics;
+    String productDiscount;
+    String unitType;
+
+    public String getUnitType() {
+        return unitType;
+    }
+
+    public String getProductDiscount() {
+        return productDiscount;
+    }
 
     public int getId() {
        return id;

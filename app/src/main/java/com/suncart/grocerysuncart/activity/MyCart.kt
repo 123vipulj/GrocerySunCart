@@ -96,7 +96,7 @@ class MyCart : AppCompatActivity(){
             )
         )
         bestDealRecyclerAdapter.setCartNumberListener(object :
-            ShippingItemsAdapter.cartNumberListener {
+            ShippingItemsAdapter.CartNumberListener {
             override fun setCurrentTotalQty(ttlQty: Int) {
                 if (ttlQty == 0) {
                     not_item_cart.visibility = View.VISIBLE
@@ -111,6 +111,22 @@ class MyCart : AppCompatActivity(){
 
         })
 
+        bestDealRecyclerAdapter.setTriggerPriceFluctuation(object : ShippingItemsAdapter.TriggerPriceFluctuation {
+            override fun setPriceFluctuationHappen(isFlucationHappen: Boolean) {
+                if (isFlucationHappen){
+                    var priceFluctuationList = DbUtils.getDataCart()
+                    var mrpPrice = priceFluctuationList.sumByDouble { it.productMrp.toDouble() * it.totalQty}
+                    var discountPrice = priceFluctuationList.sumByDouble {it.productMrp.toDouble() * it.totalQty * (it.discountProduct.toDouble()/100)}
+                    var totalPrice = mrpPrice - String.format("%.2f", discountPrice).toDouble()
+                    p_mrp.text = "Rs." + mrpPrice.toString()
+                    p_discount.text = "-Rs." + String.format("%.2f", discountPrice).toString()
+                    p_total.text = "Rs." +totalPrice.toString()
+                    p_checkout_price.text = "Rs." +totalPrice.toString()
+                }
+            }
+        })
+
+        priceShow()
 
         if(!GroceryApp.isUserLogged(this)){
             checkout_title.text = "Login to Checkout"
@@ -156,6 +172,11 @@ class MyCart : AppCompatActivity(){
 
             bestDealRecyclerAdapter = BestDealRecyclerAdapter(this, contentItems)
             recyclerDeal(recyclerBestDeal, bestDealRecyclerAdapter)
+            bestDealRecyclerAdapter.setCartTrackListener(object : BestDealRecyclerAdapter.CartTrack{
+                override fun setCurrentQty(currentQty: String?) {
+
+                }
+            })
 
         }
     }
@@ -172,6 +193,17 @@ class MyCart : AppCompatActivity(){
         if (eventBus.hasSubscriberForEvent(ContentService::class.java)) {
             eventBus.unregister(this)
         }
+    }
+
+    fun priceShow(){
+        var priceFluctuationList = DbUtils.getDataCart()
+        var mrpPrice = priceFluctuationList.sumByDouble { it.productMrp.toDouble() * it.totalQty}
+        var discountPrice = priceFluctuationList.sumByDouble {it.productMrp.toDouble() * it.totalQty * (it.discountProduct.toDouble()/100)}
+        var totalPrice = mrpPrice - String.format("%.2f", discountPrice).toDouble()
+        p_mrp.text = "Rs." + mrpPrice.toString()
+        p_discount.text = "-Rs." + String.format("%.2f", discountPrice).toString()
+        p_total.text = "Rs." +totalPrice.toString()
+        p_checkout_price.text = "Rs." +totalPrice.toString()
     }
 
 }

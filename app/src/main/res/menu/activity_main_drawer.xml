@@ -1,18 +1,51 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    tools:showIn="navigation_view">
+    xmlns:tools="http://schemas.android.com/tools">
 
-    <group android:checkableBehavior="single">
-
-        <item
-            android:id="@+id/nav_gallery"
-            android:icon="@drawable/ic_menu_gallery"
-            android:title="Order Status" />
+    <group>
 
         <item
-            android:id="@+id/nav_slideshow"
-            android:icon="@drawable/ic_menu_slideshow"
-            android:title="Your Address" />
+            android:id="@+id/your_location"
+            android:icon="@drawable/location_icon"
+            android:title="Your Location" />
+
+        <item
+            android:id="@+id/my_address"
+            android:icon="@drawable/address_icon"
+            android:title="My Address" />
+
+        <item
+            android:id="@+id/my_orders"
+            android:icon="@drawable/myorder_icon"
+            android:title="My Orders" />
+
+        <item
+            android:id="@+id/my_carts"
+            android:icon="@drawable/cart_icon"
+            android:title="My Cart" />
     </group>
+
+    <item android:title="Others">
+        <menu>
+            <item
+                android:icon="@drawable/support_icon"
+                android:id="@+id/customer_support"
+                android:title="Customer Support"/>
+
+            <item
+                android:icon="@drawable/rateus_icon"
+                android:id="@+id/rate_us"
+                android:title="Rate Us"/>
+
+            <item
+                android:icon="@drawable/shareapp_icon"
+                android:id="@+id/share_app"
+                android:title="Share"/>
+
+            <item
+                android:icon="@drawable/aboutus_icon"
+                android:id="@+id/about_us"
+                android:title="About Us"/>
+        </menu>
+    </item>
 </menu>

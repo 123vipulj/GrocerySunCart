@@ -64,6 +64,7 @@
                     android:layout_height="wrap_content"/>
 
                 <TextView
+                    android:id="@+id/p_mrp"
                     android:text="$290"
                     android:layout_alignParentEnd="true"
                     android:textSize="13sp"
@@ -93,14 +94,15 @@
                     android:layout_height="wrap_content"/>
 
                 <TextView
-                    android:text="-$82"
-                    android:layout_alignParentEnd="true"
-                    android:textColor="#4CAF50"
-                    android:textStyle="bold"
-                    android:textSize="13sp"
-                    android:fontFamily="@font/archia"
+                    android:id="@+id/p_discount"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"/>
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:fontFamily="@font/archia"
+                    android:text="-$82"
+                    android:textColor="#E91E63"
+                    android:textSize="13sp"
+                    android:textStyle="bold" />
             </RelativeLayout>
 
             <RelativeLayout
@@ -123,9 +125,10 @@
                     android:layout_height="wrap_content"/>
 
                 <TextView
-                    android:text="-$8"
+                    android:id="@+id/p_delivery_charges"
+                    android:text="Rs.8"
                     android:layout_alignParentEnd="true"
-                    android:textColor="#E91E63"
+                    android:textColor="#4CAF50"
                     android:textStyle="bold"
                     android:textSize="13sp"
                     android:fontFamily="@font/archia"
@@ -161,6 +164,7 @@
                     android:layout_height="wrap_content"/>
 
                 <TextView
+                    android:id="@+id/p_total"
                     android:text="$128"
                     android:paddingEnd="16dp"
                     android:layout_alignParentEnd="true"

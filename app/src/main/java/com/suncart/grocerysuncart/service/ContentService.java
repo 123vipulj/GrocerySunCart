@@ -22,7 +22,6 @@ public class ContentService {
     public static final String TAG = ContentService.class.getCanonicalName();
 
     private final EventBus eventBus = EventBus.getDefault();
-    private final EventBus eventBusLikes = EventBus.getDefault();
 
     private Context context;
 
@@ -33,7 +32,7 @@ public class ContentService {
     // get all news
     public void getAllContentItems() {
 
-        Call<List<ContentItems>> contentResponseCall = GroceryApp.Companion.getNewsApi().getAllContent();
+        Call<List<ContentItems>> contentResponseCall = GroceryApp.Companion.getGroceryData().getAllContent();
 
         contentResponseCall.enqueue(new Callback<List<ContentItems>>() {
             @Override
@@ -53,7 +52,7 @@ public class ContentService {
     // get all news
     public void getAllContentItemsMoreDetails(String ids) {
 
-        Call<List<ContentItemsMoreDetails>> contentResponseCall = GroceryApp.Companion.getNewsApi().getAllContentDetails(ids);
+        Call<List<ContentItemsMoreDetails>> contentResponseCall = GroceryApp.Companion.getGroceryData().getAllContentDetails(ids);
 
         contentResponseCall.enqueue(new Callback<List<ContentItemsMoreDetails>>() {
             @Override
@@ -73,7 +72,7 @@ public class ContentService {
     // get all news
     public void getAllContentItemsByCategories(String catNames) {
 
-        Call<List<ContentItems>> contentResponseCall = GroceryApp.Companion.getNewsApi().getAllContentByCat(catNames);
+        Call<List<ContentItems>> contentResponseCall = GroceryApp.Companion.getGroceryData().getAllContentByCat(catNames);
 
         contentResponseCall.enqueue(new Callback<List<ContentItems>>() {
             @Override

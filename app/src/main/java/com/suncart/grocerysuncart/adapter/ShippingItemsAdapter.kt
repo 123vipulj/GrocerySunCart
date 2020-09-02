@@ -17,7 +17,8 @@ open class ShippingItemsAdapter(
     var bestDealModel: MutableList<ProductItems>
 ) : RecyclerView.Adapter<ShippingItemsAdapter.MyViewHolder>(){
 
-    lateinit var cartNumListener : ShippingItemsAdapter.cartNumberListener
+    lateinit var cartNumListener : CartNumberListener
+    lateinit var mTriggerPriceFluctuation: TriggerPriceFluctuation
 
     override fun onCreateViewHolder(
         parent: ViewGroup,
@@ -48,20 +49,20 @@ open class ShippingItemsAdapter(
                 DbUtils.insertRowDb(position, 1, bestDealModel)
                 holder.totalQty.text = DbUtils.getTtlQtyByIds(position, bestDealModel).toString()
                 cartNumListener.setCurrentTotalQty(DbUtils.getTtlQty().toInt())
+                mTriggerPriceFluctuation.setPriceFluctuationHappen(true)
 
             } else if (DbUtils.getTtlQtyByIds(position, bestDealModel) > 0L) {
                 DbUtils.insertRowDb(position, 1, bestDealModel)
                 holder.totalQty.text = DbUtils.getTtlQtyByIds(position, bestDealModel).toString()
                 cartNumListener.setCurrentTotalQty(DbUtils.getTtlQty().toInt())
+                mTriggerPriceFluctuation.setPriceFluctuationHappen(true)
             }
 
         })
 
         holder.minusBtn?.setOnClickListener(View.OnClickListener {
             if (DbUtils.getTtlQtyByIds(position, bestDealModel) == 0L) {
-//                bestDealModel.removeAt(position)
-//                notifyItemChanged(position)
-                //DbUtils.insertRowDb(position, -1, bestDealModel)
+                mTriggerPriceFluctuation.setPriceFluctuationHappen(true)
             } else if (DbUtils.getTtlQtyByIds(position, bestDealModel) > 0L) {
                 DbUtils.insertRowDb(position, -1, bestDealModel)
                 var ttQtsByIds = DbUtils.getTtlQtyByIds(position, bestDealModel)
@@ -71,6 +72,7 @@ open class ShippingItemsAdapter(
                     notifyItemRemoved(position)
                     notifyItemRangeChanged(position, itemCount - position);
                 }
+                mTriggerPriceFluctuation.setPriceFluctuationHappen(true)
                 cartNumListener.setCurrentTotalQty(DbUtils.getTtlQty().toInt())
             }
         })
@@ -87,11 +89,19 @@ open class ShippingItemsAdapter(
         var addBtn = itemView.findViewById<ImageView?>(R.id.plus_btn)
     }
 
-    interface cartNumberListener{
+    interface CartNumberListener{
         fun setCurrentTotalQty(ttlQty: Int)
     }
 
-    public fun setCartNumberListener(cartNumberListener: cartNumberListener) {
+    interface TriggerPriceFluctuation{
+        fun setPriceFluctuationHappen(isFlucationHappen : Boolean)
+    }
+
+    fun setTriggerPriceFluctuation(triggerPriceFluctuation: TriggerPriceFluctuation){
+        this.mTriggerPriceFluctuation = triggerPriceFluctuation
+    }
+
+    fun setCartNumberListener(cartNumberListener: CartNumberListener) {
         this.cartNumListener = cartNumberListener
     }
 

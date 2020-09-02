@@ -28,5 +28,12 @@ public class ProductItems extends BaseModel {
     public String productWeight;
 
     @Column
+    public String unitType;
+
+    @Column
+    public String discountProduct;
+
+
+    @Column
     public int totalQty;
 }
