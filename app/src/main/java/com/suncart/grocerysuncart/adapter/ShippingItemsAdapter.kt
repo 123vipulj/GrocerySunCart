@@ -1,6 +1,9 @@
 package com.suncart.grocerysuncart.adapter
 
 import android.content.Context
+import android.content.Intent
+import android.text.SpannableString
+import android.text.method.LinkMovementMethod
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,6 +12,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.suncart.grocerysuncart.R
+import com.suncart.grocerysuncart.activity.ProductDetails
 import com.suncart.grocerysuncart.database.tables.ProductItems
 import com.suncart.grocerysuncart.util.DbUtils
 
@@ -40,7 +44,7 @@ open class ShippingItemsAdapter(
         Glide.with(context).load(bestDealModel[position].productPics).into(holder.productImg)
         holder.productMrp.text = bestDealModel[position].productMrp
         holder.productSp.text = bestDealModel[position].productSp
-        holder.productTitle.text = bestDealModel[position].productName
+        addShowMoreDots(bestDealModel[position].productName, holder.productTitle, 35)
         holder.productUnit.text = bestDealModel[position].productWeight
         holder.totalQty.text = bestDealModel[position].totalQty.toString()
 
@@ -76,6 +80,12 @@ open class ShippingItemsAdapter(
                 cartNumListener.setCurrentTotalQty(DbUtils.getTtlQty().toInt())
             }
         })
+
+        holder.productImg.setOnClickListener {
+            var intent = Intent(context, ProductDetails::class.java)
+            intent.putExtra("product_ids", bestDealModel[position].ids.toString())
+            context.startActivity(intent)
+        }
     }
 
     class MyViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -105,5 +115,20 @@ open class ShippingItemsAdapter(
         this.cartNumListener = cartNumberListener
     }
 
-
+    open fun addShowMoreDots(
+        targetString: String,
+        tvStringHolder: TextView,
+        charactersLimit: Int
+    ) {
+        var targetString = targetString
+        if (targetString.length > charactersLimit) {
+            val dotsString = " ... "
+            targetString = targetString.substring(0, charactersLimit) + dotsString
+            val spannableDots = SpannableString(targetString)
+            tvStringHolder.movementMethod = LinkMovementMethod.getInstance()
+            tvStringHolder.setText(spannableDots, TextView.BufferType.SPANNABLE)
+        } else {
+            tvStringHolder.text = targetString
+        }
+    }
 }

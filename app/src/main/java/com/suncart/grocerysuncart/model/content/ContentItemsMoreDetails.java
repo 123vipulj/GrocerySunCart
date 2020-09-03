@@ -15,8 +15,22 @@ public class ContentItemsMoreDetails {
     String productDescription;
     String productKeyFeature;
     String productUnitWeight;
+    String productUnitType;
     String productDesclaimer;
+    String productTitleRootCat;
+    String productTitleSubCat;
 
+    public String getProductTitleRootCat() {
+        return productTitleRootCat;
+    }
+
+    public String getProductTitleSubCat() {
+        return productTitleSubCat;
+    }
+
+    public String getProductUnitType() {
+        return productUnitType;
+    }
 
     public String getProductSelfLife() {
         return productSelfLife;

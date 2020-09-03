@@ -12,6 +12,7 @@ import androidx.appcompat.widget.Toolbar
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.transition.Visibility
+import com.bumptech.glide.Glide
 import com.smarteist.autoimageslider.IndicatorView.animation.type.IndicatorAnimationType
 import com.smarteist.autoimageslider.SliderAnimations
 import com.smarteist.autoimageslider.SliderView
@@ -26,9 +27,10 @@ import com.suncart.grocerysuncart.model.content.ContentItems
 import com.suncart.grocerysuncart.service.ContentService
 import com.suncart.grocerysuncart.util.DbUtils
 import de.greenrobot.event.EventBus
+import kotlinx.android.synthetic.main.details_product_lay.*
 import org.w3c.dom.Text
 
-public class ProductDetails : AppCompatActivity() {
+public class ProductDetails() : AppCompatActivity() {
 
     var eventBus = EventBus.getDefault()
 
@@ -44,19 +46,19 @@ public class ProductDetails : AppCompatActivity() {
     lateinit var weightTag : TextView
     lateinit var quantityTag : TextView
     lateinit var descriptionContent : TextView
+    lateinit var imageSlider : SliderView
+    lateinit var minusBtn : ImageView
+    lateinit var positiveBtn : ImageView
+    lateinit var subTitleCat: TextView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.product_details_activity)
 
+        val idsIntentString = intent?.getStringExtra("product_ids")
         contentService = ContentService(this)
         contentService.getAllContentItems()
-        contentService.getAllContentItemsMoreDetails("10000")
-
-        var bestDealList =  mutableListOf<BestDealModel>()
-        bestDealList.add(BestDealModel(1, "Plastic Free grocery deliver fast", "Rs. 960",  "Rs. 1080", "102","7 kg" , "http://vipultest.nbwebsolution.com/images/fortune.jpg"))
-        bestDealList.add(BestDealModel(2, "Plastic Free grocery deliver fast", "Rs. 960",  "Rs. 1080", "102","7 kg" , "http://vipultest.nbwebsolution.com/images/fortune.jpg"))
-        bestDealList.add(BestDealModel(3, "Plastic Free grocery deliver fast", "Rs. 960",  "Rs. 1080", "102","7 kg" , "http://vipultest.nbwebsolution.com/images/fortune.jpg"))
+        contentService.getAllContentItemsMoreDetails(idsIntentString)
 
         val toolbar: Toolbar = findViewById(R.id.toolbar)
         setSupportActionBar(toolbar)
@@ -74,11 +76,12 @@ public class ProductDetails : AppCompatActivity() {
         nav_icon?.visibility = View.GONE
         totalCart = supportActionBar?.customView?.findViewById<TextView>(R.id.total_cart)!!
 
-        var imageSlider = findViewById<SliderView>(R.id.imageSlider)
-        var minusBtn = findViewById<ImageView>(R.id.minus_btn)
+        imageSlider = findViewById<SliderView>(R.id.imageSlider)
+        minusBtn = findViewById<ImageView>(R.id.minus_btn)
         totalQnty = findViewById<TextView>(R.id.ttl_quanity)
-        var positiveBtn = findViewById<ImageView>(R.id.add_btn)
+        positiveBtn = findViewById<ImageView>(R.id.add_btn)
         titleProduct = findViewById<TextView>(R.id.product_title)
+        subTitleCat = findViewById<TextView>(R.id.title_sub_p)
         titleCat = findViewById<TextView>(R.id.title_cat_p)
         priceTag = findViewById<TextView>(R.id.price_tag)
         weightTag = findViewById<TextView>(R.id.weight_tag)
@@ -88,16 +91,26 @@ public class ProductDetails : AppCompatActivity() {
         bestDealRecycler = findViewById<RecyclerView>(R.id.best_deal_reycler)
 
         //cart total qty
-        totalCart.text = DbUtils.getDataForTrack().toString();
+        totalCart.text = DbUtils.getDataForTrack().toString()
 
-        //image slider
-        var sliderImageList = mutableListOf<SliderItem>()
-        sliderImageList.add(SliderItem("http://vipultest.nbwebsolution.com/images/grocery_one.jpg"))
-        sliderImageList.add(SliderItem("http://vipultest.nbwebsolution.com/images/grocery_4.jpg"))
-        sliderImageList.add(SliderItem("http://vipultest.nbwebsolution.com/images/grocery_2.jpg"))
-        sliderImageList.add(SliderItem("http://vipultest.nbwebsolution.com/images/grocery_3.jpg"))
+        minusBtn.setOnClickListener {
+            if((ttl_quanity.text.toString()).toInt() != 0){
+                DbUtils.insertRowDb(idsIntentString?.toLong()!!,-1)
+                var ttlQty = DbUtils.getTtlQtyByIds(idsIntentString.toLong()).toString();
+                quantityTag.text = ttlQty
+                ttl_quanity.text = ttlQty
+            }
+        }
 
-        imageSlider(imageSlider, sliderImageList)
+        positiveBtn.setOnClickListener {
+            if((ttl_quanity.text.toString()).toInt() > 0){
+                DbUtils.insertRowDb(idsIntentString?.toLong()!!,1)
+                quantityTag.text = DbUtils.getTtlQtyByIds(idsIntentString.toLong()).toString()
+                var ttlQty = DbUtils.getTtlQtyByIds(idsIntentString.toLong()).toString();
+                quantityTag.text = ttlQty
+                ttl_quanity.text = ttlQty
+            }
+        }
     }
 
     private fun imageSlider(sliderView : SliderView, sliderImgList : MutableList<SliderItem>){
@@ -111,6 +124,7 @@ public class ProductDetails : AppCompatActivity() {
         sliderView.indicatorSelectedColor = Color.WHITE
         sliderView.indicatorUnselectedColor = Color.GRAY
         sliderView.scrollTimeInSec = 4 //set scroll delay in seconds :
+        sliderView.setInfiniteAdapterEnabled(false)
         adapter.renewItems(sliderImgList)
         sliderView.startAutoCycle()
     }
@@ -149,11 +163,19 @@ public class ProductDetails : AppCompatActivity() {
     fun onEvent(contentLoadedMoreDetailsEvent: ContentLoadedMoreDetailsEvent){
         if (contentLoadedMoreDetailsEvent != null){
             val contentLoadedMoreDetailsList = contentLoadedMoreDetailsEvent.loadedMoreDetailsEvents
+            //load images
+            var sliderImageList = mutableListOf<SliderItem>()
+            sliderImageList.add(SliderItem(contentLoadedMoreDetailsList[0].productPics))
+            imageSlider(imageSlider, sliderImageList)
 
-            titleProduct.text = contentLoadedMoreDetailsList.get(0).productName
-            weightTag.text = contentLoadedMoreDetailsList.get(0).productWeight
-            priceTag.text = contentLoadedMoreDetailsList.get(0).productSp
-            descriptionContent.text = contentLoadedMoreDetailsList.get(0).productDescription
+            titleProduct.text = contentLoadedMoreDetailsList[0].productName
+            weightTag.text = contentLoadedMoreDetailsList[0].productWeight + " " + contentLoadedMoreDetailsList[0].productUnitType
+            priceTag.text = "Rs. "+ contentLoadedMoreDetailsList[0].productSp
+            descriptionContent.text = contentLoadedMoreDetailsList[0].productDescription
+            quantityTag.text = DbUtils.getTtlQtyByIds(contentLoadedMoreDetailsList[0].id.toLong()).toString()
+            titleCat.text = contentLoadedMoreDetailsList[0].productTitleRootCat
+            subTitleCat.text = contentLoadedMoreDetailsList[0].productTitleSubCat
+            ttl_quanity.text = DbUtils.getTtlQtyByIds(contentLoadedMoreDetailsList[0].id.toLong()).toString()
         }
     }
 

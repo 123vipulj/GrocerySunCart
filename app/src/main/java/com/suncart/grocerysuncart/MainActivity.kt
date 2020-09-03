@@ -209,8 +209,8 @@ class MainActivity : AppCompatActivity() {
         imageSlider(sliderView, sliderImageList)
         imageSlider(sliderView_2, sliderImageList_2)
 
-        search_product.setOnClickListener {
-            startActivity(Intent(this, StatusOrder::class.java))
+        search_product_txt.setOnClickListener {
+
         }
     }
 

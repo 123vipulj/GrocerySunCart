@@ -67,10 +67,11 @@
                 <ImageView
                     android:id="@+id/minus_btn"
                     android:layout_width="30dp"
+                    android:foreground="?attr/selectableItemBackgroundBorderless"
                     android:layout_height="match_parent"
                     android:layout_alignParentStart="true"
                     android:layout_alignParentEnd="false"
-                    android:background="#B5DD2D2D"
+                    android:background="@drawable/rounded_btn_green"
                     android:padding="3dp"
                     android:src="@drawable/ic_minus_cart" />
 
@@ -93,8 +94,9 @@
                     android:layout_width="30dp"
                     android:layout_height="match_parent"
                     android:layout_alignParentEnd="true"
-                    android:background="#B5DD2D2D"
+                    android:background="@drawable/rounded_btn_green"
                     android:padding="3dp"
+                    android:foreground="?attr/selectableItemBackgroundBorderless"
                     android:src="@drawable/ic_add_cart" />
             </RelativeLayout>
         </RelativeLayout>

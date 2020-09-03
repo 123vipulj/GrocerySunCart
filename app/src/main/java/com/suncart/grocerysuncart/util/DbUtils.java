@@ -92,7 +92,7 @@ public class DbUtils extends GroceryApp {
     }
 
     // set value to cart value
-    public static void setTtlQty(int pos){
+    public static void setTtlQty(){
         Long totalQty = FlowManager.getDatabase(AppDatabase.class).executeTransaction(new ITransaction<Long>() {
             @Override
             public Long execute(@NotNull DatabaseWrapper databaseWrapper) {
@@ -126,10 +126,9 @@ public class DbUtils extends GroceryApp {
                 if (productItemsList.size() > 0){
                     SQLite.update(ProductItems.class)
                             .set(ProductItems_Table.totalQty.eq((int) (getTtlQtyByIds(pos, bestDealModelList) + ttQty)))
-                            .where(ProductItems_Table.productName.eq(bestDealModelList.get(pos).productName))
+                            .where(ProductItems_Table.ids.eq(bestDealModelList.get(pos).ids))
                             .execute(databaseWrapper);
 
-                    setTtlQty(pos);
 
                 }else {
                     Date date = new Date();
@@ -142,7 +141,29 @@ public class DbUtils extends GroceryApp {
                     productItems.productWeight = bestDealModelList.get(pos).productWeight;
                     productItems.totalQty = 0;
                     productItems.insert(databaseWrapper);
-                    setTtlQty(pos);
+
+                }
+                return null;
+            }
+        });
+
+    }
+
+    public static void insertRowDb(long ids, int ttQty){
+        FlowManager.getDatabase(AppDatabase.class).executeTransaction(new ITransaction<Object>() {
+            @Override
+            public Object execute(@NotNull DatabaseWrapper databaseWrapper) {
+                List<ProductItems> productItemsList = SQLite.select()
+                        .from(ProductItems.class)
+                        .where(ProductItems_Table.ids.eq(ids))
+                        .queryList(databaseWrapper);
+
+
+                if (productItemsList.size() > 0){
+                    SQLite.update(ProductItems.class)
+                            .set(ProductItems_Table.totalQty.eq((int) (getTtlQtyByIds(ids) + ttQty)))
+                            .where(ProductItems_Table.ids.eq(ids))
+                            .execute(databaseWrapper);
                 }
                 return null;
             }
@@ -159,6 +180,16 @@ public class DbUtils extends GroceryApp {
                             .where(ProductItems_Table.ids.eq( bestDealModelList.get(pos).ids)).longValue(databaseWrapper);
                 }
                 return 0L;
+            }
+        });
+    }
+
+    public static Long getTtlQtyByIds(long id){
+        return FlowManager.getDatabase(AppDatabase.class).executeTransaction(new ITransaction<Long>() {
+            @Override
+            public Long execute(@NotNull DatabaseWrapper databaseWrapper) {
+                    return SQLite.select(sum(ProductItems_Table.totalQty)).from(ProductItems.class)
+                            .where(ProductItems_Table.ids.eq(id)).longValue(databaseWrapper);
             }
         });
     }
