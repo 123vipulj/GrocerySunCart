@@ -19,7 +19,8 @@ import com.suncart.grocerysuncart.service.ContentService
 import com.suncart.grocerysuncart.util.DbUtils
 import de.greenrobot.event.EventBus
 
-class ProductCategories : AppCompatActivity(){
+class ViewMore : AppCompatActivity(){
+
     var eventBus = EventBus.getDefault()
     lateinit var contentService : ContentService
     lateinit var totalCart : TextView
@@ -29,7 +30,7 @@ class ProductCategories : AppCompatActivity(){
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.product_categories_layout)
+        setContentView(R.layout.view_more_lay)
 
         val catNames = intent?.getStringExtra("cat_names")
         contentService = ContentService(this)

@@ -20,10 +20,7 @@ import com.google.android.material.navigation.NavigationView
 import com.smarteist.autoimageslider.IndicatorView.animation.type.IndicatorAnimationType
 import com.smarteist.autoimageslider.SliderAnimations
 import com.smarteist.autoimageslider.SliderView
-import com.suncart.grocerysuncart.activity.ChangeAddress
-import com.suncart.grocerysuncart.activity.MapPickAddress
-import com.suncart.grocerysuncart.activity.MyCart
-import com.suncart.grocerysuncart.activity.StatusOrder
+import com.suncart.grocerysuncart.activity.*
 import com.suncart.grocerysuncart.adapter.BestDealRecyclerAdapter
 import com.suncart.grocerysuncart.adapter.CategoriesAdapter
 import com.suncart.grocerysuncart.adapter.SliderImage
@@ -210,7 +207,7 @@ class MainActivity : AppCompatActivity() {
         imageSlider(sliderView_2, sliderImageList_2)
 
         search_product_txt.setOnClickListener {
-
+            startActivity(Intent(this, SearchProduct::class.java))
         }
     }
 

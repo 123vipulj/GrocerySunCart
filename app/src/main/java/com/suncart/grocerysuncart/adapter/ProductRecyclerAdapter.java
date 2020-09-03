@@ -24,7 +24,6 @@ import com.suncart.grocerysuncart.activity.ProductDetails;
 import com.suncart.grocerysuncart.database.AppDatabase;
 import com.suncart.grocerysuncart.database.tables.ProductItems;
 import com.suncart.grocerysuncart.database.tables.ProductItems_Table;
-import com.suncart.grocerysuncart.model.BestDealModel;
 import com.suncart.grocerysuncart.model.content.ContentItems;
 
 import org.jetbrains.annotations.NotNull;
@@ -35,7 +34,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 import static com.dbflow5.query.MethodKt.sum;
 
-public class CategoriesRecyclerAdapter extends RecyclerView.Adapter<CategoriesRecyclerAdapter.MyViewHolder> {
+public class ProductRecyclerAdapter extends RecyclerView.Adapter<ProductRecyclerAdapter.MyViewHolder> {
 
     Context context;
     List<ContentItems> bestDealModelList;
@@ -43,7 +42,7 @@ public class CategoriesRecyclerAdapter extends RecyclerView.Adapter<CategoriesRe
     int _countProductCart = 0;
     AtomicInteger countQty = new AtomicInteger();
 
-    public CategoriesRecyclerAdapter(Context context, List<ContentItems> bestDealModelList) {
+    public ProductRecyclerAdapter(Context context, List<ContentItems> bestDealModelList) {
         this.context = context;
         this.bestDealModelList = bestDealModelList;
     }
