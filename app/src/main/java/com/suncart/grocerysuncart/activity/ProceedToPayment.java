@@ -1,6 +1,8 @@
 package com.suncart.grocerysuncart.activity;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -25,13 +27,23 @@ import com.paytm.pgsdk.PaytmOrder;
 import com.paytm.pgsdk.PaytmPGService;
 import com.paytm.pgsdk.PaytmPaymentTransactionCallback;
 import com.razorpay.Checkout;
+import com.razorpay.PaymentData;
 import com.razorpay.PaymentResultListener;
+import com.razorpay.PaymentResultWithDataListener;
+import com.shreyaspatil.EasyUpiPayment.EasyUpiPayment;
+import com.shreyaspatil.EasyUpiPayment.listener.PaymentStatusListener;
+import com.shreyaspatil.EasyUpiPayment.model.PaymentApp;
+import com.shreyaspatil.EasyUpiPayment.model.TransactionDetails;
 import com.suncart.grocerysuncart.R;
 import com.suncart.grocerysuncart.adapter.ProductShippingPayment;
 import com.suncart.grocerysuncart.adapter.ShippingItemsAdapter;
+import com.suncart.grocerysuncart.bus.SuccessStatusLoadedEvent;
+import com.suncart.grocerysuncart.config.GroceryApp;
 import com.suncart.grocerysuncart.database.tables.ProductItems;
 import com.suncart.grocerysuncart.database.tables.UserAddress;
+import com.suncart.grocerysuncart.service.UserService;
 import com.suncart.grocerysuncart.util.DbUtils;
+import com.suncart.grocerysuncart.util.UtilApp;
 
 
 import org.json.JSONException;
@@ -44,19 +56,24 @@ import java.security.Security;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 import java.util.TreeMap;
+import java.util.UUID;
 
 import javax.crypto.Cipher;
 import javax.crypto.NoSuchPaddingException;
 
-public class ProceedToPayment extends AppCompatActivity implements PaymentResultListener {
+import de.greenrobot.event.EventBus;
+
+public class ProceedToPayment extends AppCompatActivity implements PaymentResultWithDataListener {
     private static final String TAG = ProceedToPayment.class.getSimpleName();
     Checkout checkout;
 
     Button button;
     TextView nameFieldTxt, addrFieldTxt,changeAddrTxt;
+    EventBus eventBus = EventBus.getDefault();
+    UserService userService;
 
-    
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -64,8 +81,21 @@ public class ProceedToPayment extends AppCompatActivity implements PaymentResult
         nameFieldTxt = findViewById(R.id.nameField);
         addrFieldTxt = findViewById(R.id.addrField);
 
-        RadioButton razorPay = findViewById(R.id.razor_pay);
+        userService = new UserService(this);
 
+        RadioButton razorPay = findViewById(R.id.razor_pay);
+        RadioButton payOnDelivery = findViewById(R.id.cash_on_delivery);
+        RadioButton payOnUpi = findViewById(R.id.upi_pay);
+
+        String getChargeDetails = UtilApp.Companion.getTotalPriceOnView();
+
+        TextView mrpTxt = findViewById(R.id.mrp_p);
+        TextView discountTxt = findViewById(R.id.discount_p);
+        TextView totalTxt = findViewById(R.id.ttl_c);
+
+        mrpTxt.setText(getChargeDetails.split(" ")[0]);
+        discountTxt.setText("-" + getChargeDetails.split(" ")[1]);
+        totalTxt.setText(getChargeDetails.split(" ")[2]);
         //nVe7QSss8gMdYc5U1sLT2r5w secret
         //rzp_test_xvrBJAhHttawNV keyid
 
@@ -125,6 +155,70 @@ public class ProceedToPayment extends AppCompatActivity implements PaymentResult
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
+                } else if (payOnDelivery.isChecked()){
+                    AlertDialog.Builder alertDialog = new AlertDialog.Builder(ProceedToPayment.this);
+                    alertDialog.setTitle("Messaeg");
+                    alertDialog.setMessage("Do you want to Confirm Pay on Delivery ?");
+                    alertDialog.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            startActivity(new Intent(ProceedToPayment.this, OrderSuccess.class));
+                            finish();
+                        }
+                    });
+
+                    alertDialog.setNegativeButton("No", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            dialogInterface.dismiss();
+                        }
+                    });
+                    alertDialog.show();
+                } else if(payOnUpi.isChecked()){
+                    UUID uniqueKey = UUID.randomUUID();
+
+                    final EasyUpiPayment easyUpiPayment = new EasyUpiPayment.Builder()
+                            .with(ProceedToPayment.this)
+                            .setPayeeVpa("ekyodha@ybl")
+                            .setPayeeName("vipul")
+                            .setTransactionId(UtilApp.Companion.generatingRandomString())
+                            .setTransactionRefId(UtilApp.Companion.generatingRandomString())
+                            .setDescription("Grocery Product")
+                            .setAmount("120.25")
+                            .build();
+
+                    easyUpiPayment.startPayment();
+                    easyUpiPayment.setPaymentStatusListener(new PaymentStatusListener() {
+                        @Override
+                        public void onTransactionCompleted(TransactionDetails transactionDetails) {
+
+                        }
+
+                        @Override
+                        public void onTransactionSuccess() {
+
+                        }
+
+                        @Override
+                        public void onTransactionSubmitted() {
+
+                        }
+
+                        @Override
+                        public void onTransactionFailed() {
+
+                        }
+
+                        @Override
+                        public void onTransactionCancelled() {
+
+                        }
+
+                        @Override
+                        public void onAppNotFound() {
+
+                        }
+                    });
                 }
             }
         });
@@ -137,6 +231,7 @@ public class ProceedToPayment extends AppCompatActivity implements PaymentResult
                 finish();
             }
         });
+
     }
 
     public void startPaymentRazorPay(){
@@ -165,26 +260,9 @@ public class ProceedToPayment extends AppCompatActivity implements PaymentResult
                     .show();
             e.printStackTrace();
         }
-    }
-    @Override
-    public void onPaymentSuccess(String razorpayPaymentID) {
-        try {
-            startActivity(new Intent(this, SuccessPayment.class));
-            Toast.makeText(this, "Payment Successful: " + razorpayPaymentID, Toast.LENGTH_SHORT).show();
-            finish();
-        } catch (Exception e) {
-            Log.e(TAG, "Exception in onPaymentSuccess", e);
-        }
+
     }
 
-    @Override
-    public void onPaymentError(int code, String response) {
-        try {
-            Toast.makeText(this, "Payment failed: " + code + " " + response, Toast.LENGTH_SHORT).show();
-        } catch (Exception e) {
-            Log.e(TAG, "Exception in onPaymentError", e);
-        }
-    }
 
     public void startPaymentPaytm() throws Exception {
 
@@ -216,7 +294,8 @@ public class ProceedToPayment extends AppCompatActivity implements PaymentResult
 
         Service.initialize(Order, null);
 
-        Service.startPaymentTransaction(this, true, true, new PaytmPaymentTransactionCallback() {
+        Service.startPaymentTransaction(this, true, true,
+                new PaytmPaymentTransactionCallback() {
             /*Call Backs*/
             public void someUIErrorOccurred(String inErrorMessage) {}
             public void onTransactionResponse(Bundle inResponse) {
@@ -231,4 +310,43 @@ public class ProceedToPayment extends AppCompatActivity implements PaymentResult
             public void onTransactionCancel(String inErrorMessage, Bundle inResponse) {}
         });
     }
+
+    @Override
+    public void onPaymentSuccess(String razorpayPaymentID, PaymentData paymentData) {
+        userService.postOrderData(GroceryApp.Companion.getUserId(ProceedToPayment.this),
+                paymentData.getOrderId(),
+                paymentData.getSignature(),
+                paymentData.getPaymentId(),
+                "In Progress");
+        Toast.makeText(this, "Payment Successful: " + razorpayPaymentID, Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onPaymentError(int i, String s, PaymentData paymentData) {
+
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        if (!eventBus.isRegistered(this)) {
+            eventBus.register(this);
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        eventBus.unregister(this);
+    }
+
+    public void onEvent(SuccessStatusLoadedEvent successStatusLoadedEvent){
+        if (successStatusLoadedEvent != null){
+            Toast.makeText(ProceedToPayment.this, successStatusLoadedEvent.successStatus.getMessage(), Toast.LENGTH_SHORT).show();
+            startActivity(new Intent(this, SuccessPayment.class));
+            finish();
+        }
+    }
+
+
 }

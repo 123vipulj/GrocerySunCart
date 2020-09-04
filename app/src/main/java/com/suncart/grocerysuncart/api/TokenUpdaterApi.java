@@ -18,7 +18,7 @@ import retrofit2.http.POST;
 public interface TokenUpdaterApi {
 
     @FormUrlEncoded
-    @POST("/v1/api/contentprod/content/updatetoken.php/{token_verification}")
-    Call<SuccessStatus> setUpdateToken(@Field("token_verification") String tokenVerfication);
+    @POST("/v1/api/contentprod/content/updatetoken.php/{user_id}/{token_key}")
+    Call<SuccessStatus> setUpdateToken(@Field("user_id") String userId, @Field("token_key") String tokenVerfication);
 
 }

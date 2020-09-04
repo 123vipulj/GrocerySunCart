@@ -99,16 +99,18 @@ public class ProductDetails() : AppCompatActivity() {
                 var ttlQty = DbUtils.getTtlQtyByIds(idsIntentString.toLong()).toString();
                 quantityTag.text = ttlQty
                 ttl_quanity.text = ttlQty
+                totalCart.text = DbUtils.getTtlQty().toString()
             }
         }
 
         positiveBtn.setOnClickListener {
-            if((ttl_quanity.text.toString()).toInt() > 0){
+            if((ttl_quanity.text.toString()).toInt() >= 0){
                 DbUtils.insertRowDb(idsIntentString?.toLong()!!,1)
                 quantityTag.text = DbUtils.getTtlQtyByIds(idsIntentString.toLong()).toString()
                 var ttlQty = DbUtils.getTtlQtyByIds(idsIntentString.toLong()).toString();
                 quantityTag.text = ttlQty
                 ttl_quanity.text = ttlQty
+                totalCart.text = DbUtils.getTtlQty().toString()
             }
         }
     }

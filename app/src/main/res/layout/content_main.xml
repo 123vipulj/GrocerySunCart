@@ -14,11 +14,7 @@
         <!-- categories and search -->
         <RelativeLayout
             android:id="@+id/cat_and_search"
-            android:layout_marginTop="16dp"
-            android:layout_marginBottom="16dp"
-            android:layout_marginStart="16dp"
-            android:layout_marginEnd="16dp"
-            android:background="@drawable/awesome_deal_lay"
+            android:background="@drawable/rounded_categories"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize">
 
@@ -95,7 +91,7 @@
                     android:text="Categories"
                     android:textStyle="bold"
                     android:textSize="18sp"
-                    android:fontFamily="@font/archia"
+                    android:fontFamily="@font/brandonbold"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"/>
             </RelativeLayout>
@@ -132,7 +128,7 @@
                     android:text="BlockBuster Deal"
                     android:textStyle="bold"
                     android:textSize="18sp"
-                    android:fontFamily="@font/archia"
+                    android:fontFamily="@font/brandonbold"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"/>
 
@@ -144,7 +140,7 @@
                     android:textSize="12sp"
                     android:background="@drawable/view_more_lay"
                     android:textColor="#6F000000"
-                    android:fontFamily="@font/archia"
+                    android:fontFamily="@font/brandonlight"
                     android:layout_alignParentEnd="true"
                     android:layout_marginEnd="16dp"
                     android:layout_width="wrap_content"
@@ -232,7 +228,7 @@
                     android:textSize="12sp"
                     android:background="@drawable/view_more_lay"
                     android:textColor="#6F000000"
-                    android:fontFamily="@font/archia"
+                    android:fontFamily="@font/brandonlight"
                     android:layout_alignParentEnd="true"
                     android:layout_marginEnd="16dp"
                     android:layout_width="wrap_content"

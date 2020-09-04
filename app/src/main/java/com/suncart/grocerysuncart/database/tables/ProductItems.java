@@ -33,7 +33,6 @@ public class ProductItems extends BaseModel {
     @Column
     public String discountProduct;
 
-
     @Column
     public int totalQty;
 }

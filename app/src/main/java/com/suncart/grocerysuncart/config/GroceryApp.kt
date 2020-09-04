@@ -45,6 +45,14 @@ open class GroceryApp : Application(){
             return SharedPrefsUtils.getStringPreference(context, "token_str")
         }
 
+        fun saveUserId(context: Context, id : String){
+            SharedPrefsUtils.setStringPreference(context, "user_id", id)
+        }
+
+        fun getUserId(context: Context) : String{
+            return SharedPrefsUtils.getStringPreference(context, "user_id")
+        }
+
         fun getGroceryData() : ContentApi {
            return APIClient.getClient().create(ContentApi::class.java)
         }

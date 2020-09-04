@@ -20,6 +20,7 @@ import com.suncart.grocerysuncart.adapter.BestDealRecyclerAdapter
 import com.suncart.grocerysuncart.adapter.ShippingItemsAdapter
 import com.suncart.grocerysuncart.bus.ContentLoadedEvent
 import com.suncart.grocerysuncart.config.GroceryApp
+import com.suncart.grocerysuncart.database.tables.ProductItems
 import com.suncart.grocerysuncart.model.content.ContentItems
 import com.suncart.grocerysuncart.service.ContentService
 import com.suncart.grocerysuncart.util.DbUtils
@@ -33,8 +34,11 @@ class MyCart : AppCompatActivity(){
     lateinit var contentService : ContentService
 
     private lateinit var bestDealRecyclerAdapter: BestDealRecyclerAdapter
-
+    private lateinit var shipingItemRecyclerAdapter: ShippingItemsAdapter
+    private lateinit var productShipRecycler : RecyclerView
     var eventBus = EventBus.getDefault()
+
+    lateinit var productCartList : MutableList<ProductItems>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -76,18 +80,20 @@ class MyCart : AppCompatActivity(){
             not_item_cart.visibility = View.VISIBLE
             ship_lay.visibility = View.INVISIBLE
             total_ship_lay.visibility = View.INVISIBLE
+            checkout_btn.visibility = View.INVISIBLE
         }else {
             not_item_cart.visibility = View.GONE
             ship_lay.visibility = View.VISIBLE
             total_ship_lay.visibility = View.VISIBLE
+            checkout_btn.visibility = View.VISIBLE
         }
 
         // get details about product in cart
-        val productCartList = DbUtils.getDataCart()
+        productCartList = DbUtils.getDataCart()
         // cart product
-        val productShipRecycler = findViewById<RecyclerView>(R.id.shipping_product_recycle)
-        val bestDealRecyclerAdapter = ShippingItemsAdapter(this, productCartList)
-        productShipRecycler.adapter = bestDealRecyclerAdapter
+        productShipRecycler = findViewById<RecyclerView>(R.id.shipping_product_recycle)
+        shipingItemRecyclerAdapter = ShippingItemsAdapter(this, productCartList)
+        productShipRecycler.adapter = shipingItemRecyclerAdapter
         productShipRecycler.layoutManager = LinearLayoutManager(this)
         productShipRecycler.addItemDecoration(
             DividerItemDecoration(
@@ -95,23 +101,25 @@ class MyCart : AppCompatActivity(){
                 DividerItemDecoration.VERTICAL
             )
         )
-        bestDealRecyclerAdapter.setCartNumberListener(object :
+        shipingItemRecyclerAdapter.setCartNumberListener(object :
             ShippingItemsAdapter.CartNumberListener {
             override fun setCurrentTotalQty(ttlQty: Int) {
                 if (ttlQty == 0) {
                     not_item_cart.visibility = View.VISIBLE
                     ship_lay.visibility = View.INVISIBLE
                     total_ship_lay.visibility = View.INVISIBLE
+                    checkout_btn.visibility = View.INVISIBLE
                 } else {
                     not_item_cart.visibility = View.GONE
                     ship_lay.visibility = View.VISIBLE
                     total_ship_lay.visibility = View.VISIBLE
+                    checkout_btn.visibility = View.VISIBLE
                 }
             }
 
         })
 
-        bestDealRecyclerAdapter.setTriggerPriceFluctuation(object : ShippingItemsAdapter.TriggerPriceFluctuation {
+        shipingItemRecyclerAdapter.setTriggerPriceFluctuation(object : ShippingItemsAdapter.TriggerPriceFluctuation {
             override fun setPriceFluctuationHappen(isFlucationHappen: Boolean) {
                 if (isFlucationHappen){
                     var priceFluctuationList = DbUtils.getDataCart()
@@ -172,11 +180,21 @@ class MyCart : AppCompatActivity(){
 
             bestDealRecyclerAdapter = BestDealRecyclerAdapter(this, contentItems)
             recyclerDeal(recyclerBestDeal, bestDealRecyclerAdapter)
-            bestDealRecyclerAdapter.setCartTrackListener(object : BestDealRecyclerAdapter.CartTrack{
-                override fun setCurrentQty(currentQty: String?) {
-
+            bestDealRecyclerAdapter.setCartTrackListener { currentQty ->
+                if (currentQty?.toInt()  == 0){
+                    not_item_cart.visibility = View.VISIBLE
+                    ship_lay.visibility = View.INVISIBLE
+                    total_ship_lay.visibility = View.INVISIBLE
+                    checkout_btn.visibility = View.INVISIBLE
+                }else {
+                    not_item_cart.visibility = View.GONE
+                    ship_lay.visibility = View.VISIBLE
+                    total_ship_lay.visibility = View.VISIBLE
+                    checkout_btn.visibility = View.VISIBLE
+                    productCartList = DbUtils.getDataCart()
+                    shipingItemRecyclerAdapter.setItems(productCartList)
                 }
-            })
+            }
 
         }
     }

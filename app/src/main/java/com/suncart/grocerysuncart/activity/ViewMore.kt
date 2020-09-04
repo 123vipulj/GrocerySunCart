@@ -18,6 +18,7 @@ import com.suncart.grocerysuncart.model.content.ContentItems
 import com.suncart.grocerysuncart.service.ContentService
 import com.suncart.grocerysuncart.util.DbUtils
 import de.greenrobot.event.EventBus
+import kotlinx.android.synthetic.main.content_main.*
 
 class ViewMore : AppCompatActivity(){
 
@@ -25,8 +26,8 @@ class ViewMore : AppCompatActivity(){
     lateinit var contentService : ContentService
     lateinit var totalCart : TextView
 
-    private lateinit var categoriesRecyclerAdapter : ProductRecyclerAdapter
-    private lateinit var categoriesRecyclerView : RecyclerView
+    private lateinit var productRecyclerAdapter : ProductRecyclerAdapter
+    private lateinit var productRecyclerView : RecyclerView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -67,7 +68,7 @@ class ViewMore : AppCompatActivity(){
             super.onBackPressed()
         }
 
-        categoriesRecyclerView = findViewById<RecyclerView>(R.id.categoriesRecyclerView)
+        productRecyclerView = findViewById<RecyclerView>(R.id.view_more_recycler)
 
     }
 
@@ -88,16 +89,16 @@ class ViewMore : AppCompatActivity(){
             val contentItems = mutableListOf<ContentItems>()
             contentItems.addAll(contentLoadedEvent.contentItemsList)
 
-            categoriesRecyclerAdapter =
+            productRecyclerAdapter =
                 ProductRecyclerAdapter(
                     this,
                     contentItems
                 );
-            categoriesRecyclerView.adapter = categoriesRecyclerAdapter
-            categoriesRecyclerView.layoutManager = LinearLayoutManager(this)
+            productRecyclerView.adapter = productRecyclerAdapter
+            productRecyclerView.layoutManager = LinearLayoutManager(this)
 
             // set cart track of product
-            categoriesRecyclerAdapter.setCartTrackListener {
+            productRecyclerAdapter.setCartTrackListener {
                     currentQty: String? ->  totalCart.text = currentQty
             }
         }

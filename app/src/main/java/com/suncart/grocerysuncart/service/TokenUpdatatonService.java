@@ -26,9 +26,9 @@ public class TokenUpdatatonService {
         this.context = context;
     }
 
-    public void setUpdatedToken(String tokenVerification){
+    public void setUpdatedToken(String userId, String tokenVerification){
 
-        Call<SuccessStatus> tokenUpdatedCallBack = GroceryApp.Companion.tokenUpdatation().setUpdateToken(tokenVerification);
+        Call<SuccessStatus> tokenUpdatedCallBack = GroceryApp.Companion.tokenUpdatation().setUpdateToken(userId, tokenVerification);
         tokenUpdatedCallBack.enqueue(new Callback<SuccessStatus>() {
             @Override
             public void onResponse(Call<SuccessStatus> call, Response<SuccessStatus> response) {

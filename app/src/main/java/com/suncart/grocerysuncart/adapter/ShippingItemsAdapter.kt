@@ -18,7 +18,7 @@ import com.suncart.grocerysuncart.util.DbUtils
 
 open class ShippingItemsAdapter(
     var context: Context,
-    var bestDealModel: MutableList<ProductItems>
+    var productItemModel: MutableList<ProductItems>
 ) : RecyclerView.Adapter<ShippingItemsAdapter.MyViewHolder>(){
 
     lateinit var cartNumListener : CartNumberListener
@@ -37,27 +37,27 @@ open class ShippingItemsAdapter(
     }
 
     override fun getItemCount(): Int {
-        return bestDealModel.size
+        return productItemModel.size
     }
 
     override fun onBindViewHolder(holder: ShippingItemsAdapter.MyViewHolder, position: Int) {
-        Glide.with(context).load(bestDealModel[position].productPics).into(holder.productImg)
-        holder.productMrp.text = bestDealModel[position].productMrp
-        holder.productSp.text = bestDealModel[position].productSp
-        addShowMoreDots(bestDealModel[position].productName, holder.productTitle, 35)
-        holder.productUnit.text = bestDealModel[position].productWeight
-        holder.totalQty.text = bestDealModel[position].totalQty.toString()
+        Glide.with(context).load(productItemModel[position].productPics).into(holder.productImg)
+        holder.productMrp.text = "Rs." + productItemModel[position].productMrp
+        holder.productSp.text = "Rs." +productItemModel[position].productSp
+        addShowMoreDots(productItemModel[position].productName, holder.productTitle, 35)
+        holder.productUnit.text = productItemModel[position].productWeight + " "+productItemModel[position].unitType
+        holder.totalQty.text = productItemModel[position].totalQty.toString()
 
         holder.addBtn?.setOnClickListener(View.OnClickListener { v: View? ->
-            if (DbUtils.getTtlQtyByIds(position, bestDealModel) == 0L) {
-                DbUtils.insertRowDb(position, 1, bestDealModel)
-                holder.totalQty.text = DbUtils.getTtlQtyByIds(position, bestDealModel).toString()
+            if (DbUtils.getTtlQtyByIds(position, productItemModel) == 0L) {
+                DbUtils.insertRowDb(position, 1, productItemModel)
+                holder.totalQty.text = DbUtils.getTtlQtyByIds(position, productItemModel).toString()
                 cartNumListener.setCurrentTotalQty(DbUtils.getTtlQty().toInt())
                 mTriggerPriceFluctuation.setPriceFluctuationHappen(true)
 
-            } else if (DbUtils.getTtlQtyByIds(position, bestDealModel) > 0L) {
-                DbUtils.insertRowDb(position, 1, bestDealModel)
-                holder.totalQty.text = DbUtils.getTtlQtyByIds(position, bestDealModel).toString()
+            } else if (DbUtils.getTtlQtyByIds(position, productItemModel) > 0L) {
+                DbUtils.insertRowDb(position, 1, productItemModel)
+                holder.totalQty.text = DbUtils.getTtlQtyByIds(position, productItemModel).toString()
                 cartNumListener.setCurrentTotalQty(DbUtils.getTtlQty().toInt())
                 mTriggerPriceFluctuation.setPriceFluctuationHappen(true)
             }
@@ -65,14 +65,14 @@ open class ShippingItemsAdapter(
         })
 
         holder.minusBtn?.setOnClickListener(View.OnClickListener {
-            if (DbUtils.getTtlQtyByIds(position, bestDealModel) == 0L) {
+            if (DbUtils.getTtlQtyByIds(position, productItemModel) == 0L) {
                 mTriggerPriceFluctuation.setPriceFluctuationHappen(true)
-            } else if (DbUtils.getTtlQtyByIds(position, bestDealModel) > 0L) {
-                DbUtils.insertRowDb(position, -1, bestDealModel)
-                var ttQtsByIds = DbUtils.getTtlQtyByIds(position, bestDealModel)
+            } else if (DbUtils.getTtlQtyByIds(position, productItemModel) > 0L) {
+                DbUtils.insertRowDb(position, -1, productItemModel)
+                var ttQtsByIds = DbUtils.getTtlQtyByIds(position, productItemModel)
                 holder.totalQty.text = ttQtsByIds.toString()
                 if (ttQtsByIds == 0L) {
-                    bestDealModel.removeAt(position)
+                    productItemModel.removeAt(position)
                     notifyItemRemoved(position)
                     notifyItemRangeChanged(position, itemCount - position);
                 }
@@ -83,7 +83,7 @@ open class ShippingItemsAdapter(
 
         holder.productImg.setOnClickListener {
             var intent = Intent(context, ProductDetails::class.java)
-            intent.putExtra("product_ids", bestDealModel[position].ids.toString())
+            intent.putExtra("product_ids", productItemModel[position].ids.toString())
             context.startActivity(intent)
         }
     }
@@ -130,5 +130,11 @@ open class ShippingItemsAdapter(
         } else {
             tvStringHolder.text = targetString
         }
+    }
+    
+    fun setItems(productItemModel: MutableList<ProductItems>){
+        this.productItemModel = productItemModel
+        notifyDataSetChanged()
+        mTriggerPriceFluctuation.setPriceFluctuationHappen(true)
     }
 }

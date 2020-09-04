@@ -38,4 +38,20 @@ public class UserService {
             }
         });
     }
+
+    public void postOrderData(String userId, String orderID, String signature, String paymentId, String status){
+        Call<SuccessStatus> successStatusCallBack = GroceryApp.Companion.getPhoneValidation().postOrderData(userId, orderID, signature, paymentId, status);
+        successStatusCallBack.enqueue(new Callback<SuccessStatus>() {
+            @Override
+            public void onResponse(Call<SuccessStatus> call, Response<SuccessStatus> response) {
+                Log.i(TAG, "### Get Items Response : " + response.body().toString());
+                eventBus.post(new SuccessStatusLoadedEvent(response.body()));
+            }
+
+            @Override
+            public void onFailure(Call<SuccessStatus> call, Throwable t) {
+                eventBus.post(new ApiErrorEvent(t));
+            }
+        });
+    }
 }

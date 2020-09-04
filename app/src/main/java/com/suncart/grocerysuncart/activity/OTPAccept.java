@@ -110,11 +110,9 @@ public class OTPAccept extends AppCompatActivity {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if (task.isComplete()){
-                    userService.getPhoneVerficationStatus(phoneNumber);
+                    userService.getPhoneVerficationStatus(phoneNumber.split(" ")[1]);
                     GroceryApp.Companion.saveLoginNumber(OTPAccept.this, phoneNumber.replace(" ",""));
                     GroceryApp.Companion.saveLogin(OTPAccept.this, true);
-                    navigateUpTo(new Intent(OTPAccept.this, MainActivity.class));
-                    finish();
                 }else {
                     Toast.makeText(
                             OTPAccept.this,
@@ -133,10 +131,14 @@ public class OTPAccept extends AppCompatActivity {
     public void onEvent(SuccessStatusLoadedEvent successStatusLoadedEvent){
         if (successStatusLoadedEvent != null){
             if(successStatusLoadedEvent.successStatus.getSuccess().equals("yes")){
-                tokenUpdaterService.setUpdatedToken(verificationId);
+                tokenUpdaterService.setUpdatedToken(successStatusLoadedEvent.successStatus.getId(), verificationId);
+                GroceryApp.Companion.saveUserId(OTPAccept.this, successStatusLoadedEvent.successStatus.getId());
             }else if (successStatusLoadedEvent.successStatus.getSuccess().equals("true")){
                 Log.d(OTPAccept.class.getCanonicalName(), "Token Updated");
                 GroceryApp.Companion.setTokenLocally(OTPAccept.this, verificationId);
+                navigateUpTo(new Intent(OTPAccept.this, MainActivity.class));
+                finish();
+                progress.dismiss();
             }
         }
     }

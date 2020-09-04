@@ -37,13 +37,14 @@
                     android:textSize="13sp"/>
 
                 <TextView
+                    android:id="@+id/mrp_p"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentEnd="true"
                     android:fontFamily="@font/archia"
                     android:text="$290"
                     android:textColor="#000"
-                    android:textSize="13sp"/>
+                    android:textSize="13sp" />
             </RelativeLayout>
 
             <RelativeLayout
@@ -66,6 +67,7 @@
                     android:textSize="13sp"/>
 
                 <TextView
+                    android:id="@+id/discount_p"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentEnd="true"
@@ -73,7 +75,7 @@
                     android:text="-$82"
                     android:textColor="#4CAF50"
                     android:textSize="13sp"
-                    android:textStyle="bold"/>
+                    android:textStyle="bold" />
             </RelativeLayout>
 
             <RelativeLayout
@@ -96,14 +98,15 @@
                     android:layout_height="wrap_content"/>
 
                 <TextView
-                    android:text="-$8"
-                    android:layout_alignParentEnd="true"
-                    android:textColor="#E91E63"
-                    android:textStyle="bold"
-                    android:textSize="13sp"
-                    android:fontFamily="@font/archia"
+                    android:id="@+id/delivery_c"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"/>
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:fontFamily="@font/archia"
+                    android:text="-$8"
+                    android:textColor="#E91E63"
+                    android:textSize="13sp"
+                    android:textStyle="bold" />
             </RelativeLayout>
 
             <View
@@ -134,14 +137,15 @@
                     android:layout_height="wrap_content"/>
 
                 <TextView
-                    android:text="$128"
-                    android:paddingEnd="16dp"
-                    android:layout_alignParentEnd="true"
-                    android:textColor="#0E0E0E"
-                    android:textStyle="bold"
-                    android:fontFamily="@font/archia"
+                    android:id="@+id/ttl_c"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"/>
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:fontFamily="@font/archia"
+                    android:paddingEnd="16dp"
+                    android:text="$128"
+                    android:textColor="#0E0E0E"
+                    android:textStyle="bold" />
             </RelativeLayout>
         </RelativeLayout>
 
@@ -248,11 +252,12 @@
                 android:layout_marginBottom="16dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
+
                 <RadioButton
                     android:id="@+id/cash_on_delivery"
-                    android:text="Cash On Delivery"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"/>
+                    android:layout_height="wrap_content"
+                    android:text="Pay On Delivery" />
                 <RadioButton
                     android:id="@+id/razor_pay"
                     android:text="RazorPay"
@@ -260,13 +265,14 @@
                     android:layout_marginTop="16dp"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"/>
+
                 <RadioButton
-                    android:id="@+id/phone_pe"
-                    android:text="PhonePe"
+                    android:id="@+id/upi_pay"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
                     android:layout_gravity=""
                     android:layout_marginTop="16dp"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"/>
+                    android:text="Pay on UPI" />
             </RadioGroup>
         </RelativeLayout>
 

@@ -62,7 +62,6 @@ public class ProductRecyclerAdapter extends RecyclerView.Adapter<ProductRecycler
 
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
-        AtomicInteger ttQty = new AtomicInteger();
 
         Glide.with(context).load(bestDealModelList.get(position).getProductPics()).into(holder.productImg);
         addShowMoreDots(bestDealModelList.get(position).getProductName(), holder.productTitle,50);
@@ -70,7 +69,7 @@ public class ProductRecyclerAdapter extends RecyclerView.Adapter<ProductRecycler
         holder.productMrp.setText("Rs." + bestDealModelList.get(position).getProductMrp());
         holder.productMrp.setPaintFlags(holder.productMrp.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
         holder.productSp.setText("Rs." + bestDealModelList.get(position).getProductSp());
-        holder.productUnit.setText(bestDealModelList.get(position).getProductWeight());
+        holder.productUnit.setText(bestDealModelList.get(position).getProductWeight() + " "+ bestDealModelList.get(position).getUnitType());
 
         holder.productImg.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -80,18 +79,16 @@ public class ProductRecyclerAdapter extends RecyclerView.Adapter<ProductRecycler
             }
         });
         holder.addBtn.setOnClickListener(v -> {
-            //countQty.incrementAndGet();
-            ttQty.incrementAndGet();
-            if (ttQty.get() == 0){
+            if (getTtlQty() == 0){
                 insertRowDb(position, 1);
                 holder.addTxt.setVisibility(View.VISIBLE);
                 holder.totalQty.setVisibility(View.GONE);
 
-            }else if( ttQty.get() > 0){
+            }else if( getTtlQty() > 0){
                 insertRowDb(position, 1);
                 holder.addTxt.setVisibility(View.GONE);
                 holder.totalQty.setVisibility(View.VISIBLE);
-                holder.totalQty.setText(getTtlQty()+"");
+                holder.totalQty.setText(getTtlQtyByIds(position)+"");
 
             }
             // cartTrackListener.setCurrentQty(String.valueOf(ttQty));
@@ -101,19 +98,16 @@ public class ProductRecyclerAdapter extends RecyclerView.Adapter<ProductRecycler
         holder.minusBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                countQty.decrementAndGet();
-//                int ttQty = countQty.get();
-                ttQty.decrementAndGet();
 
-                if (ttQty.get() == 0){
+                if (getTtlQty() == 0){
                     holder.addTxt.setVisibility(View.VISIBLE);
                     holder.totalQty.setVisibility(View.GONE);
                    // insertRowDb(position, -1);
-                }else if( ttQty.get() > 0){
+                }else if(getTtlQty() > 0){
                     insertRowDb(position, -1);
                     holder.addTxt.setVisibility(View.GONE);
                     holder.totalQty.setVisibility(View.VISIBLE);
-                    holder.totalQty.setText(getTtlQty()+"");
+                    holder.totalQty.setText(getTtlQtyByIds(position)+"");
                 }
                 // cartTrackListener.setCurrentQty(String.valueOf(ttQty));
 
@@ -167,7 +161,7 @@ public class ProductRecyclerAdapter extends RecyclerView.Adapter<ProductRecycler
                 if (productItemsList.size() > 0){
                     SQLite.update(ProductItems.class)
                             .set(ProductItems_Table.totalQty.eq((int) (getTtlQtyByIds(pos) + ttQty)))
-                            .where(ProductItems_Table.productName.eq(bestDealModelList.get(pos).getProductName()))
+                            .where(ProductItems_Table.ids.eq((long) bestDealModelList.get(pos).getId()))
                             .execute(databaseWrapper);
 
                     setTtlQty(pos);
@@ -181,6 +175,7 @@ public class ProductRecyclerAdapter extends RecyclerView.Adapter<ProductRecycler
                     productItems.productMrp = bestDealModelList.get(pos).getProductMrp();
                     productItems.productSp = bestDealModelList.get(pos).getProductSp();
                     productItems.productWeight = bestDealModelList.get(pos).getProductWeight();
+                    productItems.unitType = bestDealModelList.get(pos).getUnitType();
                     productItems.totalQty = 0;
                     productItems.insert(databaseWrapper);
                     setTtlQty(pos);
@@ -189,9 +184,6 @@ public class ProductRecyclerAdapter extends RecyclerView.Adapter<ProductRecycler
             }
         });
 
-
-//        ModelAdapter<ProductItems>  productItemsModelAdapter = FlowManager.getModelAdapter(ProductItems.class);
-//        productItemsModelAdapter.insert(productItems, FlowManager.getDatabase(AppDatabase.class));
     }
 
     // set value to cart value

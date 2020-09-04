@@ -209,6 +209,10 @@ class MainActivity : AppCompatActivity() {
         search_product_txt.setOnClickListener {
             startActivity(Intent(this, SearchProduct::class.java))
         }
+
+        view_more_best_deal.setOnClickListener {
+            startActivity(Intent(this, ViewMore::class.java))
+        }
     }
 
     private fun imageSlider(sliderView: SliderView, sliderImgList: MutableList<SliderItem>){

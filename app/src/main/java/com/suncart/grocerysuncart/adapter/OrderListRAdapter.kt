@@ -13,6 +13,10 @@ import com.suncart.grocerysuncart.activity.StatusOrder
 import com.suncart.grocerysuncart.model.content.ContentItems
 import com.suncart.grocerysuncart.model.content.OrderStatus
 
+/*
+* TODO
+*  1. order list recycler
+* */
 class OrderListRAdapter(var context: Context ,var orderStatusList: MutableList<OrderStatus> ) : RecyclerView.Adapter<OrderListRAdapter.MyViewHolder>(){
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {

@@ -110,6 +110,8 @@ dependencies {
     compile('com.paytm:pgplussdk:1.4.4') {
         transitive = true;
     }
+    //easy upi
+    implementation 'com.shreyaspatil:EasyUpiPayment:2.2'
 
 
 }

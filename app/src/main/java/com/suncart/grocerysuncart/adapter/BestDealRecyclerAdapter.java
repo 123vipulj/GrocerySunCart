@@ -70,12 +70,13 @@ public class BestDealRecyclerAdapter extends RecyclerView.Adapter<BestDealRecycl
         holder.productMrp.setText("Rs."+bestDealModelList.get(position).getProductMrp());
         holder.productMrp.setPaintFlags(holder.productMrp.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
         holder.productSp.setText("Rs."+bestDealModelList.get(position).getProductSp());
-        holder.productUnit.setText(bestDealModelList.get(position).getProductWeight());
+        holder.productUnit.setText(bestDealModelList.get(position).getProductWeight() + " "+bestDealModelList.get(position).getUnitType());
 
         holder.productImg.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(context, ProductDetails.class);
+                intent.putExtra("product_ids",  String.valueOf(bestDealModelList.get(position).getId()));
                 context.startActivity(intent);
             }
         });
@@ -178,6 +179,7 @@ public class BestDealRecyclerAdapter extends RecyclerView.Adapter<BestDealRecycl
                     productItems.productSp = bestDealModelList.get(pos).getProductSp();
                     productItems.productWeight = bestDealModelList.get(pos).getProductWeight();
                     productItems.discountProduct = bestDealModelList.get(pos).getProductDiscount();
+                    productItems.unitType = bestDealModelList.get(pos).getUnitType();
                     productItems.totalQty = 0;
                     productItems.insert(databaseWrapper);
                     setTtlQty(pos);
