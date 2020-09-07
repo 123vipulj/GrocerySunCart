@@ -16,6 +16,14 @@ public interface UserApi {
     Call<SuccessStatus> getPhoneVerification(@Field("phone_number") String phoneNumber);
 
     @FormUrlEncoded
+    @POST("/v1/api/contentprod/user/order_transaction_product.php/{id}/{product_id}/{order_id}/{order_qty}/{product_mrp}/{product_discount}")
+    Call<SuccessStatus> postOrderProductData(@Field("user_id") String userId, @Field("product_id") String productId,
+                                      @Field("order_id") String orderId, @Field("order_qty") String orderQty,
+                                      @Field("product_mrp") String productMrp, @Field("product_discount") String productDiscount);
+
+
+
+    @FormUrlEncoded
     @POST("/v1/api/contentprod/user/order_transaction.php/{id}/{razor_pay_order_id}/{razor_signature}/{razor_payment_id}/{status}")
     Call<SuccessStatus> postOrderData(@Field("user_id") String userId, @Field("razor_pay_order_id") String orderId,
                                       @Field("razor_signature") String signature, @Field("razor_payment_id") String paymentID,

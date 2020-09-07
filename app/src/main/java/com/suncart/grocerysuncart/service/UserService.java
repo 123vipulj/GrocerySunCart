@@ -60,6 +60,24 @@ public class UserService {
         });
     }
 
+    public void postOrderProduct(String userId, String productId, String orderId, String orderQty, String productMrp, String productDiscount){
+        Call<SuccessStatus> successStatusCallBack = GroceryApp.Companion.getPhoneValidation()
+                .postOrderProductData(userId, productId, orderId, orderQty, productMrp, productDiscount);
+
+        successStatusCallBack.enqueue(new Callback<SuccessStatus>() {
+            @Override
+            public void onResponse(Call<SuccessStatus> call, Response<SuccessStatus> response) {
+                Log.i(TAG, "### Get Items Response : " + response.body().toString());
+                eventBus.post(new SuccessStatusLoadedEvent(response.body()));
+            }
+
+            @Override
+            public void onFailure(Call<SuccessStatus> call, Throwable t) {
+                eventBus.post(new ApiErrorEvent(t));
+            }
+        });
+    }
+
     public void getOrderDataList(String userId){
         Call<List<OrderStatus>> successStatusCallBack = GroceryApp.Companion.getPhoneValidation().getOrderList(userId);
         successStatusCallBack.enqueue(new Callback<List<OrderStatus>>() {

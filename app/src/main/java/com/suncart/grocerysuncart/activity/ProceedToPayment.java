@@ -53,6 +53,7 @@ import java.security.NoSuchAlgorithmException;
 import java.security.NoSuchProviderException;
 import java.security.Provider;
 import java.security.Security;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -65,6 +66,8 @@ import javax.crypto.NoSuchPaddingException;
 
 import de.greenrobot.event.EventBus;
 
+import static com.suncart.grocerysuncart.util.DbUtils.getDataCart;
+
 public class ProceedToPayment extends AppCompatActivity implements PaymentResultWithDataListener {
     private static final String TAG = ProceedToPayment.class.getSimpleName();
     Checkout checkout;
@@ -73,6 +76,8 @@ public class ProceedToPayment extends AppCompatActivity implements PaymentResult
     TextView nameFieldTxt, addrFieldTxt,changeAddrTxt;
     EventBus eventBus = EventBus.getDefault();
     UserService userService;
+
+    String globalOrderId = "";
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -130,7 +135,7 @@ public class ProceedToPayment extends AppCompatActivity implements PaymentResult
         });
 
         // get details about product in cart
-        List<ProductItems> productCartList = DbUtils.getDataCart();
+        List<ProductItems> productCartList = getDataCart();
         // cart product
         RecyclerView productShipRecycler = findViewById(R.id.shipping_product_recycle);
         ProductShippingPayment bestDealRecyclerAdapter = new ProductShippingPayment(this, productCartList);
@@ -162,11 +167,13 @@ public class ProceedToPayment extends AppCompatActivity implements PaymentResult
                     alertDialog.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialogInterface, int i) {
+                            String orderIdGenerator = UtilApp.Companion.generatingRandomString();
                             userService.postOrderData(GroceryApp.Companion.getUserId(ProceedToPayment.this),
-                                    UtilApp.Companion.generatingRandomString(),
+                                    orderIdGenerator,
                                     "nil",
                                     "nil",
                                     "In Progress");
+                            globalOrderId = orderIdGenerator;
                             // startActivity(new Intent(ProceedToPayment.this, OrderSuccess.class));
                            // finish();
                         }
@@ -323,6 +330,7 @@ public class ProceedToPayment extends AppCompatActivity implements PaymentResult
                 paymentData.getSignature(),
                 paymentData.getPaymentId(),
                 "In Progress");
+        globalOrderId = paymentData.getOrderId();
       //  Toast.makeText(this, "Payment Successful: " + razorpayPaymentID, Toast.LENGTH_SHORT).show();
     }
 
@@ -348,7 +356,18 @@ public class ProceedToPayment extends AppCompatActivity implements PaymentResult
     public void onEvent(SuccessStatusLoadedEvent successStatusLoadedEvent){
         if (successStatusLoadedEvent != null){
             if (successStatusLoadedEvent.successStatus.getSuccess().equals("yes")){
+                List<ProductItems> productItemsList = DbUtils.getDataCart();
+
+                userService.postOrderProduct(
+                        GroceryApp.Companion.getUserId(getApplicationContext()),
+                        String.valueOf(productItemsList.get(0).ids),
+                        globalOrderId,
+                        String.valueOf(productItemsList.get(0).totalQty),
+                        productItemsList.get(0).productMrp.toString(),
+                        productItemsList.get(0).discountProduct.toString());
+
                 Toast.makeText(ProceedToPayment.this, successStatusLoadedEvent.successStatus.getMessage(), Toast.LENGTH_SHORT).show();
+            }else if (successStatusLoadedEvent.successStatus.getSuccess().equals("yes_order_data")){
                 startActivity(new Intent(this, OrderSuccess.class));
                 finish();
             }
