@@ -26,11 +26,12 @@ class ProductCategories : AppCompatActivity(){
 
     private lateinit var categoriesRecyclerAdapter : ProductRecyclerAdapter
     private lateinit var categoriesRecyclerView : RecyclerView
+    private lateinit var contentItems : MutableList<ContentItems>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.product_categories_layout)
-
+        contentItems = mutableListOf()
         val catNames = intent?.getStringExtra("cat_names")
         contentService = ContentService(this)
         contentService.getAllContentItemsByCategories(catNames);
@@ -72,7 +73,7 @@ class ProductCategories : AppCompatActivity(){
 
     override fun onResume() {
         super.onResume()
-        totalCart.text = DbUtils.getDataForTrack().toString();
+        // totalCart.text = DbUtils.getDataForTrack().toString();
     }
 
     override fun onStart() {
@@ -84,7 +85,7 @@ class ProductCategories : AppCompatActivity(){
 
     fun onEvent(contentLoadedEvent: ContentLoadedEvent){
         if (contentLoadedEvent != null){
-            val contentItems = mutableListOf<ContentItems>()
+
             contentItems.addAll(contentLoadedEvent.contentItemsList)
 
             categoriesRecyclerAdapter =

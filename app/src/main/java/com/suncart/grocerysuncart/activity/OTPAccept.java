@@ -110,7 +110,8 @@ public class OTPAccept extends AppCompatActivity {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if (task.isComplete()){
-                    userService.getPhoneVerficationStatus(phoneNumber.split(" ")[1]);
+                    String pNo = phoneNumber.split(" ")[1];
+                    userService.getPhoneVerficationStatus(pNo);
                     GroceryApp.Companion.saveLoginNumber(OTPAccept.this, phoneNumber.replace(" ",""));
                     GroceryApp.Companion.saveLogin(OTPAccept.this, true);
                 }else {

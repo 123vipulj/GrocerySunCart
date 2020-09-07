@@ -8,6 +8,7 @@ import com.suncart.grocerysuncart.R
 import com.suncart.grocerysuncart.adapter.OrderListRAdapter
 import com.suncart.grocerysuncart.bus.OrderListLoadedEvent
 import com.suncart.grocerysuncart.service.ContentService
+import com.suncart.grocerysuncart.service.UserService
 import de.greenrobot.event.EventBus
 
 class OrderList : AppCompatActivity() {
@@ -16,13 +17,14 @@ class OrderList : AppCompatActivity() {
     lateinit var orderListAdapter : OrderListRAdapter
 
     var eventBus = EventBus.getDefault()
-    lateinit var contentService : ContentService
+    lateinit var userService : UserService
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.order_list)
         orderListRecyclerView = findViewById(R.id.order_list_recyclerView)
-        contentService = ContentService(this)
+        userService = UserService(this)
+        userService.getOrderDataList("1001")
     }
 
     override fun onStart() {

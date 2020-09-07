@@ -1,14 +1,18 @@
 package com.suncart.grocerysuncart.model.content;
 
 public class OrderStatus {
-    String orderId,orderDate,orderStatus;
+    String id, razorpayOrderId, createdAt, orderStatus;
 
-    public String getOrderId() {
-        return orderId;
+    public String getId() {
+        return id;
     }
 
-    public String getOrderDate() {
-        return orderDate;
+    public String getRazorpayOrderId() {
+        return razorpayOrderId;
+    }
+
+    public String getCreatedAt() {
+        return createdAt;
     }
 
     public String getOrderStatus() {

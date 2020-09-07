@@ -48,12 +48,13 @@ class MainActivity : AppCompatActivity() {
     lateinit var recylerBestDeal_2 : RecyclerView
 
     lateinit var totalCart : TextView
+    lateinit var cotentItemList : MutableList<ContentItems>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         FlowManager.init(this)
-
+        cotentItemList = mutableListOf()
         contentService = ContentService(this)
         contentService.getAllContentItems()
 
@@ -264,10 +265,11 @@ class MainActivity : AppCompatActivity() {
 
     fun onEvent(contentLoadedEvent: ContentLoadedEvent){
         if (contentLoadedEvent != null){
-            val contentItems = mutableListOf<ContentItems>()
-            contentItems.addAll(contentLoadedEvent.contentItemsList)
+            //val contentItems = mutableListOf<ContentItems>()
 
-            bestDealRecyclerAdapter = BestDealRecyclerAdapter(this, contentItems);
+            cotentItemList.addAll(contentLoadedEvent.contentItemsList)
+
+            bestDealRecyclerAdapter = BestDealRecyclerAdapter(this, cotentItemList);
             recyclerDeal(recyclerBestDeal, bestDealRecyclerAdapter);
             recyclerDeal(recylerBestDeal_2, bestDealRecyclerAdapter)
 

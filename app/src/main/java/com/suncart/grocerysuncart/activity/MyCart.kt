@@ -216,7 +216,7 @@ class MyCart : AppCompatActivity(){
     fun priceShow(){
         var priceFluctuationList = DbUtils.getDataCart()
         var mrpPrice = priceFluctuationList.sumByDouble { it.productMrp.toDouble() * it.totalQty}
-        var discountPrice = priceFluctuationList.sumByDouble {it.productMrp.toDouble() * it.totalQty * (it.discountProduct.toDouble()/100)}
+        var discountPrice = priceFluctuationList.sumByDouble {it.productMrp.toDouble() * it.totalQty * (it.discountProduct.toDouble() /100)}
         var totalPrice = mrpPrice - String.format("%.2f", discountPrice).toDouble()
         p_mrp.text = "Rs." + mrpPrice.toString()
         p_discount.text = "-Rs." + String.format("%.2f", discountPrice).toString()

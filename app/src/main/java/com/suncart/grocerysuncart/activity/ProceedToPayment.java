@@ -162,8 +162,13 @@ public class ProceedToPayment extends AppCompatActivity implements PaymentResult
                     alertDialog.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialogInterface, int i) {
-                            startActivity(new Intent(ProceedToPayment.this, OrderSuccess.class));
-                            finish();
+                            userService.postOrderData(GroceryApp.Companion.getUserId(ProceedToPayment.this),
+                                    UtilApp.Companion.generatingRandomString(),
+                                    "nil",
+                                    "nil",
+                                    "In Progress");
+                            // startActivity(new Intent(ProceedToPayment.this, OrderSuccess.class));
+                           // finish();
                         }
                     });
 
@@ -318,7 +323,7 @@ public class ProceedToPayment extends AppCompatActivity implements PaymentResult
                 paymentData.getSignature(),
                 paymentData.getPaymentId(),
                 "In Progress");
-        Toast.makeText(this, "Payment Successful: " + razorpayPaymentID, Toast.LENGTH_SHORT).show();
+      //  Toast.makeText(this, "Payment Successful: " + razorpayPaymentID, Toast.LENGTH_SHORT).show();
     }
 
     @Override
@@ -342,9 +347,12 @@ public class ProceedToPayment extends AppCompatActivity implements PaymentResult
 
     public void onEvent(SuccessStatusLoadedEvent successStatusLoadedEvent){
         if (successStatusLoadedEvent != null){
-            Toast.makeText(ProceedToPayment.this, successStatusLoadedEvent.successStatus.getMessage(), Toast.LENGTH_SHORT).show();
-            startActivity(new Intent(this, SuccessPayment.class));
-            finish();
+            if (successStatusLoadedEvent.successStatus.getSuccess().equals("yes")){
+                Toast.makeText(ProceedToPayment.this, successStatusLoadedEvent.successStatus.getMessage(), Toast.LENGTH_SHORT).show();
+                startActivity(new Intent(this, OrderSuccess.class));
+                finish();
+            }
+
         }
     }
 

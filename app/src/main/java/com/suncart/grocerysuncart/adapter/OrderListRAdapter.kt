@@ -25,12 +25,12 @@ class OrderListRAdapter(var context: Context ,var orderStatusList: MutableList<O
     }
 
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
-        holder.orderIdText.text = orderStatusList.get(position).orderId
-        holder.dateOrderText.text = orderStatusList.get(position).orderDate
-        holder.statusOrderText.text = orderStatusList.get(position).orderStatus
+        holder.orderIdText.text = orderStatusList[position].razorpayOrderId
+        holder.dateOrderText.text = orderStatusList[position].createdAt
+        holder.statusOrderText.text = orderStatusList[position].orderStatus
         holder.orderStatusLay.setOnClickListener {
             var intent = Intent(context, StatusOrder::class.java)
-            intent.putExtra("order_id", orderStatusList.get(position).orderId)
+            intent.putExtra("order_id", orderStatusList[position].razorpayOrderId)
             context.startActivity(intent)
         }
     }
