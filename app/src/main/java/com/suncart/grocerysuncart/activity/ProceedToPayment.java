@@ -22,6 +22,7 @@ import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.gson.Gson;
 import com.paytm.pg.merchant.PaytmChecksum;
 import com.paytm.pgsdk.PaytmOrder;
 import com.paytm.pgsdk.PaytmPGService;
@@ -357,14 +358,9 @@ public class ProceedToPayment extends AppCompatActivity implements PaymentResult
         if (successStatusLoadedEvent != null){
             if (successStatusLoadedEvent.successStatus.getSuccess().equals("yes")){
                 List<ProductItems> productItemsList = DbUtils.getDataCart();
+                String json = new Gson().toJson(productItemsList);
 
-                userService.postOrderProduct(
-                        GroceryApp.Companion.getUserId(getApplicationContext()),
-                        String.valueOf(productItemsList.get(0).ids),
-                        globalOrderId,
-                        String.valueOf(productItemsList.get(0).totalQty),
-                        productItemsList.get(0).productMrp.toString(),
-                        productItemsList.get(0).discountProduct.toString());
+                userService.postOrderProduct(json, GroceryApp.Companion.getUserId(getApplicationContext()), globalOrderId);
 
                 Toast.makeText(ProceedToPayment.this, successStatusLoadedEvent.successStatus.getMessage(), Toast.LENGTH_SHORT).show();
             }else if (successStatusLoadedEvent.successStatus.getSuccess().equals("yes_order_data")){

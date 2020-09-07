@@ -4,8 +4,11 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/order_status_lay"
+    android:elevation="1dp"
+    android:layout_margin="8dp"
+    android:background="#BFCDDC39"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="wrap_content">
 
     <TextView
         android:id="@+id/order_id"
@@ -14,6 +17,9 @@
         android:layout_marginStart="8dp"
         android:fontFamily="@font/robotomono"
         android:text="TextView"
+        android:background="#9A000000"
+        android:textColor="#fff"
+        android:padding="3dp"
         app:layout_constraintBottom_toBottomOf="@+id/textView11"
         app:layout_constraintStart_toEndOf="@+id/textView11"
         app:layout_constraintTop_toTopOf="@+id/textView11" />
@@ -22,20 +28,19 @@
         android:id="@+id/order_date"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
-        android:layout_marginEnd="24dp"
+        android:layout_marginEnd="28dp"
         android:text="TextView"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintBottom_toBottomOf="@+id/order_status"
+        app:layout_constraintEnd_toEndOf="parent" />
 
     <TextView
         android:id="@+id/textView9"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="24dp"
+        android:fontFamily="@font/robotomono"
         android:text="Status"
         android:textStyle="bold"
-        android:fontFamily="@font/robotomono"
         app:layout_constraintStart_toStartOf="@+id/textView11"
         app:layout_constraintTop_toBottomOf="@+id/textView11" />
 
@@ -55,9 +60,9 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="24dp"
         android:layout_marginTop="24dp"
+        android:fontFamily="@font/robotomono"
         android:text="Order Id"
         android:textStyle="bold"
-        android:fontFamily="@font/robotomono"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -66,10 +71,44 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
+        android:fontFamily="@font/robotomono"
         android:text="Order Date"
         android:textStyle="bold"
-        android:fontFamily="@font/robotomono"
-        app:layout_constraintBottom_toBottomOf="@+id/order_date"
         app:layout_constraintEnd_toStartOf="@+id/order_date"
         app:layout_constraintTop_toTopOf="@+id/order_date" />
+
+
+    <RelativeLayout
+        android:id="@+id/relativeLayout2"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_marginTop="8dp"
+        android:background="#AB3F51B5"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/order_status">
+
+        <TextView
+            android:id="@+id/ttl_price_bottom_header"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_centerVertical="true"
+            android:text="Total : Rs.1200"
+            android:layout_marginStart="16dp"
+            android:fontFamily="@font/robotomono"
+            android:textColor="#fff" />
+
+        <TextView
+            android:id="@+id/ttl_qty_bottom_header"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:layout_marginEnd="16dp"
+            android:text="Total Qty : 21"
+            android:fontFamily="@font/robotomono"
+            android:textColor="#fff" />
+    </RelativeLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

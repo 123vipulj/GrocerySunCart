@@ -157,7 +157,7 @@ class MainActivity : AppCompatActivity() {
 
         var yourLocation = Intent(this, MapPickAddress::class.java)
         var changeAddress = Intent(this, ChangeAddress::class.java)
-        var myOrder = Intent(this, StatusOrder::class.java)
+        var myOrder = Intent(this, OrderList::class.java)
         var myCart = Intent(this, MyCart::class.java)
 
         navigationView.setNavigationItemSelectedListener(object : NavigationView.OnNavigationItemSelectedListener{

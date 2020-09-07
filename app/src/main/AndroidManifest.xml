@@ -61,6 +61,7 @@
         <activity android:name=".activity.SearchProduct"/>
         <activity android:name=".activity.ViewMore"/>
         <activity android:name=".activity.OrderSuccess"/>
+        <activity android:name=".activity.OrderList"/>
 
         <service
             android:name=".config.GroceryFirebaseMessagingService"

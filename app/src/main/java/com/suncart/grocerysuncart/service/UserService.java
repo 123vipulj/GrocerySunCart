@@ -60,9 +60,9 @@ public class UserService {
         });
     }
 
-    public void postOrderProduct(String userId, String productId, String orderId, String orderQty, String productMrp, String productDiscount){
+    public void postOrderProduct(String jsonData, String userId, String orderId){
         Call<SuccessStatus> successStatusCallBack = GroceryApp.Companion.getPhoneValidation()
-                .postOrderProductData(userId, productId, orderId, orderQty, productMrp, productDiscount);
+                .postOrderProductData(jsonData, userId, orderId);
 
         successStatusCallBack.enqueue(new Callback<SuccessStatus>() {
             @Override
