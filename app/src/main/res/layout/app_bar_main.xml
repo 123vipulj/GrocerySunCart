@@ -23,6 +23,11 @@
 
 
     <include
+        android:id="@+id/progress_bar_lay_included"
+        layout="@layout/progressbar_lay"/>
+
+    <include
+        android:id="@+id/content_main_included"
         layout="@layout/content_main" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

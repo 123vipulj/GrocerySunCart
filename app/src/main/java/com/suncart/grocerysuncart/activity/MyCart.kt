@@ -45,6 +45,8 @@ class MyCart : AppCompatActivity(){
         setContentView(R.layout.my_cart_activity)
         FlowManager.init(this);
 
+        best_deal_lay.visibility = View.GONE
+
         //get content for deal
         contentService = ContentService(this)
         contentService.getAllContentItems()
@@ -175,6 +177,9 @@ class MyCart : AppCompatActivity(){
 
     fun onEvent(contentLoadedEvent: ContentLoadedEvent){
         if (contentLoadedEvent != null){
+            best_deal_lay.visibility = View.VISIBLE
+            lottie_anim.visibility = View.GONE
+
             val contentItems = mutableListOf<ContentItems>()
             contentItems.addAll(contentLoadedEvent.contentItemsList)
 

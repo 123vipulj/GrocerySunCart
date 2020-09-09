@@ -4,6 +4,7 @@ import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
 import android.view.MenuItem
+import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.ActionBar
@@ -32,7 +33,9 @@ import com.suncart.grocerysuncart.model.content.ContentItems
 import com.suncart.grocerysuncart.service.ContentService
 import com.suncart.grocerysuncart.util.DbUtils
 import de.greenrobot.event.EventBus
+import kotlinx.android.synthetic.main.app_bar_main.*
 import kotlinx.android.synthetic.main.content_main.*
+import kotlinx.android.synthetic.main.progressbar_lay.*
 
 
 class MainActivity : AppCompatActivity() {
@@ -53,6 +56,9 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        content_main_included.visibility = View.GONE
+        progress_bar_lay_included.visibility = View.VISIBLE
+
         FlowManager.init(this)
         cotentItemList = mutableListOf()
         contentService = ContentService(this)
@@ -266,6 +272,9 @@ class MainActivity : AppCompatActivity() {
     fun onEvent(contentLoadedEvent: ContentLoadedEvent){
         if (contentLoadedEvent != null){
             //val contentItems = mutableListOf<ContentItems>()
+            content_main_included.visibility = View.VISIBLE
+            progress_bar_lay_included.visibility = View.GONE
+            lottie_anim.visibility = View.INVISIBLE
 
             cotentItemList.addAll(contentLoadedEvent.contentItemsList)
 
