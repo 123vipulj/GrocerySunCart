@@ -30,7 +30,7 @@ public class ProductShippingPayment(var context: Context, var bestDealModel: Mut
         holder.productMrp.text = bestDealModel[position].productMrp
         holder.productSp.text = bestDealModel[position].productSp
         holder.productTitle.text = bestDealModel[position].productName
-        holder.productUnit.text = bestDealModel[position].productWeight
+        holder.productUnit.text = bestDealModel[position].productWeight + " " +bestDealModel[position].unitType
         holder.totalQty.text = bestDealModel[position].totalQty.toString()
     }
 

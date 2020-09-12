@@ -41,6 +41,12 @@ class ChangeAddress : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.change_addr_activity)
 
+        if (intent.getBooleanExtra("proceed_pay", false)){
+            nextBtn.visibility = View.VISIBLE
+        }else{
+            nextBtn.visibility = View.GONE
+        }
+
         //toolbar
         val toolbar: Toolbar = findViewById(R.id.toolbar)
         setSupportActionBar(toolbar)

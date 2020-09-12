@@ -17,6 +17,7 @@ import com.suncart.grocerysuncart.config.GroceryApp
 import com.suncart.grocerysuncart.service.ContentService
 import com.suncart.grocerysuncart.service.UserService
 import de.greenrobot.event.EventBus
+import kotlinx.android.synthetic.main.order_list.*
 
 class OrderList : AppCompatActivity() {
 
@@ -29,6 +30,7 @@ class OrderList : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.order_list)
+
 
         val toolbar: Toolbar = findViewById(R.id.toolbar)
         //toolbar
@@ -56,8 +58,15 @@ class OrderList : AppCompatActivity() {
         }
 
         orderListRecyclerView = findViewById(R.id.order_list_recyclerView)
+        orderListRecyclerView.visibility = View.GONE
+
         userService = UserService(this)
-        userService.getOrderDataList(GroceryApp.getUserId(applicationContext))
+        if (GroceryApp.getUserId(this) != null){
+            userService.getOrderDataList(GroceryApp.getUserId(this))
+        }else {
+            lottie_anim.visibility = View.GONE
+        }
+
     }
 
     override fun onStart() {
@@ -76,7 +85,11 @@ class OrderList : AppCompatActivity() {
 
     fun onEvent(orderListLoadedEvent: OrderListLoadedEvent){
         if (orderListLoadedEvent != null){
+            lottie_anim.visibility = View.GONE
+            orderListRecyclerView.visibility = View.VISIBLE
+
             val oList = orderListLoadedEvent.orderStatusList
+
             orderListAdapter = OrderListRAdapter(this, oList)
             orderListRecyclerView.adapter = orderListAdapter
             orderListRecyclerView.layoutManager = LinearLayoutManager(this)

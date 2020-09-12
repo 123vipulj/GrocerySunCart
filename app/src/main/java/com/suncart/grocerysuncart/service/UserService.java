@@ -6,11 +6,15 @@ import android.util.Log;
 
 import com.suncart.grocerysuncart.activity.OrderList;
 import com.suncart.grocerysuncart.bus.OrderListLoadedEvent;
+import com.suncart.grocerysuncart.bus.OrderReceiptLoadedEvent;
+import com.suncart.grocerysuncart.bus.OrderStatusTrackLoadedEvent;
 import com.suncart.grocerysuncart.bus.SuccessStatusLoadedEvent;
 import com.suncart.grocerysuncart.config.GroceryApp;
 import com.suncart.grocerysuncart.exception.ApiErrorEvent;
 import com.suncart.grocerysuncart.model.SuccessStatus;
 import com.suncart.grocerysuncart.model.content.OrderStatus;
+import com.suncart.grocerysuncart.model.content.OrderStatusReceipt;
+import com.suncart.grocerysuncart.model.content.OrderStatusTrack;
 
 import java.util.List;
 
@@ -89,6 +93,38 @@ public class UserService {
 
             @Override
             public void onFailure(Call<List<OrderStatus>> call, Throwable t) {
+                eventBus.post(new ApiErrorEvent(t));
+            }
+        });
+    }
+
+    public void getOrderStatusDataList(String userId){
+        Call<List<OrderStatusReceipt>> successStatusCallBack = GroceryApp.Companion.getPhoneValidation().getOrderStatusReceiptList(userId);
+        successStatusCallBack.enqueue(new Callback<List<OrderStatusReceipt>>() {
+            @Override
+            public void onResponse(Call<List<OrderStatusReceipt>> call, Response<List<OrderStatusReceipt>> response) {
+                Log.i(TAG, "### Get Items Response : " + response.body().toString());
+                eventBus.post(new OrderReceiptLoadedEvent(response.body()));
+            }
+
+            @Override
+            public void onFailure(Call<List<OrderStatusReceipt>> call, Throwable t) {
+                eventBus.post(new ApiErrorEvent(t));
+            }
+        });
+    }
+
+    public void getOrderStatus(String userId){
+        Call<OrderStatusTrack> successStatusCallBack = GroceryApp.Companion.getPhoneValidation().getOrderStatus(userId);
+        successStatusCallBack.enqueue(new Callback<OrderStatusTrack>() {
+            @Override
+            public void onResponse(Call<OrderStatusTrack> call, Response<OrderStatusTrack> response) {
+                Log.i(TAG, "### Get Items Response : " + response.body().toString());
+                eventBus.post(new OrderStatusTrackLoadedEvent(response.body()));
+            }
+
+            @Override
+            public void onFailure(Call<OrderStatusTrack> call, Throwable t) {
                 eventBus.post(new ApiErrorEvent(t));
             }
         });

@@ -7,6 +7,7 @@
             android:id="@+id/startPayment"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
+            android:foreground="?attr/selectableItemBackgroundBorderless"
             android:background="#3F51B5"
             android:textColor="#fff"
             android:textAllCaps="false"

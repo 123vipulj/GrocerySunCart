@@ -14,17 +14,33 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.dbflow5.config.FlowManager
 import com.suncart.grocerysuncart.R
+import com.suncart.grocerysuncart.adapter.OrderListRAdapter
 import com.suncart.grocerysuncart.adapter.OrderListRecyclerAdapter
+import com.suncart.grocerysuncart.bus.OrderListLoadedEvent
+import com.suncart.grocerysuncart.bus.OrderReceiptLoadedEvent
+import com.suncart.grocerysuncart.bus.OrderStatusTrackLoadedEvent
+import com.suncart.grocerysuncart.service.ContentService
+import com.suncart.grocerysuncart.service.UserService
 import com.suncart.grocerysuncart.util.DbUtils
 import com.suncart.grocerysuncart.util.customview.ProgressCircleWithLine
+import de.greenrobot.event.EventBus
+import kotlinx.android.synthetic.main.order_list.*
 import kotlinx.android.synthetic.main.status_order.*
 
 class StatusOrder : AppCompatActivity(){
+    var eventBus = EventBus.getDefault()
+    lateinit var userService : UserService
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.status_order)
         FlowManager.init(this)
+
+        var orderId = intent?.getStringExtra("user_id")
+        userService = UserService(this)
+        userService.getOrderStatus(orderId)
+
         val toolbar: Toolbar = findViewById(R.id.toolbar)
         //toolbar
         setSupportActionBar(toolbar)
@@ -32,7 +48,6 @@ class StatusOrder : AppCompatActivity(){
         supportActionBar?.setCustomView(R.layout.custom_toolbar)
         supportActionBar?.setHomeButtonEnabled(true)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
-
 
         val nav_icon  = supportActionBar?.customView?.findViewById<ImageView>(R.id.navigation_drawer)
         val cartImg = supportActionBar?.customView?.findViewById<ImageView>(R.id.cart_icons)
@@ -55,14 +70,27 @@ class StatusOrder : AppCompatActivity(){
         circleWithLine.circleInTopLineColor = "#18c721"
 
         var orderListData = DbUtils.getDataCart()
-        var orderListRecyclerView = findViewById<RecyclerView>(R.id.order_recycler)
-        var orderListAdapter = OrderListRecyclerAdapter(this, orderListData)
-        orderListRecyclerView.adapter = orderListAdapter
-        orderListRecyclerView.layoutManager = LinearLayoutManager(this)
-        orderListRecyclerView.addItemDecoration(DividerItemDecoration(this, DividerItemDecoration.VERTICAL).apply {
-            ContextCompat.getDrawable(this@StatusOrder,R.drawable.dotted_shape)?.let {
-                setDrawable(it)
-            }
-        })
+
     }
+
+    override fun onStart() {
+        super.onStart()
+        if (!eventBus.isRegistered(this)) {
+            eventBus.register(this)
+        }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        if (eventBus.hasSubscriberForEvent(ContentService::class.java)) {
+            eventBus.unregister(this)
+        }
+    }
+
+    fun onEvent(orderStatusTrackLoadedEvent: OrderStatusTrackLoadedEvent){
+        if (orderStatusTrackLoadedEvent != null){
+            order_id.text = "Order Id : " + orderStatusTrackLoadedEvent.orderStatusTrack.razorpayOrderId.toString()
+        }
+    }
+
 }

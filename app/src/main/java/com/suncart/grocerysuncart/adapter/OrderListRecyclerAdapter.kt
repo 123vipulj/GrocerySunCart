@@ -10,10 +10,13 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.suncart.grocerysuncart.R
+import com.suncart.grocerysuncart.activity.StatusOrder
 import com.suncart.grocerysuncart.database.tables.ProductItems
+import com.suncart.grocerysuncart.model.content.OrderStatusReceipt
 
-class OrderListRecyclerAdapter(var context: Context, var bestDealModel: MutableList<ProductItems>) : RecyclerView.Adapter<OrderListRecyclerAdapter.MyViewHolder>(){
-
+// TODO
+// 1. order status
+class OrderListRecyclerAdapter(var context: Context, var bestDealModel: MutableList<OrderStatusReceipt>) : RecyclerView.Adapter<OrderListRecyclerAdapter.MyViewHolder>(){
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
@@ -26,9 +29,9 @@ class OrderListRecyclerAdapter(var context: Context, var bestDealModel: MutableL
     }
 
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
-        addShowMoreDots(bestDealModel[position].productName, holder.productTitle,35)
-        holder.productPrice.text = "Rs. "+bestDealModel[position].productSp
-        holder.productQty.text = "Qty : "+ bestDealModel[position].totalQty.toString()
+        addShowMoreDots(bestDealModel[position].product_name, holder.productTitle,35)
+        holder.productPrice.text = "Rs. "+bestDealModel[position].product_mrp.toString()
+        holder.productQty.text = "Qty : "+ bestDealModel[position].order_qty.toString()
         holder.productPrice.setTextColor(Color.parseColor("#0cc418"))
     }
 

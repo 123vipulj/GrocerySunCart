@@ -17,186 +17,185 @@
         app:layout_constraintTop_toTopOf="parent"
         app:popupTheme="@style/AppTheme.PopupOverlay" />
 
+
     <RelativeLayout
-        android:id="@+id/relativeLayout"
+        android:id="@+id/relativeLayout3"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:background="#99FFFFFF"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp"
+        android:background="#E4FFFFFF"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/toolbar">
 
-        <RelativeLayout
-            android:id="@+id/root_order"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="16dp"
-            android:layout_marginBottom="8dp">
-
-            <TextView
-                android:id="@+id/order_id_txt"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Order ID"
-                android:textSize="14sp"
-                android:textStyle="bold" />
-
-            <TextView
-                android:id="@+id/order_id_no"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:layout_toEndOf="@id/order_id_txt"
-                android:text="12451fdsfs"
-                android:textSize="14sp" />
-
-            <TextView
-                android:layout_alignParentEnd="true"
-                android:layout_alignParentTop="true"
-                android:text="12 july 2020"
-                android:textStyle="bold"
-                android:lineSpacingExtra="0.1dp"
-                android:fontFamily="@font/robotomono"
-                android:layout_marginEnd="8dp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
-        </RelativeLayout>
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/order_recycler"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/root_order"
-            android:layout_margin="8dp" />
-    </RelativeLayout>
-
-    <RelativeLayout
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_marginTop="8dp"
-        android:background="#99FFFFFF"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/relativeLayout">
-
         <TextView
             android:id="@+id/status_title"
-            android:text="Status"
-            android:textStyle="bold"
-            android:textSize="17sp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginTop="16dp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
+            android:text="Status"
+            android:textSize="17sp"
+            android:textStyle="bold" />
 
+        <TextView
+            android:id="@+id/order_id"
+            android:layout_alignParentEnd="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp"
+            android:layout_marginTop="16dp"
+            android:text=""
+            android:textSize="17sp"
+            android:textStyle="bold" />
 
 
         <RelativeLayout
             android:id="@+id/order_lay"
-            android:layout_below="@id/status_title"
             android:layout_width="match_parent"
-            android:layout_height="100dp">
+            android:layout_height="100dp"
+            android:layout_below="@id/status_title">
 
             <com.suncart.grocerysuncart.util.customview.ProgressCircleWithLine
                 android:id="@+id/circle_with_line"
+                android:layout_width="45dp"
+                android:layout_height="match_parent"
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="32dp"
-                app:circleOnTop="true"
-                android:layout_width="45dp"
-                android:layout_height="match_parent"/>
+                app:circleOnTop="true" />
 
             <TextView
-                android:text="Order Wednesday 25"
-                android:layout_toEndOf="@id/circle_with_line"
-                android:layout_centerVertical="true"
-                android:textSize="22sp"
-                android:textStyle="bold"
-                android:fontFamily="@font/archia"
-                android:layout_marginStart="16dp"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginStart="16dp"
+                android:layout_toEndOf="@id/circle_with_line"
+                android:fontFamily="@font/archia"
+                android:text="Order Wednesday 25"
+                android:textSize="22sp"
+                android:textStyle="bold" />
         </RelativeLayout>
 
         <RelativeLayout
             android:id="@+id/proccesed_lay"
-            android:layout_below="@id/order_lay"
             android:layout_width="match_parent"
-            android:layout_height="100dp">
+            android:layout_height="100dp"
+            android:layout_below="@id/order_lay">
 
             <com.suncart.grocerysuncart.util.customview.ProgressCircleWithLine
                 android:id="@+id/circle_with_line_proccesed"
+                android:layout_width="45dp"
+                android:layout_height="match_parent"
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="0dp"
-                app:circleOnBetween="true"
-                android:layout_width="45dp"
-                android:layout_height="match_parent"/>
+                app:circleOnBetween="true" />
 
             <TextView
-                android:text="Processed"
-                android:layout_toEndOf="@id/circle_with_line_proccesed"
-                android:layout_centerVertical="true"
-                android:textSize="22sp"
-                android:textStyle="bold"
-                android:fontFamily="@font/archia"
-                android:layout_marginStart="16dp"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginStart="16dp"
+                android:layout_toEndOf="@id/circle_with_line_proccesed"
+                android:fontFamily="@font/archia"
+                android:text="Processed"
+                android:textSize="22sp"
+                android:textStyle="bold" />
         </RelativeLayout>
 
         <RelativeLayout
             android:id="@+id/out_of_deliver_lay"
-            android:layout_below="@id/proccesed_lay"
             android:layout_width="match_parent"
-            android:layout_height="100dp">
+            android:layout_height="100dp"
+            android:layout_below="@id/proccesed_lay">
 
             <com.suncart.grocerysuncart.util.customview.ProgressCircleWithLine
                 android:id="@+id/circle_with_line_out_of_deliver"
+                android:layout_width="45dp"
+                android:layout_height="match_parent"
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="0dp"
-                app:circleOnBetween="true"
-                android:layout_width="45dp"
-                android:layout_height="match_parent"/>
+                app:circleOnBetween="true" />
 
             <TextView
-                android:text="Out Of Delivery"
-                android:layout_toEndOf="@id/circle_with_line_out_of_deliver"
-                android:layout_centerVertical="true"
-                android:textSize="22sp"
-                android:textStyle="bold"
-                android:fontFamily="@font/archia"
-                android:layout_marginStart="16dp"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginStart="16dp"
+                android:layout_toEndOf="@id/circle_with_line_out_of_deliver"
+                android:fontFamily="@font/archia"
+                android:text="Out Of Delivery"
+                android:textSize="22sp"
+                android:textStyle="bold" />
         </RelativeLayout>
 
         <RelativeLayout
             android:id="@+id/delivered_lay"
-            android:layout_below="@id/out_of_deliver_lay"
             android:layout_width="match_parent"
-            android:layout_height="100dp">
+            android:layout_height="100dp"
+            android:layout_below="@id/out_of_deliver_lay">
 
             <com.suncart.grocerysuncart.util.customview.ProgressCircleWithLine
                 android:id="@+id/circle_with_line_delivered"
+                android:layout_width="45dp"
+                android:layout_height="match_parent"
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="0dp"
-                app:circleOnBottom="true"
-                android:layout_width="45dp"
-                android:layout_height="match_parent"/>
+                app:circleOnBottom="true" />
 
             <TextView
-                android:text="Delivered"
-                android:layout_toEndOf="@id/circle_with_line_delivered"
-                android:layout_centerVertical="true"
-                android:textSize="22sp"
-                android:textStyle="bold"
-                android:fontFamily="@font/archia"
-                android:layout_marginStart="16dp"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginStart="16dp"
+                android:layout_toEndOf="@id/circle_with_line_delivered"
+                android:fontFamily="@font/archia"
+                android:text="Delivered"
+                android:textSize="22sp"
+                android:textStyle="bold" />
         </RelativeLayout>
+    </RelativeLayout>
 
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:background="#fff"
+        android:elevation="1dp"
+        android:orientation="vertical"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/relativeLayout3">
+
+        <ImageView
+            android:id="@+id/call_img"
+            android:layout_width="60dp"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_centerVertical="true"
+            android:layout_gravity="start"
+            android:src="@android:drawable/ic_menu_call" />
+
+        <TextView
+            android:id="@+id/call_us_txt"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_toEndOf="@id/call_img"
+            android:padding="7dp"
+            android:paddingStart="16dp"
+            android:text="Call Us"
+            android:textSize="21sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/call_us_txt"
+            android:layout_marginBottom="8dp"
+            android:layout_toEndOf="@id/call_img"
+            android:paddingStart="16dp"
+            android:text="If you face any problem" />
     </RelativeLayout>
 
 

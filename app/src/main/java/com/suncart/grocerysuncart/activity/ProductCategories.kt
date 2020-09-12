@@ -18,6 +18,7 @@ import com.suncart.grocerysuncart.model.content.ContentItems
 import com.suncart.grocerysuncart.service.ContentService
 import com.suncart.grocerysuncart.util.DbUtils
 import de.greenrobot.event.EventBus
+import kotlinx.android.synthetic.main.product_categories_layout.*
 
 class ProductCategories : AppCompatActivity(){
     var eventBus = EventBus.getDefault()
@@ -68,6 +69,7 @@ class ProductCategories : AppCompatActivity(){
         }
 
         categoriesRecyclerView = findViewById<RecyclerView>(R.id.categoriesRecyclerView)
+        categoriesRecyclerView.visibility = View.GONE
 
     }
 
@@ -85,6 +87,8 @@ class ProductCategories : AppCompatActivity(){
 
     fun onEvent(contentLoadedEvent: ContentLoadedEvent){
         if (contentLoadedEvent != null){
+            lottie_anim.visibility = View.GONE
+            categoriesRecyclerView.visibility = View.VISIBLE
 
             contentItems.addAll(contentLoadedEvent.contentItemsList)
 

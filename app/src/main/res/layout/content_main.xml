@@ -16,7 +16,7 @@
         <!-- categories and search -->
         <RelativeLayout
             android:id="@+id/cat_and_search"
-            android:background="@drawable/rounded_categories"
+            android:background="#8B8BC34A"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize">
 
@@ -141,7 +141,7 @@
                     android:textStyle="bold"
                     android:textSize="12sp"
                     android:background="@drawable/view_more_lay"
-                    android:textColor="#6F000000"
+                    android:textColor="#95000000"
                     android:fontFamily="@font/brandonlight"
                     android:layout_alignParentEnd="true"
                     android:layout_marginEnd="16dp"
@@ -218,7 +218,7 @@
                     android:text="Vegetable Deal"
                     android:textStyle="bold"
                     android:textSize="18sp"
-                    android:fontFamily="@font/archia"
+                    android:fontFamily="@font/brandonbold"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"/>
 
@@ -229,7 +229,7 @@
                     android:padding="6dp"
                     android:textSize="12sp"
                     android:background="@drawable/view_more_lay"
-                    android:textColor="#6F000000"
+                    android:textColor="#95000000"
                     android:fontFamily="@font/brandonlight"
                     android:layout_alignParentEnd="true"
                     android:layout_marginEnd="16dp"

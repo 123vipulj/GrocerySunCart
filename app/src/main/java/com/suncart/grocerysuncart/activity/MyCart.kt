@@ -138,18 +138,19 @@ class MyCart : AppCompatActivity(){
 
         priceShow()
 
-        if(!GroceryApp.isUserLogged(this)){
+        if(!GroceryApp.isUserLogged(this)!!){
             checkout_title.text = "Login to Checkout"
         }else {
             checkout_title.text = "Checkout"
         }
 
         checkoutBtn.setOnClickListener {
-            if (!GroceryApp.isUserLogged(this)){
+            if (!GroceryApp.isUserLogged(this)!!){
                 val intent = Intent(this, OTPLogin::class.java)
                 startActivity(intent)
             }else {
                 val intent = Intent(this, ChangeAddress::class.java)
+                intent.putExtra("proceed_pay", true)
                 startActivity(intent)
             }
         }

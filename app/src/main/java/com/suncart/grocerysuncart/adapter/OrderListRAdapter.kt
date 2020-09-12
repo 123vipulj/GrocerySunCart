@@ -30,9 +30,14 @@ class OrderListRAdapter(var context: Context ,var orderStatusList: MutableList<O
         holder.statusOrderText.text = orderStatusList[position].orderStatus
         holder.orderStatusLay.setOnClickListener {
             var intent = Intent(context, StatusOrder::class.java)
-            intent.putExtra("order_id", orderStatusList[position].razorpayOrderId)
+            intent.putExtra("user_id", orderStatusList[position].id)
+            intent.putExtra("total_price", orderStatusList[position].product_mrp)
+            intent.putExtra("total_qty", orderStatusList[position].order_qty)
             context.startActivity(intent)
         }
+
+        holder.ttlPriceHeader.text = "Total Price : "+ (orderStatusList[position].product_mrp.toFloat() - orderStatusList[position].product_discount.toFloat())
+        holder.ttlQtyHeader.text = "Total Qty :: " + orderStatusList[position].order_qty
     }
 
     override fun getItemCount(): Int {
@@ -44,5 +49,8 @@ class OrderListRAdapter(var context: Context ,var orderStatusList: MutableList<O
         var dateOrderText = itemView.findViewById<TextView>(R.id.order_date)
         var statusOrderText = itemView.findViewById<TextView>(R.id.order_status)
         var orderStatusLay = itemView.findViewById<ConstraintLayout>(R.id.order_status_lay)
+        var ttlPriceHeader = itemView.findViewById<TextView>(R.id.ttl_price_bottom_header)
+        var ttlQtyHeader = itemView.findViewById<TextView>(R.id.ttl_qty_bottom_header)
     }
+
 }

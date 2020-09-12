@@ -11,13 +11,8 @@ import com.suncart.grocerysuncart.api.TokenUpdaterApi
 import com.suncart.grocerysuncart.api.UserApi
 import com.suncart.grocerysuncart.database.AppDatabase
 import com.suncart.grocerysuncart.util.SharedPrefsUtils
-import org.acra.ACRA
-import org.acra.BuildConfig
-import org.acra.annotation.AcraCore
-import org.acra.annotation.AcraMailSender
 
-@AcraMailSender(mailTo = "123.vipulj@gmail.com")
-@AcraCore(buildConfigClass = BuildConfig::class)
+
 open class GroceryApp : Application(){
 
     companion object {
@@ -33,7 +28,7 @@ open class GroceryApp : Application(){
             return SharedPrefsUtils.getStringPreference(context, "loginNumber")
         }
 
-        fun isUserLogged(context: Context) : Boolean{
+        fun isUserLogged(context: Context) : Boolean?{
             return SharedPrefsUtils.getBooleanPreference(context, "isLogin", false)
         }
 
@@ -41,7 +36,7 @@ open class GroceryApp : Application(){
             SharedPrefsUtils.setStringPreference(context,"token_str" ,tokenVerfication)
         }
 
-        fun getTokenString(context: Context) : String{
+        fun getTokenString(context: Context) : String?{
             return SharedPrefsUtils.getStringPreference(context, "token_str")
         }
 
@@ -49,7 +44,7 @@ open class GroceryApp : Application(){
             SharedPrefsUtils.setStringPreference(context, "user_id", id)
         }
 
-        fun getUserId(context: Context) : String{
+        fun getUserId(context: Context) : String?{
             return SharedPrefsUtils.getStringPreference(context, "user_id")
         }
 
@@ -77,11 +72,6 @@ open class GroceryApp : Application(){
                 .build());
     }
 
-    override fun attachBaseContext(base: Context?) {
-        super.attachBaseContext(base)
-        // acra initialization
-        ACRA.init(this)
-    }
 
 
 }

@@ -2,6 +2,8 @@ package com.suncart.grocerysuncart.api;
 
 import com.suncart.grocerysuncart.model.SuccessStatus;
 import com.suncart.grocerysuncart.model.content.OrderStatus;
+import com.suncart.grocerysuncart.model.content.OrderStatusReceipt;
+import com.suncart.grocerysuncart.model.content.OrderStatusTrack;
 
 import java.util.List;
 
@@ -31,7 +33,15 @@ public interface UserApi {
 
 
     @FormUrlEncoded
-    @POST("v1/api/contentprod/user/get_order_list.php/{user_id}")
+    @POST("/v1/api/contentprod/user/get_order_list.php/{user_id}")
     Call<List<OrderStatus>> getOrderList(@Field("user_id") String userId);
+
+    @FormUrlEncoded
+    @POST("/v1/api/contentprod/user/get_order_status_details.php/{user_id}")
+    Call<List<OrderStatusReceipt>> getOrderStatusReceiptList(@Field("user_id") String userId);
+
+    @FormUrlEncoded
+    @POST("/v1/api/contentprod/user/get_order_status.php/{user_id}")
+    Call<OrderStatusTrack> getOrderStatus(@Field("user_id") String userId);
 
 }

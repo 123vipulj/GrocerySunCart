@@ -134,7 +134,6 @@ class MapPickAddress : AppCompatActivity(), OnMapReadyCallback {
                     startIntentService(currentLoc)
                     location?.stopUpdateLocation()
 
-
                 }
             })
 
@@ -160,6 +159,34 @@ class MapPickAddress : AppCompatActivity(), OnMapReadyCallback {
                 finish()
             }
             alertDialogConfirm.show()
+
+        }
+        icons_place.setOnClickListener {
+            location = Location(
+                this,
+                object :
+                    locationListener {
+                    override fun locationResponse(locationResult: LocationResult) {
+                        mMap.clear()
+                        val currentLoc = LatLng(
+                            locationResult.lastLocation.latitude,
+                            locationResult.lastLocation.longitude
+                        )
+
+                        marker = mMap.addMarker(
+                            MarkerOptions().icon(
+                                BitmapDescriptorFactory.fromBitmap(bitmapScaledDescriptorFromVector())
+                            ).position(currentLoc).title("hi")
+                        )
+
+                        exactLoc = currentLoc.toString()
+
+                        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(currentLoc, 14f))
+                        startIntentService(currentLoc)
+                        location?.stopUpdateLocation()
+
+                    }
+                })
 
         }
 
