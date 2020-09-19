@@ -30,7 +30,7 @@ class OrderListRAdapter(var context: Context ,var orderStatusList: MutableList<O
         holder.statusOrderText.text = orderStatusList[position].orderStatus
         holder.orderStatusLay.setOnClickListener {
             var intent = Intent(context, StatusOrder::class.java)
-            intent.putExtra("user_id", orderStatusList[position].id)
+            intent.putExtra("user_id", orderStatusList[position].razorpayOrderId)
             intent.putExtra("total_price", orderStatusList[position].product_mrp)
             intent.putExtra("total_qty", orderStatusList[position].order_qty)
             context.startActivity(intent)

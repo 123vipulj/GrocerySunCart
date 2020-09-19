@@ -4,11 +4,11 @@
 
     <size android:height="1dp" />
 
-    <solid android:color="#171010" />
+    <solid android:color="#000000" />
 
     <stroke
         android:width="0.5dp"
-        android:color="#131212"
+        android:color="#070707"
         android:dashWidth="5dp"
         android:dashGap="5dp" />
 </shape>

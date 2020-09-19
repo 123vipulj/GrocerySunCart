@@ -61,52 +61,59 @@ class ProgressCircleWithLine(context: Context?, attributes: AttributeSet?) : Vie
     }
 
     private fun drawCircle(canvas: Canvas){
-        if (isCircleInTop){
-            paintCicle.color = Color.parseColor(circleInTopColor)
-            paintCicle.strokeWidth = 3f
-            paintCicle.style = Paint.Style.FILL_AND_STROKE
+        when {
+            isCircleInTop -> {
+                paintCicle.color = Color.parseColor(circleInTopColor)
+                paintCicle.strokeWidth = 3f
+                paintCicle.style = Paint.Style.FILL_AND_STROKE
 
-            paintLine.color = Color.parseColor(circleInTopLineColor)
-            paintLine.strokeWidth = 3f
-            paintLine.style = Paint.Style.STROKE
-            paintLine.strokeCap = Paint.Cap.SQUARE
+                paintLine.color = Color.parseColor(circleInTopLineColor)
+                paintLine.strokeWidth = 3f
+                paintLine.style = Paint.Style.STROKE
+                paintLine.strokeCap = Paint.Cap.SQUARE
 
-            val mWidth = width / 2
-            val mHeight = height / 2
-            canvas.drawCircle(mWidth.toFloat(), 35f, (mWidth / 2).toFloat(), paintCicle)
-            canvas.drawLine((mWidth).toFloat(), 18f,
-                (mWidth).toFloat(), height.toFloat(), paintLine)
-        }else if (isCircleInBetween){
-            paintCicle.color = Color.parseColor(circleInBetweenColor)
-            paintCicle.strokeWidth = 3f
-            paintCicle.style = Paint.Style.FILL_AND_STROKE
+                val mWidth = width / 2
+                val mHeight = height / 2
+                canvas.drawCircle(mWidth.toFloat(), 25f, (mWidth / 2).toFloat(), paintCicle)
+                canvas.drawLine((mWidth).toFloat(), 18f,
+                    (mWidth).toFloat(), height.toFloat(), paintLine)
+                postInvalidate()
+            }
+            isCircleInBetween -> {
+                paintCicle.color = Color.parseColor(circleInBetweenColor)
+                paintCicle.strokeWidth = 3f
+                paintCicle.style = Paint.Style.FILL_AND_STROKE
 
-            paintLine.color = Color.parseColor(circleInBetweenLineColor)
-            paintLine.strokeWidth = 3f
-            paintLine.style = Paint.Style.STROKE
-            paintLine.strokeCap = Paint.Cap.SQUARE
+                paintLine.color = Color.parseColor(circleInBetweenLineColor)
+                paintLine.strokeWidth = 3f
+                paintLine.style = Paint.Style.STROKE
+                paintLine.strokeCap = Paint.Cap.SQUARE
 
-            val mWidth = width / 2
-            val mHeight = height / 2
-            canvas.drawCircle(mWidth.toFloat(),
-                (mHeight).toFloat(), (mWidth / 2).toFloat(), paintCicle)
-            canvas.drawLine((mWidth).toFloat(), 0f,
-                (mWidth).toFloat(), height.toFloat(), paintLine)
-        }else if (isCircleInBottom){
-            paintCicle.color = Color.parseColor(circleInBottomColor)
-            paintCicle.strokeWidth = 3f
-            paintCicle.style = Paint.Style.FILL_AND_STROKE
+                val mWidth = width / 2
+                val mHeight = height / 2
+                canvas.drawCircle(mWidth.toFloat(),
+                    (mHeight).toFloat(), (mWidth / 2).toFloat(), paintCicle)
+                canvas.drawLine((mWidth).toFloat(), 0f,
+                    (mWidth).toFloat(), height.toFloat(), paintLine)
+                postInvalidate()
+            }
+            isCircleInBottom -> {
+                paintCicle.color = Color.parseColor(circleInBottomColor)
+                paintCicle.strokeWidth = 3f
+                paintCicle.style = Paint.Style.FILL_AND_STROKE
 
-            paintLine.color = Color.parseColor(circleInBottomLineColor)
-            paintLine.strokeWidth = 3f
-            paintLine.style = Paint.Style.STROKE
-            paintLine.strokeCap = Paint.Cap.SQUARE
+                paintLine.color = Color.parseColor(circleInBottomLineColor)
+                paintLine.strokeWidth = 3f
+                paintLine.style = Paint.Style.STROKE
+                paintLine.strokeCap = Paint.Cap.SQUARE
 
-            val mWidth = width / 2
-            val mHeight = height / 2
-            canvas.drawCircle(mWidth.toFloat(), mHeight.toFloat(), (mWidth / 2).toFloat(), paintCicle)
-            canvas.drawLine((mWidth).toFloat(), 0f,
-                (mWidth).toFloat(), height.toFloat() / 2, paintLine)
+                val mWidth = width / 2
+                val mHeight = height / 2
+                canvas.drawCircle(mWidth.toFloat(), mHeight.toFloat(), (mWidth / 2).toFloat(), paintCicle)
+                canvas.drawLine((mWidth).toFloat(), 0f,
+                    (mWidth).toFloat(), height.toFloat() / 2, paintLine)
+                postInvalidate()
+            }
         }
 
     }

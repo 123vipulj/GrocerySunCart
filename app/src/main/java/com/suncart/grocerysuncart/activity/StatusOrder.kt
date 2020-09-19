@@ -1,7 +1,9 @@
 package com.suncart.grocerysuncart.activity
 
+import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
+import android.provider.CalendarContract
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
@@ -31,11 +33,22 @@ class StatusOrder : AppCompatActivity(){
     var eventBus = EventBus.getDefault()
     lateinit var userService : UserService
 
+    lateinit var circleWithLine : ProgressCircleWithLine
+    lateinit var circleWithLineProcessed : ProgressCircleWithLine
+    lateinit var circleWithLineOutOfDeliver : ProgressCircleWithLine
+    lateinit var circleWithLineDelivered : ProgressCircleWithLine
+
+    private lateinit var statusChangeListener: StatusChangeListener
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.status_order)
         FlowManager.init(this)
+
+        circleWithLine = findViewById(R.id.circle_with_line)
+        circleWithLineProcessed = findViewById(R.id.circle_with_line_proccesed)
+        circleWithLineOutOfDeliver = findViewById(R.id.circle_with_line_out_of_deliver)
+        circleWithLineDelivered = findViewById(R.id.circle_with_line_delivered)
 
         var orderId = intent?.getStringExtra("user_id")
         userService = UserService(this)
@@ -65,11 +78,64 @@ class StatusOrder : AppCompatActivity(){
             super.onBackPressed()
         }
 
-        val circleWithLine = findViewById<ProgressCircleWithLine>(R.id.circle_with_line)
-        circleWithLine.circleInTopColor = "#18c721"
-        circleWithLine.circleInTopLineColor = "#18c721"
+        setStatusChangeListener(object : StatusOrder.StatusChangeListener{
 
-        var orderListData = DbUtils.getDataCart()
+            override fun setStatusProperty(status: String) {
+                if (status == "In Progress"){
+                    circleWithLine.circleInTopColor = "#18c721"
+                    circleWithLine.circleInTopLineColor = "#18c721"
+                    order_on_day_title.setTextColor(Color.parseColor("#18c721"))
+                }else if(status == "Progressed"){
+                    circleWithLine.circleInTopColor = "#18c721"
+                    circleWithLine.circleInTopLineColor = "#18c721"
+
+                    circleWithLineProcessed.circleInBetweenColor = "#18c721"
+                    circleWithLineProcessed.circleInBetweenLineColor = "#18c721"
+
+                    order_on_day_title.setTextColor(Color.parseColor("#18c721"))
+                    processed_title.setTextColor(Color.parseColor("#18c721"))
+                }else if(status== "Out Of Delivery"){
+                    circleWithLine.circleInTopColor = "#18c721"
+                    circleWithLine.circleInTopLineColor = "#18c721"
+
+                    circleWithLineProcessed.circleInBetweenColor = "#18c721"
+                    circleWithLineProcessed.circleInBetweenLineColor = "#18c721"
+
+                    circleWithLineOutOfDeliver.circleInBetweenColor = "#18c721"
+                    circleWithLineOutOfDeliver.circleInBetweenLineColor = "#18c721"
+
+                    order_on_day_title.setTextColor(Color.parseColor("#18c721"))
+                    processed_title.setTextColor(Color.parseColor("#18c721"))
+                    out_of_delivery_title.setTextColor(Color.parseColor("#18c721"))
+
+
+                }else if(status == "Delivered"){
+                    circleWithLine.circleInTopColor = "#18c721"
+                    circleWithLine.circleInTopLineColor = "#18c721"
+
+                    circleWithLineProcessed.circleInBetweenColor = "#18c721"
+                    circleWithLineProcessed.circleInBetweenLineColor = "18c721"
+
+                    circleWithLineOutOfDeliver.circleInBetweenColor = "#18c721"
+                    circleWithLineOutOfDeliver.circleInBetweenLineColor = "#18c721"
+
+                    circleWithLineDelivered.circleInBottomLineColor = "#18c721"
+
+                    order_on_day_title.setTextColor(Color.parseColor("#18c721"))
+                    processed_title.setTextColor(Color.parseColor("#18c721"))
+                    out_of_delivery_title.setTextColor(Color.parseColor("#18c721"))
+                    delivered_title.setTextColor(Color.parseColor("#18c721"))
+                }
+
+            }
+
+        })
+
+        receipt_lay.setOnClickListener {
+            var intent = Intent(this, ReceiptOrder::class.java)
+            intent.putExtra("orderId", orderId)
+            startActivity(intent)
+        }
 
     }
 
@@ -89,8 +155,16 @@ class StatusOrder : AppCompatActivity(){
 
     fun onEvent(orderStatusTrackLoadedEvent: OrderStatusTrackLoadedEvent){
         if (orderStatusTrackLoadedEvent != null){
+            statusChangeListener.setStatusProperty(orderStatusTrackLoadedEvent.orderStatusTrack.orderStatus)
             order_id.text = "Order Id : " + orderStatusTrackLoadedEvent.orderStatusTrack.razorpayOrderId.toString()
         }
     }
 
+    fun setStatusChangeListener(statusChangeListener: StatusChangeListener){
+        this.statusChangeListener = statusChangeListener
+    }
+
+    interface StatusChangeListener {
+        fun setStatusProperty(status : String)
+    }
 }
